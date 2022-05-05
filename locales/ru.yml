@@ -1,3 +1,5 @@
+layout:
+  toggle_sidebar: Свернуть/резвернуть меню
 button:
   about: О шаблоне
   back: Назад
