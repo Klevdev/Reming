@@ -1,0 +1,91 @@
+<script setup lang="ts">
+import { mapActions, storeToRefs } from 'pinia'
+import { toggleDark } from '~/composables'
+import { useLayoutStore } from '~/stores/layout'
+
+const { t, availableLocales, locale } = useI18n()
+
+const { userPanelCollapsed } = storeToRefs(useLayoutStore())
+const { toggleUserPanel, toggleSidebar } = mapActions(useLayoutStore, ['toggleUserPanel', 'toggleSidebar'])
+
+const toggleLocales = () => {
+  // change to some real logic
+  const locales = availableLocales
+  locale.value = locales[(locales.indexOf(locale.value) + 1) % locales.length]
+}
+</script>
+
+<template>
+  <header>
+    <button class="w-60px h-60px icon-btn !outline-none" :title="t('layout.toggle_sidebar')" @click="toggleSidebar">
+      <div class="mx-auto" i="carbon-menu" />
+    </button>
+    <span id="logo">Reming</span>
+    <div id="userPanel" @click="toggleUserPanel()">
+      <div v-if="userPanelCollapsed">
+        username
+      </div>
+      <div v-else class="flex flex-row-reverse">
+        <button class="icon-btn mx-2 !outline-none" :title="t('button.toggle_dark')" @click.stop.prevent="toggleDark()">
+          <div i="carbon-sun dark:carbon-moon" />
+        </button>
+        <a class="icon-btn mx-2" :title="t('button.toggle_langs')" @click.stop.prevent="toggleLocales">
+          <div i-carbon-language />
+        </a>
+      </div>
+    </div>
+  </header>
+</template>
+
+<style scoped>
+  #logo {
+    margin-left: 3vw;
+    font-weight: bold;
+    font-size: 1.7em;
+  }
+  header {
+    display: flex;
+    align-items: center;
+    height: 60px;
+    gap: 3vw;
+    background-color: #FAFAFA;
+  }
+
+  header > button {
+    display: none;
+  }
+
+  .dark header {
+    background-color: #444;
+  }
+
+  #userPanel {
+    margin-left: auto;
+    padding-right: 1em;
+    height: 100%;
+    width: 100px;
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  #userPanel:hover {
+    cursor: pointer;
+    background-color: teal;
+  }
+
+  @media only screen and (min-width: 600px) {
+    #logo {
+    margin-left: 0;
+    }
+    header > button {
+      display: block;
+    }
+    #userPanel {
+    padding-right: 2em;
+      width: 300px;
+    }
+  }
+
+</style>
