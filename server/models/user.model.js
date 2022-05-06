@@ -2,6 +2,7 @@ const crypto = require('crypto')
 const mongoose = require('mongoose')
 const jwt = require('jsonwebtoken')
 const { nanoid } = require('nanoid/async')
+const { saveFile, deleteFile } = require('../utils/files')
 
 mongoose.connect(process.env.DB_URL)
 
@@ -43,7 +44,7 @@ const userSchema = new mongoose.Schema({
     type: Number,
     default: () => Date.now(),
   },
-  avatar: String,
+  picture: String,
   bio: {
     type: String,
     maxLength: 250,
@@ -79,6 +80,10 @@ const hashPassword = function(password) {
     .digest('base64')
 }
 
+userSchema.methods.setPicture = function(fileObject) {
+  this.picture = saveFile(fileObject)
+}
+
 userSchema.methods.update = async function(userObject) {
   this.name = userObject.name || this.name
   this.email = userObject.email || this.email
@@ -107,16 +112,20 @@ userSchema.methods.logout = async function() {
 userSchema.pre('save', async function(next) {
   if (this.isNew) {
     let safetyCounter = 0
-    do {
+    do
       this.sid = await nanoid(10)
-      safetyCounter++
-    } while (await this.model('Users').findOne({ sid: this.sid }) || safetyCounter >= 100)
+    while (await this.model('Users').findOne({ sid: this.sid }) || safetyCounter++ >= 100)
     if (safetyCounter >= 100)
-      return false
+      throw new Error('Cannot create short id')
     this.password = hashPassword(this.password)
     this.setRefreshToken(false)
   }
   next()
+})
+
+userSchema.post('remove', function() {
+  if (this.picture)
+    deleteFile(this.picture)
 })
 
 module.exports = mongoose.model('Users', userSchema)

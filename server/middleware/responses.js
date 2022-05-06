@@ -29,7 +29,6 @@ const extendedResponse = (req, res, next) => {
       response.data = data
     // if (message)
     //   data.message = message
-    console.log("user: ", req.user);
     if (req.user?.refreshed)
       response.tokens = req.user.refreshedTokens
 

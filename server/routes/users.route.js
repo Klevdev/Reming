@@ -1,15 +1,17 @@
 /* eslint-disable space-before-function-paren */
 const express = require('express')
+const multer = require('multer')
 const sanitizeRequest = require('../middleware/sanitizeRequest')
 const auth = require('../middleware/auth')
 const User = require('../models/user.model')
 
+const upload = multer({ dest: './server/temp' })
 const router = express.Router()
 
 router.post('/signup', sanitizeRequest, async (req, res) => {
   try {
     const user = await User.create(req.body)
-    return res.sendData(201, { sid: user.sid, accessToken: user.accessToken })
+    return res.sendData(201, { sid: user.sid, accessToken: user.accessToken, refreshToken: user.refreshToken })
   }
   catch (err) {
     return res.sendError(400, err.message, err.errors)
@@ -46,15 +48,12 @@ router.get('/refresh', async (req, res) => {
   if (_user.refreshToken !== refreshToken)
     return res.sendError(403, 'Refresh token is invalid or expired')
   await _user.setRefreshToken()
-  req.user = {
-    _id: token._id,
-    refreshed: true,
-    refreshedTokens: {
-      accessToken: _user.accessToken,
-      refreshToken: _user.refreshToken,
-    },
+
+  const data = {
+    accessToken: _user.accessToken,
+    refreshToken: _user.refreshToken,
   }
-  return res.sendData(200)
+  return res.sendData(200, data)
 })
 
 router.delete('/logout', auth, async (req, res) => {
@@ -77,11 +76,12 @@ router.get('/:sid', async (req, res) => {
   return res.sendData(200, user)
 })
 
-router.patch('/self', sanitizeRequest, auth, async (req, res) => {
+router.patch('/self', sanitizeRequest, auth, upload.single('picture'), async (req, res) => {
   const user = await User.findById(req.user._id)
   if (!user)
     return res.sendError(400, 'User not found')
   try {
+    user.setPicture(req.file)
     await user.update(req.body)
   }
   catch (err) {
