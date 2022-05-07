@@ -12,12 +12,8 @@ const router = express.Router()
 router.post('/signup', sanitizeRequest, async (req, res) => {
   try {
     const user = await User.create(req.body)
-    return res.sendData(201, {
-      sid: user.sid,
-      name: user.name,
-      accessToken: user.accessToken,
-      refreshToken: user.refreshToken,
-    })
+    const projection = { sid: 1, name: 1, picture: 1, accessToken: 1, refreshToken: 1 }
+    return res.sendData(201, user.getObject(projection))
   }
   catch (err) {
     return res.sendError(400, err.message, err.errors)
@@ -29,12 +25,8 @@ router.post('/login', sanitizeRequest, async (req, res) => {
     const user = await User.login(req.body.email, req.body.password)
     if (!user)
       return res.sendError(400, 'Incorrect e-mail or password')
-    return res.sendData(201, {
-      sid: user.sid,
-      name: user.name,
-      accessToken: user.accessToken,
-      refreshToken: user.refreshToken,
-    })
+    const projection = { sid: 1, name: 1, picture: 1, accessToken: 1, refreshToken: 1 }
+    return res.sendData(201, user.getObject(projection))
   }
   catch (err) {
     return res.sendError(400, err.message, err.errors)

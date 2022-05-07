@@ -109,6 +109,13 @@ userSchema.methods.logout = async function() {
   await this.save()
 }
 
+userSchema.methods.getObject = function(projection) {
+  const obj = {}
+  for (const field in projection)
+    obj[field] = this[field]
+  return obj
+}
+
 userSchema.pre('save', async function(next) {
   if (this.isNew) {
     let safetyCounter = 0
