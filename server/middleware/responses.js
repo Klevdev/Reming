@@ -30,7 +30,7 @@ const extendedResponse = (req, res, next) => {
     // if (message)
     //   data.message = message
     if (req.user?.refreshed)
-      response.tokens = req.user.refreshedTokens
+      response.refresh = req.user.refreshedTokens
 
     if (Object.keys(response).length > 0)
       return res.status(code).send(response)

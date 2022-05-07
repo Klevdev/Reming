@@ -3,10 +3,13 @@ import { storeToRefs } from 'pinia'
 // import { ref } from 'vue'
 import { toggleDark } from '~/composables'
 import { useLayoutStore } from '~/stores/layout'
+import { useUserStore } from '~/stores/user'
 const { t, availableLocales, locale } = useI18n()
 
 const layoutStore = useLayoutStore()
 const { userPanelCollapsed } = storeToRefs(layoutStore)
+const user = useUserStore()
+const { userLoggedIn, userName, userPicture } = storeToRefs(user)
 // const { toggleUserPanel, toggleSidebar } = mapActions(useLayoutStore, ['toggleUserPanel', 'toggleSidebar'])
 
 const toggleLocales = () => {
@@ -24,7 +27,15 @@ const toggleLocales = () => {
     <span id="logo">Reming</span>
     <div id="userPanel" @click="layoutStore.toggleUserPanel">
       <div v-if="userPanelCollapsed">
-        {{ userPanelCollapsed }}
+        <div v-if="userLoggedIn">
+          <span>{{ userName }}</span>
+          <img :src="`http://localhost:3001/${userPicture || 'default_avatar.svg'}`" alt="userPicture">
+        </div>
+        <div v-else>
+          <router-link to="/login">
+            Log in
+          </router-link>
+        </div>
       </div>
       <div v-else class="flex flex-row-reverse">
         <button class="icon-btn mx-2 !outline-none" :title="t('button.toggle_dark')" @click.stop.prevent="toggleDark()">

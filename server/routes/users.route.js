@@ -11,7 +11,12 @@ const router = express.Router()
 router.post('/signup', sanitizeRequest, async (req, res) => {
   try {
     const user = await User.create(req.body)
-    return res.sendData(201, { sid: user.sid, accessToken: user.accessToken, refreshToken: user.refreshToken })
+    return res.sendData(201, {
+      sid: user.sid,
+      name: user.name,
+      accessToken: user.accessToken,
+      refreshToken: user.refreshToken
+    })
   }
   catch (err) {
     return res.sendError(400, err.message, err.errors)
@@ -23,7 +28,12 @@ router.post('/login', sanitizeRequest, async (req, res) => {
     const user = await User.login(req.body.email, req.body.password)
     if (!user)
       return res.sendError(400, 'Incorrect e-mail or password')
-    return res.sendData(200, { sid: user.sid, accessToken: user.accessToken, refreshToken: user.refreshToken })
+    return res.sendData(201, {
+      sid: user.sid,
+      name: user.name,
+      accessToken: user.accessToken,
+      refreshToken: user.refreshToken
+    })
   }
   catch (err) {
     return res.sendError(400, err.message, err.errors)
