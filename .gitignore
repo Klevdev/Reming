@@ -10,3 +10,4 @@ node_modules
 server/.env
 server/temp
 uploads
+staticServer.js

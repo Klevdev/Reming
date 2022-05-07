@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import { mapActions, storeToRefs } from 'pinia'
+import { storeToRefs } from 'pinia'
+// import { ref } from 'vue'
 import { toggleDark } from '~/composables'
 import { useLayoutStore } from '~/stores/layout'
-
 const { t, availableLocales, locale } = useI18n()
 
-const { userPanelCollapsed } = storeToRefs(useLayoutStore())
-const { toggleUserPanel, toggleSidebar } = mapActions(useLayoutStore, ['toggleUserPanel', 'toggleSidebar'])
+const layoutStore = useLayoutStore()
+const { userPanelCollapsed } = storeToRefs(layoutStore)
+// const { toggleUserPanel, toggleSidebar } = mapActions(useLayoutStore, ['toggleUserPanel', 'toggleSidebar'])
 
 const toggleLocales = () => {
   // change to some real logic
@@ -17,13 +18,13 @@ const toggleLocales = () => {
 
 <template>
   <header>
-    <button class="w-60px h-60px icon-btn !outline-none" :title="t('layout.toggle_sidebar')" @click="toggleSidebar">
+    <button class="w-60px h-60px icon-btn !outline-none" :title="t('layout.toggle_sidebar')" @click="layoutStore.toggleSidebar">
       <div class="mx-auto" i="carbon-menu" />
     </button>
     <span id="logo">Reming</span>
-    <div id="userPanel" @click="toggleUserPanel()">
+    <div id="userPanel" @click="layoutStore.toggleUserPanel">
       <div v-if="userPanelCollapsed">
-        username
+        {{ userPanelCollapsed }}
       </div>
       <div v-else class="flex flex-row-reverse">
         <button class="icon-btn mx-2 !outline-none" :title="t('button.toggle_dark')" @click.stop.prevent="toggleDark()">
