@@ -4,6 +4,7 @@ const multer = require('multer')
 const sanitizeRequest = require('../middleware/sanitizeRequest')
 const auth = require('../middleware/auth')
 const User = require('../models/user.model')
+const { deleteFile } = require('../utils/files')
 
 const upload = multer({ dest: './server/temp' })
 const router = express.Router()
@@ -98,6 +99,8 @@ router.patch('/self', sanitizeRequest, auth, upload.single('picture'), async (re
     await user.update(update)
   }
   catch (err) {
+    if (req.file)
+      deleteFile(req.file.path)
     return res.sendError(500, 'Error', err.errors)
   }
   return res.sendData(200)
