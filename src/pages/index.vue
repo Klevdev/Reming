@@ -12,10 +12,18 @@
 
 // const { t } = useI18n()
 
+async function f() {
+  // document.cookie = 'test=Test;max-age=10m;'
+  await fetch('http://localhost:3000/test', {
+    credentials: 'include',
+    method: 'GET',
+  })
+}
+
 </script>
 
 <template>
-  <button class="btn">
+  <button class="btn" @click="f">
     f for fetch
   </button>
 </template>

@@ -19,10 +19,16 @@ app.use(cors({
     else
       callback(new Error('Not allowed by CORS'))
   },
+  credentials: true,
 }))
 
+app.use((req, res, next) => {
+  console.log(req.cookies)
+  next()
+})
+
 app.get('/test', (req, res) => {
-  return res.sendError(400, 'Test')
+  return res.sendError(418, 'Test')
   // return res.sendData(200)
 })
 

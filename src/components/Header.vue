@@ -27,13 +27,18 @@ const toggleLocales = () => {
     <span id="logo">Reming</span>
     <div id="userPanel" @click="layoutStore.toggleUserPanel">
       <div v-if="userPanelCollapsed">
-        <div v-if="userLoggedIn">
-          <span>{{ userName }}</span>
-          <img :src="`http://localhost:3001/${userPicture || 'default_avatar.svg'}`" alt="userPicture">
+        <div v-if="userLoggedIn" class="flex flex-row items-center gap-5px">
+          <router-link to="/profile">
+            {{ userName }}
+          </router-link>
+          <img id="userPicture" :src="`http://localhost:3001/${userPicture || 'default_avatar.svg'}`" alt="userPicture">
         </div>
-        <div v-else>
+        <div v-else class="flex gap-5px">
           <router-link to="/login">
             Log in
+          </router-link>
+          <router-link to="/signup">
+            Sign up
           </router-link>
         </div>
       </div>
@@ -100,4 +105,9 @@ const toggleLocales = () => {
     }
   }
 
+  #userPicture {
+    height: 2em;
+    width: 2em;
+    border-radius: 50%;
+  }
 </style>

@@ -15,7 +15,7 @@ router.post('/signup', sanitizeRequest, async (req, res) => {
       sid: user.sid,
       name: user.name,
       accessToken: user.accessToken,
-      refreshToken: user.refreshToken
+      refreshToken: user.refreshToken,
     })
   }
   catch (err) {
@@ -32,7 +32,7 @@ router.post('/login', sanitizeRequest, async (req, res) => {
       sid: user.sid,
       name: user.name,
       accessToken: user.accessToken,
-      refreshToken: user.refreshToken
+      refreshToken: user.refreshToken,
     })
   }
   catch (err) {

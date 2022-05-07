@@ -19,8 +19,8 @@ export const useUserStore = defineStore('user', () => {
     userSid.value = user.sid
     userPicture.value = user.picture
 
-    document.cookie = `accessToken=${user.accessToken};max-age=15m;`
-    document.cookie = `refreshToken=${user.refreshToken};max-age=12h;`
+    document.cookie = `accessToken=${user.accessToken};expires=Mon, 18 Dec 2023 12:00:00 UTC;`
+    document.cookie = `refreshToken=${user.refreshToken};expires=Mon, 18 Dec 2023 12:00:00 UTC;`
 
     userLoggedIn.value = true
   }

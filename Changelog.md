@@ -21,3 +21,6 @@ Server-side:
 * Server now automatically sends refreshed tokens alongside requested data or error
 * Added /user/refresh route for reauthenticating using refreshToken
 * File uploading
+
+To Do:
+* Replace hardcoded cookies' "expires" attribute on login
