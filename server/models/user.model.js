@@ -44,6 +44,7 @@ const userSchema = new mongoose.Schema({
     type: Number,
     default: () => Date.now(),
   },
+  __tempPicture: Object,
   picture: String,
   bio: {
     type: String,
@@ -80,16 +81,15 @@ const hashPassword = function(password) {
     .digest('base64')
 }
 
-userSchema.methods.setPicture = function(fileObject) {
-  this.picture = saveFile(fileObject)
-}
-
 userSchema.methods.update = async function(userObject) {
   this.name = userObject.name || this.name
   this.email = userObject.email || this.email
   this.bio = userObject.bio || this.bio
   if (Object.prototype.hasOwnProperty.call(userObject, 'password'))
     this.password = hashPassword(userObject.password)
+
+  this.__tempPicture = userObject.__tempPicture
+
   await this.save()
 }
 
@@ -119,6 +119,12 @@ userSchema.pre('save', async function(next) {
       throw new Error('Cannot create short id')
     this.password = hashPassword(this.password)
     this.setRefreshToken(false)
+  }
+  if (this.__tempPicture) {
+    if (this.picture)
+      deleteFile(this.picture)
+    this.picture = saveFile(this.__tempPicture)
+    this.__tempPicture = undefined
   }
   next()
 })

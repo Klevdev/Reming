@@ -13,7 +13,7 @@ function saveFile(fileObject) {
       throw err
   })
 
-  return `${name}.${ext}`
+  return destinationPath
 }
 
 function deleteFile(filePath) {

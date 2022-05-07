@@ -91,8 +91,11 @@ router.patch('/self', sanitizeRequest, auth, upload.single('picture'), async (re
   if (!user)
     return res.sendError(400, 'User not found')
   try {
-    user.setPicture(req.file)
-    await user.update(req.body)
+    const update = {
+      ...req.body,
+      __tempPicture: req.file,
+    }
+    await user.update(update)
   }
   catch (err) {
     return res.sendError(500, 'Error', err.errors)
