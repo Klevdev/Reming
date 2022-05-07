@@ -11,7 +11,15 @@ require('dotenv').config({ path: path.join(__dirname, '.env') })
 app.use(express.json())
 app.use(cookieParser())
 app.use(extendedResponse)
-app.use(cors({ origin: 'http://localhost:3333' }))
+app.use(cors({
+  origin: (_origin, callback) => {
+    const whitelist = process.env.ORIGINS.split(' ')
+    if (whitelist.includes(_origin) !== -1)
+      callback(null, true)
+    else
+      callback(new Error('Not allowed by CORS'))
+  },
+}))
 
 app.get('/test', (req, res) => {
   return res.sendError(400, 'Test')
