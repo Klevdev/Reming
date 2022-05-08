@@ -1,27 +1,24 @@
 <script setup lang="ts">
-let form: HTMLFormElement | undefined
-let formData: FormData
+import { useUserStore } from '~/stores/user'
 
-onBeforeMount(() => {
-  form = document.getElementById('form') || undefined
-  formData = new FormData(form)
-})
+const user = useUserStore()
 
 const submitForm = async() => {
+  const form = document.getElementById('form') || undefined
+  const formData = new FormData(form)
+
   const res = await fetch('http://localhost:3000/user/self', {
     method: 'PATCH',
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
     credentials: 'include',
     body: formData,
   })
   const response = await res.json()
 
   if (Object.prototype.hasOwnProperty.call(response, 'error'))
-    alert(`${response.error.message}`)
+    alert(response.error.message)
   else
-    alert('Profile updated successfully')
+    alert('👌')
+    // alert('Profile updated successfully')
 }
 
 </script>
@@ -38,6 +35,12 @@ const submitForm = async() => {
       Submit
     </button>
   </form>
+
+  <hr>
+
+  <button type="button" class="btn" @click="user.logout">
+    Log out
+  </button>
 </template>
 
 <route lang="yaml">

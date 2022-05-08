@@ -15,7 +15,7 @@ const extendedResponse = (req, res, next) => {
     if (req.user?.refreshed)
       response.tokens = req.user.refreshedTokens
 
-    return res.status(code).send(response)
+    return res.status(code).json(response)
   }
 
   res.sendData = (code, data) => {
@@ -33,9 +33,9 @@ const extendedResponse = (req, res, next) => {
       response.refresh = req.user.refreshedTokens
 
     if (Object.keys(response).length > 0)
-      return res.status(code).send(response)
+      return res.status(code).json(response)
     else
-      return res.sendStatus(code)
+      return res.sendStatus(204)
   }
   next()
 }

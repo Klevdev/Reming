@@ -24,12 +24,25 @@ export const useUserStore = defineStore('user', () => {
 
     userLoggedIn.value = true
   }
+
+  const logout = () => {
+    userName.value = ''
+    userSid.value = ''
+    userPicture.value = ''
+
+    document.cookie = 'accessToken=;expires=Mon, 18 Dec 2003 12:00:00 UTC;'
+    document.cookie = 'refreshToken=;expires=Mon, 18 Dec 2003 12:00:00 UTC;'
+
+    userLoggedIn.value = false
+  }
+
   return {
     userLoggedIn,
     userName,
     userSid,
     userPicture,
     login,
+    logout,
   }
 })
 

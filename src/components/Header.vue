@@ -31,7 +31,8 @@ const toggleLocales = () => {
           <router-link to="/profile">
             {{ userName }}
           </router-link>
-          <img id="userPicture" :src="`http://localhost:3001/${userPicture || 'default_avatar.svg'}`" alt="userPicture">
+          <img v-if="userPicture" id="userPicture" :src="`http://localhost:3001/${userPicture}'}`" alt="userPicture">
+          <div v-else i="carbon-user-avatar-filled-alt" />
         </div>
         <div v-else class="flex gap-5px">
           <router-link to="/login">
