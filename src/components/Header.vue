@@ -1,14 +1,4 @@
 <script setup lang="ts">
-<<<<<<< HEAD
-import { mapActions, storeToRefs } from 'pinia'
-import { toggleDark } from '~/composables'
-import { useLayoutStore } from '~/stores/layout'
-
-const { t, availableLocales, locale } = useI18n()
-
-const { userPanelCollapsed } = storeToRefs(useLayoutStore())
-const { toggleUserPanel, toggleSidebar } = mapActions(useLayoutStore, ['toggleUserPanel', 'toggleSidebar'])
-=======
 import { storeToRefs } from 'pinia'
 // import { ref } from 'vue'
 import { toggleDark } from '~/composables'
@@ -21,7 +11,6 @@ const { userPanelCollapsed } = storeToRefs(layoutStore)
 const user = useUserStore()
 const { loggedIn: userLoggedIn, name: userName, picture: userPicture } = storeToRefs(user)
 // const { toggleUserPanel, toggleSidebar } = mapActions(useLayoutStore, ['toggleUserPanel', 'toggleSidebar'])
->>>>>>> development
 
 const toggleLocales = () => {
   // change to some real logic
@@ -32,23 +21,6 @@ const toggleLocales = () => {
 
 <template>
   <header>
-<<<<<<< HEAD
-    <button class="w-60px h-60px icon-btn !outline-none" :title="t('layout.toggle_sidebar')" @click="toggleSidebar">
-      <div class="mx-auto" i="carbon-menu" />
-    </button>
-    <span id="logo">Reming</span>
-    <div id="userPanel" @click="toggleUserPanel()">
-      <div v-if="userPanelCollapsed">
-        username
-      </div>
-      <div v-else class="flex flex-row-reverse">
-        <button class="icon-btn mx-2 !outline-none" :title="t('button.toggle_dark')" @click.stop.prevent="toggleDark()">
-          <div i="carbon-sun dark:carbon-moon" />
-        </button>
-        <a class="icon-btn mx-2" :title="t('button.toggle_langs')" @click.stop.prevent="toggleLocales">
-          <div i-carbon-language />
-        </a>
-=======
     <button class="w-60px h-60px icon-btn !outline-none" :title="t('layout.toggle_sidebar')" @click="layoutStore.toggleSidebar">
       <div class="mx-auto" i="carbon-menu" />
     </button>
@@ -81,7 +53,6 @@ const toggleLocales = () => {
         <button class="icon-btn mx-2" :title="t('button.toggle_langs')" @click.stop.prevent="toggleLocales">
           <div i-carbon-language />
         </button>
->>>>>>> development
       </div>
     </div>
   </header>
@@ -138,12 +109,9 @@ const toggleLocales = () => {
     }
   }
 
-<<<<<<< HEAD
-=======
   #userPicture {
     height: 2em;
     width: 2em;
     border-radius: 50%;
   }
->>>>>>> development
 </style>

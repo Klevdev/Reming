@@ -1,20 +1,5 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
 
-<<<<<<< HEAD
-export const useLayoutStore = defineStore('layout', {
-  state: () => ({
-    sidebarCollapsed: true,
-    userPanelCollapsed: true,
-  }),
-  actions: {
-    toggleSidebar() {
-      this.sidebarCollapsed = !this.sidebarCollapsed
-    },
-    toggleUserPanel() {
-      this.userPanelCollapsed = !this.userPanelCollapsed
-    },
-  },
-=======
 interface PopupPayload {
   type: 'error' | 'success' | 'info'
   message: string
@@ -46,7 +31,6 @@ export const useLayoutStore = defineStore('layout', () => {
     toggleUserPanel,
     popup,
   }
->>>>>>> development
 })
 
 if (import.meta.hot)

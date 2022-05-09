@@ -2,12 +2,8 @@
 import { storeToRefs } from 'pinia'
 import { useLayoutStore } from '~/stores/layout'
 
-<<<<<<< HEAD
-const { sidebarCollapsed } = storeToRefs(useLayoutStore())
-=======
 const layoutStore = useLayoutStore()
 const { sidebarCollapsed } = storeToRefs(layoutStore)
->>>>>>> development
 
 // const toggleLocales = () => {
 //   // change to some real logic

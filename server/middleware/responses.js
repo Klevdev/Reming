@@ -1,5 +1,4 @@
 const extendedResponse = (req, res, next) => {
-<<<<<<< HEAD
   res.sendError = (code, message, errors) => {
     if (!message)
       throw new Error('Error response must have a message')
@@ -36,25 +35,7 @@ const extendedResponse = (req, res, next) => {
     if (Object.keys(response).length > 0)
       return res.status(code).json(response)
     else
-<<<<<<< HEAD
-      return res.sendStatus(code)
-=======
-  res.sendError = (code, message, errors = []) => {
-    const error = { error: { message } }
-    if (errors && errors.length > 0)
-      error.error.errors = errors
-    return res.status(code).send(error)
-  }
-
-  res.sendData = (code, data = {}, message = undefined) => {
-    const response = { data }
-    if (message)
-      data.message = message
-    return res.status(code).send(response)
->>>>>>> origin/main
-=======
       return res.sendStatus(204)
->>>>>>> development
   }
   next()
 }

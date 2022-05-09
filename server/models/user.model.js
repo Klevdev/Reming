@@ -2,10 +2,7 @@ const crypto = require('crypto')
 const mongoose = require('mongoose')
 const jwt = require('jsonwebtoken')
 const { nanoid } = require('nanoid/async')
-<<<<<<< HEAD
-=======
 const { saveFile, deleteFile } = require('../utils/files')
->>>>>>> development
 
 mongoose.connect(process.env.DB_URL)
 
@@ -47,12 +44,8 @@ const userSchema = new mongoose.Schema({
     type: Number,
     default: () => Date.now(),
   },
-<<<<<<< HEAD
-  avatar: String,
-=======
   __tempPicture: Object,
   picture: String,
->>>>>>> development
   bio: {
     type: String,
     maxLength: 250,
@@ -94,12 +87,9 @@ userSchema.methods.update = async function(userObject) {
   this.bio = userObject.bio || this.bio
   if (Object.prototype.hasOwnProperty.call(userObject, 'password'))
     this.password = hashPassword(userObject.password)
-<<<<<<< HEAD
-=======
 
   this.__tempPicture = userObject.__tempPicture
 
->>>>>>> development
   await this.save()
 }
 
@@ -119,23 +109,6 @@ userSchema.methods.logout = async function() {
   await this.save()
 }
 
-<<<<<<< HEAD
-userSchema.pre('save', async function(next) {
-  if (this.isNew) {
-    let safetyCounter = 0
-    do {
-      this.sid = await nanoid(10)
-      safetyCounter++
-    } while (await this.model('Users').findOne({ sid: this.sid }) || safetyCounter >= 100)
-    if (safetyCounter >= 100)
-      return false
-    this.password = hashPassword(this.password)
-    this.setRefreshToken(false)
-  }
-  next()
-})
-
-=======
 userSchema.methods.getObject = function(projection) {
   const obj = {}
   for (const field in projection)
@@ -168,5 +141,4 @@ userSchema.post('remove', function() {
     deleteFile(`.\\uploads\\${this.picture}`)
 })
 
->>>>>>> development
 module.exports = mongoose.model('Users', userSchema)

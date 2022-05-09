@@ -8,9 +8,6 @@ node_modules
 .idea/
 *.log
 server/.env
-<<<<<<< HEAD
-=======
 server/temp/*
 uploads/*
 staticServer.js
->>>>>>> development

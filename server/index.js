@@ -22,15 +22,6 @@ app.use(cors({
   credentials: true,
 }))
 
-<<<<<<< HEAD
-app.get('/test', (req, res) => {
-<<<<<<< HEAD
-  return res.sendError(400, 'Test')
-  // return res.sendData(200)
-=======
-  return res.sendError(418, 'Test', [req.cookies])
->>>>>>> origin/main
-=======
 // app.use((req, res, next) => {
 //   console.log(req.cookies)
 //   next()
@@ -39,24 +30,14 @@ app.get('/test', (req, res) => {
 app.post('/test', (req, res) => {
   // return res.sendError(418, 'Test')
   return res.sendData(200, { message: 'test' })
->>>>>>> development
 })
 
 /* - - - Routes: - - - */
 app.use(['/users', '/user'], require('./routes/users.route.js'))
 
-<<<<<<< HEAD
 app.use((err, req, res) => {
   res.sendError(500, 'Server error. Try again', { err: err.message })
 })
 
 app.listen(process.env.PORT || 3000)
 console.log(`Server is listening on http://localhost:${process.env.PORT || 3000}`)
-<<<<<<< HEAD
-
-=======
-app.listen(process.env.PORT || 3000)
-console.log(`Server is listening on http://localhost:${process.env.PORT || 3000}`)
->>>>>>> origin/main
-=======
->>>>>>> development
