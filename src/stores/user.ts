@@ -14,13 +14,20 @@ export const useUserStore = defineStore('user', () => {
   const userSid = ref('')
   const userPicture = ref('')
 
-  const login = (user: user) => {
+  const setData = (user: user) => {
     userName.value = user.name
     userSid.value = user.sid
     userPicture.value = user.picture
+  }
 
-    document.cookie = `accessToken=${user.accessToken};expires=Mon, 18 Dec 2023 12:00:00 UTC;`
-    document.cookie = `refreshToken=${user.refreshToken};expires=Mon, 18 Dec 2023 12:00:00 UTC;`
+  const refresh = (accessToken: string, refreshToken: string) => {
+    document.cookie = `accessToken=${accessToken};expires=Mon, 18 Dec 2023 12:00:00 UTC;`
+    document.cookie = `refreshToken=${refreshToken};expires=Mon, 18 Dec 2023 12:00:00 UTC;`
+  }
+
+  const login = (user: user) => {
+    setData(user)
+    refresh(user.accessToken, user.refreshToken)
 
     userLoggedIn.value = true
   }
@@ -43,6 +50,8 @@ export const useUserStore = defineStore('user', () => {
     userPicture,
     login,
     logout,
+    refresh,
+    setData,
   }
 })
 

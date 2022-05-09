@@ -1,5 +1,9 @@
 <script setup lang="ts">
+
+import request from '~/composables/request'
 import { useUserStore } from '~/stores/user'
+
+const router = useRouter()
 
 const user = useUserStore()
 
@@ -7,18 +11,18 @@ const submitForm = async() => {
   const form = document.getElementById('form') || undefined
   const formData = new FormData(form)
 
-  const res = await fetch('http://localhost:3000/user/self', {
-    method: 'PATCH',
-    credentials: 'include',
-    body: formData,
-  })
-  const response = await res.text()
+  const response = await request.patch('/user/self', formData)
 
   if (Object.prototype.hasOwnProperty.call(response, 'error'))
     alert(response.error.message)
   else
-    alert('👌')
-    // alert('Profile updated successfully')
+    alert('log in again to see update')
+}
+
+const deleteUser = async() => {
+  await request.delete('/user/self')
+  user.logout()
+  router.push('/')
 }
 
 </script>
@@ -43,7 +47,7 @@ const submitForm = async() => {
       <button type="button" class="btn" @click="user.logout">
         Log out
       </button>
-      <button type="button" class="btn bg-red" @click="user.delete">
+      <button type="button" class="btn bg-red" @click="deleteUser">
         Delete profile
       </button>
     </div>

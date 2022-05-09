@@ -27,9 +27,9 @@ app.use(cors({
 //   next()
 // })
 
-app.get('/test', (req, res) => {
-  return res.sendError(418, 'Test')
-  // return res.sendData(200)
+app.post('/test', (req, res) => {
+  // return res.sendError(418, 'Test')
+  return res.sendData(200, { message: 'test' })
 })
 
 /* - - - Routes: - - - */

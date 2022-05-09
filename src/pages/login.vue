@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import request from '~/composables/request'
 import { useUserStore } from '~/stores/user'
 
 const user = useUserStore()
@@ -8,15 +9,7 @@ const formData = ref({
 })
 
 const submitForm = async() => {
-  const res = await fetch('http://localhost:3000/user/login', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    // credentials: 'include',
-    body: JSON.stringify(formData.value),
-  })
-  const response = await res.json()
+  const response = await request.post('/user/login', formData.value)
 
   if (Object.prototype.hasOwnProperty.call(response, 'error'))
     alert(`${response.error.message}`)
