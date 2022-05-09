@@ -24,12 +24,22 @@
     font-size: 1.2em;
   }
   main {
+<<<<<<< HEAD
       padding: 1em 3vw;
       width: 100%;
   }
   @media only screen and (min-width: 600px) {
     main{
       height: 100%;
+=======
+      padding: 1em 0 calc(60px + 60px + 1em) 3vw;
+      width: 100%;
+      overflow-y: auto;
+  }
+  @media only screen and (min-width: 600px) {
+    main{
+      padding-bottom: calc(60px + 1em);
+>>>>>>> development
     }
   }
 

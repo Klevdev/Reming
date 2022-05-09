@@ -1,32 +1,75 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
+import request from '~/composables/request'
+
+type user = userData & userTokens
+
+interface userTokens {
+  accessToken: string
+  refreshToken: string
+}
+
+interface userData {
+  name: string
+  picture?: string
+}
 
 export const useUserStore = defineStore('user', () => {
-  /**
-   * Current name of the user.
-   */
-  const savedName = ref('')
-  const previousNames = ref(new Set<string>())
+  const loggedIn = ref(false)
+  const name = ref('')
+  const picture = ref('')
 
-  const usedNames = computed(() => Array.from(previousNames.value))
-  const otherNames = computed(() => usedNames.value.filter(name => name !== savedName.value))
+  const setData = (user: userData, save = true) => {
+    name.value = user.name
+    picture.value = user.picture || ''
 
-  /**
-   * Changes the current name of the user and saves the one that was used
-   * before.
-   *
-   * @param name - new name to set
-   */
-  function setNewName(name: string) {
-    if (savedName.value)
-      previousNames.value.add(savedName.value)
+    if (save) {
+      localStorage.setItem('user', JSON.stringify({
+        name: name.value,
+        picture: picture.value,
+      }))
+    }
+  }
 
-    savedName.value = name
+  const refresh = (tokens: userTokens) => {
+    document.cookie = `accessToken=${tokens.accessToken};expires=Mon, 18 Dec 2023 12:00:00 UTC;`
+    document.cookie = `refreshToken=${tokens.refreshToken};expires=Mon, 18 Dec 2023 12:00:00 UTC;`
+  }
+
+  const login = (user: user) => {
+    setData({
+      name: user.name,
+      picture: user.picture,
+    })
+    refresh({
+      accessToken: user.accessToken,
+      refreshToken: user.refreshToken,
+    })
+
+    loggedIn.value = true
+  }
+
+  const logout = () => {
+    request.delete('/user/logout', true).then(() => {
+      document.cookie = 'accessToken=;expires=Mon, 18 Dec 2003 12:00:00 UTC;'
+      document.cookie = 'refreshToken=;expires=Mon, 18 Dec 2003 12:00:00 UTC;'
+    })
+
+    name.value = ''
+    picture.value = ''
+
+    localStorage.removeItem('user')
+
+    loggedIn.value = false
   }
 
   return {
-    setNewName,
-    otherNames,
-    savedName,
+    loggedIn,
+    name,
+    picture,
+    login,
+    logout,
+    refresh,
+    setData,
   }
 })
 

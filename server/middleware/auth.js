@@ -36,7 +36,7 @@ async function auth(req, res, next) {
   }
 
   if (!refreshToken)
-    return res.sendError(403, 'Refresh token is empty')
+    return res.sendError(401, 'Refresh token is empty')
 
 <<<<<<< HEAD
   try {
@@ -46,7 +46,7 @@ async function auth(req, res, next) {
     return res.sendError(403, 'Refresh token is invalid or expired')
   }
   const _user = await User.findById(token._id)
-  if (_user.refreshToken !== refreshToken)
+  if (_user?.refreshToken !== refreshToken)
     return res.sendError(403, 'Refresh token is invalid or expired')
   await _user.setRefreshToken()
   req.user = {

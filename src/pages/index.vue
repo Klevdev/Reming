@@ -1,4 +1,5 @@
 <script setup lang="ts">
+<<<<<<< HEAD
 // import { useUserStore } from '~/stores/user'
 
 // const user = useUserStore()
@@ -25,6 +26,15 @@ async function f() {
 <template>
   <button class="btn" @click="f">
     f for fetch
+=======
+import request from '~/composables/request'
+
+</script>
+
+<template>
+  <button class="btn" @click="request.get('/test')">
+    Test
+>>>>>>> development
   </button>
 </template>
 

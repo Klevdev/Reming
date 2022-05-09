@@ -2,6 +2,10 @@ const crypto = require('crypto')
 const mongoose = require('mongoose')
 const jwt = require('jsonwebtoken')
 const { nanoid } = require('nanoid/async')
+<<<<<<< HEAD
+=======
+const { saveFile, deleteFile } = require('../utils/files')
+>>>>>>> development
 
 mongoose.connect(process.env.DB_URL)
 
@@ -43,7 +47,12 @@ const userSchema = new mongoose.Schema({
     type: Number,
     default: () => Date.now(),
   },
+<<<<<<< HEAD
   avatar: String,
+=======
+  __tempPicture: Object,
+  picture: String,
+>>>>>>> development
   bio: {
     type: String,
     maxLength: 250,
@@ -85,6 +94,12 @@ userSchema.methods.update = async function(userObject) {
   this.bio = userObject.bio || this.bio
   if (Object.prototype.hasOwnProperty.call(userObject, 'password'))
     this.password = hashPassword(userObject.password)
+<<<<<<< HEAD
+=======
+
+  this.__tempPicture = userObject.__tempPicture
+
+>>>>>>> development
   await this.save()
 }
 
@@ -104,6 +119,7 @@ userSchema.methods.logout = async function() {
   await this.save()
 }
 
+<<<<<<< HEAD
 userSchema.pre('save', async function(next) {
   if (this.isNew) {
     let safetyCounter = 0
@@ -119,4 +135,38 @@ userSchema.pre('save', async function(next) {
   next()
 })
 
+=======
+userSchema.methods.getObject = function(projection) {
+  const obj = {}
+  for (const field in projection)
+    obj[field] = this[field]
+  return obj
+}
+
+userSchema.pre('save', async function(next) {
+  if (this.isNew) {
+    let safetyCounter = 0
+    do
+      this.sid = await nanoid(10)
+    while (await this.model('Users').findOne({ sid: this.sid }) || safetyCounter++ >= 100)
+    if (safetyCounter >= 100)
+      throw new Error('Cannot create short id')
+    this.password = hashPassword(this.password)
+    this.setRefreshToken(false)
+  }
+  if (this.__tempPicture) {
+    if (this.picture)
+      deleteFile(`.\\uploads\\${this.picture}`)
+    this.picture = saveFile(this.__tempPicture)
+    this.__tempPicture = undefined
+  }
+  next()
+})
+
+userSchema.post('remove', function() {
+  if (this.picture)
+    deleteFile(`.\\uploads\\${this.picture}`)
+})
+
+>>>>>>> development
 module.exports = mongoose.model('Users', userSchema)

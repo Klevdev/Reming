@@ -14,9 +14,9 @@ const extendedResponse = (req, res, next) => {
     if (errors && Object.keys(errors).length > 0)
       response.error.errors = errors
     if (req.user?.refreshed)
-      response.tokens = req.user.refreshedTokens
+      response.refresh = req.user.refreshedTokens
 
-    return res.status(code).send(response)
+    return res.status(code).json(response)
   }
 
   res.sendData = (code, data) => {
@@ -30,13 +30,13 @@ const extendedResponse = (req, res, next) => {
       response.data = data
     // if (message)
     //   data.message = message
-    console.log("user: ", req.user);
     if (req.user?.refreshed)
-      response.tokens = req.user.refreshedTokens
+      response.refresh = req.user.refreshedTokens
 
     if (Object.keys(response).length > 0)
-      return res.status(code).send(response)
+      return res.status(code).json(response)
     else
+<<<<<<< HEAD
       return res.sendStatus(code)
 =======
   res.sendError = (code, message, errors = []) => {
@@ -52,6 +52,9 @@ const extendedResponse = (req, res, next) => {
       data.message = message
     return res.status(code).send(response)
 >>>>>>> origin/main
+=======
+      return res.sendStatus(204)
+>>>>>>> development
   }
   next()
 }

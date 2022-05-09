@@ -1,15 +1,19 @@
 /* eslint-disable space-before-function-paren */
 const express = require('express')
+const multer = require('multer')
 const sanitizeRequest = require('../middleware/sanitizeRequest')
 const auth = require('../middleware/auth')
 const User = require('../models/user.model')
+const { deleteFile } = require('../utils/files')
 
+const upload = multer({ dest: './server/temp' })
 const router = express.Router()
 
 router.post('/signup', sanitizeRequest, async (req, res) => {
   try {
     const user = await User.create(req.body)
-    return res.sendData(201, { sid: user.sid, accessToken: user.accessToken })
+    const projection = { name: 1, picture: 1, accessToken: 1, refreshToken: 1 }
+    return res.sendData(201, user.getObject(projection))
   }
   catch (err) {
     return res.sendError(400, err.message, err.errors)
@@ -21,7 +25,8 @@ router.post('/login', sanitizeRequest, async (req, res) => {
     const user = await User.login(req.body.email, req.body.password)
     if (!user)
       return res.sendError(400, 'Incorrect e-mail or password')
-    return res.sendData(200, { sid: user.sid, accessToken: user.accessToken, refreshToken: user.refreshToken })
+    const projection = { name: 1, picture: 1, accessToken: 1, refreshToken: 1 }
+    return res.sendData(201, user.getObject(projection))
   }
   catch (err) {
     return res.sendError(400, err.message, err.errors)
@@ -34,7 +39,7 @@ router.get('/refresh', async (req, res) => {
   const refreshToken = req.cookies?.refreshToken
 
   if (!refreshToken)
-    return res.sendError(403, 'Refresh token is empty')
+    return res.sendError(401, 'Refresh token is empty')
 
   let token
   try {
@@ -47,15 +52,12 @@ router.get('/refresh', async (req, res) => {
   if (_user.refreshToken !== refreshToken)
     return res.sendError(403, 'Refresh token is invalid or expired')
   await _user.setRefreshToken()
-  req.user = {
-    _id: token._id,
-    refreshed: true,
-    refreshedTokens: {
-      accessToken: _user.accessToken,
-      refreshToken: _user.refreshToken,
-    },
+
+  const data = {
+    accessToken: _user.accessToken,
+    refreshToken: _user.refreshToken,
   }
-  return res.sendData(200)
+  return res.sendData(200, data)
 })
 
 =======
@@ -63,7 +65,7 @@ router.get('/refresh', async (req, res) => {
 router.delete('/logout', auth, async (req, res) => {
   const user = await User.findById(req.user._id)
   if (!user)
-    return res.sendError(400, 'User not found')
+    return res.sendError(401, 'User not found')
   try {
     await user.logout()
     return res.sendStatus(204)
@@ -80,18 +82,24 @@ router.get('/:sid', sanitizeRequest, async (req, res) => {
 >>>>>>> origin/main
   const user = await User.findByShortId(req.params.sid, { _id: 0, password: 0, sid: 0, refreshToken: 0 })
   if (!user)
-    return res.sendError(400, 'User not found')
+    return res.sendError(404, 'User not found')
   return res.sendData(200, user)
 })
 
-router.patch('/self', sanitizeRequest, auth, async (req, res) => {
+router.patch('/self', sanitizeRequest, auth, upload.single('picture'), async (req, res) => {
   const user = await User.findById(req.user._id)
   if (!user)
-    return res.sendError(400, 'User not found')
+    return res.sendError(401, 'User not found')
   try {
-    await user.update(req.body)
+    const update = {
+      ...req.body,
+      __tempPicture: req.file,
+    }
+    await user.update(update)
   }
   catch (err) {
+    if (req.file)
+      deleteFile(req.file.path)
     return res.sendError(500, 'Error', err.errors)
   }
 <<<<<<< HEAD
@@ -104,7 +112,7 @@ router.patch('/self', sanitizeRequest, auth, async (req, res) => {
 router.delete('/self', auth, async (req, res) => {
   const user = await User.findById(req.user._id)
   if (!user)
-    return res.sendError(400, 'User not found')
+    return res.sendError(401, 'User not found')
   try {
     await user.delete()
     return res.sendStatus(204)

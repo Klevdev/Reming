@@ -11,8 +11,18 @@ require('dotenv').config({ path: path.join(__dirname, '.env') })
 app.use(express.json())
 app.use(cookieParser())
 app.use(extendedResponse)
-app.use(cors({ origin: 'http://localhost:3333' }))
+app.use(cors({
+  origin: (_origin, callback) => {
+    const whitelist = process.env.ORIGINS.split(' ')
+    if (whitelist.includes(_origin) !== -1)
+      callback(null, true)
+    else
+      callback(new Error('Not allowed by CORS'))
+  },
+  credentials: true,
+}))
 
+<<<<<<< HEAD
 app.get('/test', (req, res) => {
 <<<<<<< HEAD
   return res.sendError(400, 'Test')
@@ -20,6 +30,16 @@ app.get('/test', (req, res) => {
 =======
   return res.sendError(418, 'Test', [req.cookies])
 >>>>>>> origin/main
+=======
+// app.use((req, res, next) => {
+//   console.log(req.cookies)
+//   next()
+// })
+
+app.post('/test', (req, res) => {
+  // return res.sendError(418, 'Test')
+  return res.sendData(200, { message: 'test' })
+>>>>>>> development
 })
 
 /* - - - Routes: - - - */
@@ -32,8 +52,11 @@ app.use((err, req, res) => {
 
 app.listen(process.env.PORT || 3000)
 console.log(`Server is listening on http://localhost:${process.env.PORT || 3000}`)
+<<<<<<< HEAD
 
 =======
 app.listen(process.env.PORT || 3000)
 console.log(`Server is listening on http://localhost:${process.env.PORT || 3000}`)
 >>>>>>> origin/main
+=======
+>>>>>>> development
