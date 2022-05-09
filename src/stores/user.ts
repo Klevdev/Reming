@@ -1,53 +1,71 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
+import request from '~/composables/request'
 
-interface user {
-  name: string
-  sid: string
-  picture: string
+type user = userData & userTokens
+
+interface userTokens {
   accessToken: string
   refreshToken: string
 }
 
-export const useUserStore = defineStore('user', () => {
-  const userLoggedIn = ref(false)
-  const userName = ref('')
-  const userSid = ref('')
-  const userPicture = ref('')
+interface userData {
+  name: string
+  picture?: string
+}
 
-  const setData = (user: user) => {
-    userName.value = user.name
-    userSid.value = user.sid
-    userPicture.value = user.picture
+export const useUserStore = defineStore('user', () => {
+  const loggedIn = ref(false)
+  const name = ref('')
+  const picture = ref('')
+
+  const setData = (user: userData, save = true) => {
+    name.value = user.name
+    picture.value = user.picture || ''
+
+    if (save) {
+      localStorage.setItem('user', JSON.stringify({
+        name: name.value,
+        picture: picture.value,
+      }))
+    }
   }
 
-  const refresh = (accessToken: string, refreshToken: string) => {
-    document.cookie = `accessToken=${accessToken};expires=Mon, 18 Dec 2023 12:00:00 UTC;`
-    document.cookie = `refreshToken=${refreshToken};expires=Mon, 18 Dec 2023 12:00:00 UTC;`
+  const refresh = (tokens: userTokens) => {
+    document.cookie = `accessToken=${tokens.accessToken};expires=Mon, 18 Dec 2023 12:00:00 UTC;`
+    document.cookie = `refreshToken=${tokens.refreshToken};expires=Mon, 18 Dec 2023 12:00:00 UTC;`
   }
 
   const login = (user: user) => {
-    setData(user)
-    refresh(user.accessToken, user.refreshToken)
+    setData({
+      name: user.name,
+      picture: user.picture,
+    })
+    refresh({
+      accessToken: user.accessToken,
+      refreshToken: user.refreshToken,
+    })
 
-    userLoggedIn.value = true
+    loggedIn.value = true
   }
 
   const logout = () => {
-    userName.value = ''
-    userSid.value = ''
-    userPicture.value = ''
+    request.delete('/user/logout', true).then(() => {
+      document.cookie = 'accessToken=;expires=Mon, 18 Dec 2003 12:00:00 UTC;'
+      document.cookie = 'refreshToken=;expires=Mon, 18 Dec 2003 12:00:00 UTC;'
+    })
 
-    document.cookie = 'accessToken=;expires=Mon, 18 Dec 2003 12:00:00 UTC;'
-    document.cookie = 'refreshToken=;expires=Mon, 18 Dec 2003 12:00:00 UTC;'
+    name.value = ''
+    picture.value = ''
 
-    userLoggedIn.value = false
+    localStorage.removeItem('user')
+
+    loggedIn.value = false
   }
 
   return {
-    userLoggedIn,
-    userName,
-    userSid,
-    userPicture,
+    loggedIn,
+    name,
+    picture,
     login,
     logout,
     refresh,

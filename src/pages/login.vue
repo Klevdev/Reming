@@ -9,13 +9,10 @@ const formData = ref({
 })
 
 const submitForm = async() => {
-  const response = await request.post('/user/login', formData.value)
+  const { data, error } = await request.post('/user/login', formData.value)
 
-  if (Object.prototype.hasOwnProperty.call(response, 'error'))
-    alert(`${response.error.message}`)
-
-  else
-    user.login(response.data)
+  if (!error)
+    user.login(data)
 }
 
 </script>

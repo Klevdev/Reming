@@ -1,8 +1,18 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
 
+interface PopupPayload {
+  type: 'error' | 'success' | 'info'
+  message: string
+  action?: {
+    text: string
+    action: Function
+  }
+}
+
 export const useLayoutStore = defineStore('layout', () => {
   const sidebarCollapsed = ref(true)
   const userPanelCollapsed = ref(true)
+
   function toggleSidebar() {
     sidebarCollapsed.value = !sidebarCollapsed.value
   }
@@ -10,11 +20,16 @@ export const useLayoutStore = defineStore('layout', () => {
     userPanelCollapsed.value = !userPanelCollapsed.value
   }
 
+  function popup(payload: PopupPayload) {
+    alert(payload.message)
+  }
+
   return {
     sidebarCollapsed,
     userPanelCollapsed,
     toggleSidebar,
     toggleUserPanel,
+    popup,
   }
 })
 

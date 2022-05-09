@@ -9,7 +9,7 @@ const { t, availableLocales, locale } = useI18n()
 const layoutStore = useLayoutStore()
 const { userPanelCollapsed } = storeToRefs(layoutStore)
 const user = useUserStore()
-const { userLoggedIn, userName, userPicture } = storeToRefs(user)
+const { loggedIn: userLoggedIn, name: userName, picture: userPicture } = storeToRefs(user)
 // const { toggleUserPanel, toggleSidebar } = mapActions(useLayoutStore, ['toggleUserPanel', 'toggleSidebar'])
 
 const toggleLocales = () => {
@@ -27,12 +27,12 @@ const toggleLocales = () => {
     <span id="logo"><router-link to="/">Reming</router-link></span>
     <div id="userPanel" @click="layoutStore.toggleUserPanel">
       <div v-if="userPanelCollapsed">
-        <div v-if="userLoggedIn" class="flex flex-row items-center gap-5px">
-          <router-link to="/profile">
+        <div v-if="userLoggedIn" class="flex flex-row items-center gap-1em">
+          <router-link to="/profile" class="text-1.2em">
             {{ userName }}
           </router-link>
           <img v-if="userPicture" id="userPicture" :src="`http://localhost:3001/${userPicture}`" alt="user picture">
-          <div v-else i="carbon-user-avatar-filled-alt" />
+          <div v-else class="text-2em" i="carbon-user-avatar-filled-alt" />
         </div>
         <div v-else class="flex gap-5px">
           <router-link to="/login" class="btn" @click.stop.prevent>
@@ -44,7 +44,7 @@ const toggleLocales = () => {
         </div>
       </div>
       <div v-else class="flex flex-row-reverse">
-        <button class="icon-btn mx-2" title="Log out" @click.stop.prevent="user.logout">
+        <button class="icon-btn mx-2" title="Log out" @click="user.logout">
           <div i-carbon-logout />
         </button>
         <button class="icon-btn mx-2 !outline-none" :title="t('button.toggle_dark')" @click.stop.prevent="toggleDark()">

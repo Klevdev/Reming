@@ -12,7 +12,7 @@ const router = express.Router()
 router.post('/signup', sanitizeRequest, async (req, res) => {
   try {
     const user = await User.create(req.body)
-    const projection = { sid: 1, name: 1, picture: 1, accessToken: 1, refreshToken: 1 }
+    const projection = { name: 1, picture: 1, accessToken: 1, refreshToken: 1 }
     return res.sendData(201, user.getObject(projection))
   }
   catch (err) {
@@ -25,7 +25,7 @@ router.post('/login', sanitizeRequest, async (req, res) => {
     const user = await User.login(req.body.email, req.body.password)
     if (!user)
       return res.sendError(400, 'Incorrect e-mail or password')
-    const projection = { sid: 1, name: 1, picture: 1, accessToken: 1, refreshToken: 1 }
+    const projection = { name: 1, picture: 1, accessToken: 1, refreshToken: 1 }
     return res.sendData(201, user.getObject(projection))
   }
   catch (err) {
@@ -38,7 +38,7 @@ router.get('/refresh', async (req, res) => {
   const refreshToken = req.cookies?.refreshToken
 
   if (!refreshToken)
-    return res.sendError(403, 'Refresh token is empty')
+    return res.sendError(401, 'Refresh token is empty')
 
   let token
   try {
@@ -62,7 +62,7 @@ router.get('/refresh', async (req, res) => {
 router.delete('/logout', auth, async (req, res) => {
   const user = await User.findById(req.user._id)
   if (!user)
-    return res.sendError(400, 'User not found')
+    return res.sendError(401, 'User not found')
   try {
     await user.logout()
     return res.sendStatus(204)
@@ -75,14 +75,14 @@ router.delete('/logout', auth, async (req, res) => {
 router.get('/:sid', async (req, res) => {
   const user = await User.findByShortId(req.params.sid, { _id: 0, password: 0, sid: 0, refreshToken: 0 })
   if (!user)
-    return res.sendError(400, 'User not found')
+    return res.sendError(404, 'User not found')
   return res.sendData(200, user)
 })
 
 router.patch('/self', sanitizeRequest, auth, upload.single('picture'), async (req, res) => {
   const user = await User.findById(req.user._id)
   if (!user)
-    return res.sendError(400, 'User not found')
+    return res.sendError(401, 'User not found')
   try {
     const update = {
       ...req.body,
@@ -101,7 +101,7 @@ router.patch('/self', sanitizeRequest, auth, upload.single('picture'), async (re
 router.delete('/self', auth, async (req, res) => {
   const user = await User.findById(req.user._id)
   if (!user)
-    return res.sendError(400, 'User not found')
+    return res.sendError(401, 'User not found')
   try {
     await user.delete()
     return res.sendStatus(204)

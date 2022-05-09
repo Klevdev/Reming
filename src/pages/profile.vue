@@ -11,11 +11,9 @@ const submitForm = async() => {
   const form = document.getElementById('form') || undefined
   const formData = new FormData(form)
 
-  const response = await request.patch('/user/self', formData)
+  const { data, error } = await request.patch('/user/self', formData)
 
-  if (Object.prototype.hasOwnProperty.call(response, 'error'))
-    alert(response.error.message)
-  else
+  if (!error)
     alert('log in again to see update')
 }
 

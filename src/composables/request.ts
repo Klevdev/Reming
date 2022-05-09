@@ -1,3 +1,6 @@
+import { useUserStore } from '~/stores/user'
+import { useLayoutStore } from '~/stores/layout'
+
 const host = 'http://localhost:3000'
 
 enum methods {
@@ -7,15 +10,43 @@ enum methods {
   DELETE = 'DELETE',
 }
 
-interface headers {
+interface Headers {
   'Content-Type'?: string|undefined
 }
 
-async function _request(method: methods, path: string, body: object|FormData|undefined|string) {
+type Data = Object | Array<Object> | []
+
+interface Error {
+  message: string
+  errors?: Array<Object|string>
+}
+
+interface Response {
+  data: Data | Boolean
+  error: Error | null
+}
+
+function _handleErrors(status: Number, resError: Error) {
+  const layout = useLayoutStore()
+  layout.popup({
+    type: 'error',
+    message: resError.message,
+  })
+  if (status === 401 || status === 403) {
+    const user = useUserStore()
+    user.logout()
+  }
+}
+
+async function _request(
+  method: methods,
+  path: string,
+  body: object|FormData|undefined|string,
+  silent: boolean): Promise<Response> {
   if (path[0] !== '/')
     path = `/${path}`
 
-  const headers: headers = {}
+  const headers: Headers = {}
   if (!(body instanceof FormData)) {
     body = JSON.stringify(body)
     headers['Content-Type'] = 'application/json'
@@ -27,18 +58,33 @@ async function _request(method: methods, path: string, body: object|FormData|und
     credentials: 'include',
     body,
   })
-  let response = await res.text()
-  try {
-    response = JSON.parse(response)
-  }
-  catch (err) {}
 
-  return response
+  if (res.status === 204)
+    return { data: {}, error: null }
+
+  let resJson
+  try {
+    resJson = await res.json()
+  }
+  catch (error) {
+    return { data: {}, error: { message: 'JSON parsing error' } }
+  }
+
+  if (Object.prototype.hasOwnProperty.call(resJson, 'refresh')) {
+    const user = useUserStore()
+    user.refresh(resJson.refresh.accessToken, resJson.refresh.refreshToken)
+  }
+  if (Object.prototype.hasOwnProperty.call(resJson, 'error')) {
+    if (!silent)
+      _handleErrors(res.status, resJson.error)
+    return { data: {} || {}, error: resJson.error }
+  }
+  return { data: resJson.data || {}, error: null }
 }
 
 export default {
-  get: async(path: string) => await _request(methods.GET, path, undefined),
-  post: async(path: string, body: object|FormData|undefined = undefined) => await _request(methods.POST, path, body),
-  patch: async(path: string, body: object|FormData|undefined = undefined) => await _request(methods.PATCH, path, body),
-  delete: async(path: string) => await _request(methods.DELETE, path, undefined),
+  get: async(path: string, silent = false) => await _request(methods.GET, path, undefined, silent),
+  post: async(path: string, body: object|FormData|undefined = undefined, silent = false) => await _request(methods.POST, path, body, silent),
+  patch: async(path: string, body: object|FormData|undefined = undefined, silent = false) => await _request(methods.PATCH, path, body, silent),
+  delete: async(path: string, silent = false) => await _request(methods.DELETE, path, undefined, silent),
 }

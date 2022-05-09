@@ -13,7 +13,7 @@ const extendedResponse = (req, res, next) => {
     if (errors && Object.keys(errors).length > 0)
       response.error.errors = errors
     if (req.user?.refreshed)
-      response.tokens = req.user.refreshedTokens
+      response.refresh = req.user.refreshedTokens
 
     return res.status(code).json(response)
   }

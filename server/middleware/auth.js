@@ -24,7 +24,7 @@ async function auth(req, res, next) {
   }
 
   if (!refreshToken)
-    return res.sendError(403, 'Refresh token is empty')
+    return res.sendError(401, 'Refresh token is empty')
 
   try {
     token = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET)
