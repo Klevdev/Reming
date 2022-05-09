@@ -12,7 +12,7 @@ const submitForm = async() => {
     credentials: 'include',
     body: formData,
   })
-  const response = await res.json()
+  const response = await res.text()
 
   if (Object.prototype.hasOwnProperty.call(response, 'error'))
     alert(response.error.message)
@@ -24,23 +24,30 @@ const submitForm = async() => {
 </script>
 
 <template>
-  <form id="form" class="w-200px flex flex-col gap-15px" @submit.prevent="submitForm">
-    <input name="name" type="text">
-    <input name="email" type="email">
-    <input name="password" type="password">
-    <textarea name="bio" />
-    <input name="picture" type="file">
+  <div class="flex flex-col gap-1em">
+    <h2>Edit profile information</h2>
+    <form id="form" class="w-200px flex flex-col gap-15px" @submit.prevent="submitForm">
+      <input name="name" type="text">
+      <input name="email" type="email">
+      <input name="password" type="password">
+      <textarea name="bio" />
+      <input name="picture" type="file">
 
-    <button class="btn">
-      Submit
-    </button>
-  </form>
+      <button class="btn">
+        Submit
+      </button>
+    </form>
 
-  <hr>
-
-  <button type="button" class="btn" @click="user.logout">
-    Log out
-  </button>
+    <h2>Actions</h2>
+    <div class="w-max flex flex-col gap-1em">
+      <button type="button" class="btn" @click="user.logout">
+        Log out
+      </button>
+      <button type="button" class="btn bg-red" @click="user.delete">
+        Delete profile
+      </button>
+    </div>
+  </div>
 </template>
 
 <route lang="yaml">

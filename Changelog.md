@@ -1,6 +1,7 @@
 ## Reming changelog
 ---
-**v0.0.0** - *05.05.22* 
+**v0.0** - *05.05.22*
+"Bootstrap"
 
 Client-side:
 * App created, based on [vitesse](https://github.com/antfu/vitesse) template
@@ -10,17 +11,14 @@ Server-side:
 * User authentication
 * Creating account, login, logout, getting profile, deleting account
 
-To Do:
-* File uploading
-* User privacy settings
-* Querying users
 ---
-**v0.0.1** - *06.05.22*
+**v0.1** - *09.05.22*
+"User"
 
-Server-side:
-* Server now automatically sends refreshed tokens alongside requested data or error
-* Added /user/refresh route for reauthenticating using refreshToken
+* Login, Signup, Pofile editing
+* Authentification, refreshing tokens, logout
 * File uploading
+* Basic responsive layout
 
-To Do:
-* Replace hardcoded cookies' "expires" attribute on login
+**0.2**
+"Materials"

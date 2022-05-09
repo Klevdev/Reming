@@ -24,32 +24,35 @@ const toggleLocales = () => {
     <button class="w-60px h-60px icon-btn !outline-none" :title="t('layout.toggle_sidebar')" @click="layoutStore.toggleSidebar">
       <div class="mx-auto" i="carbon-menu" />
     </button>
-    <span id="logo">Reming</span>
+    <span id="logo"><router-link to="/">Reming</router-link></span>
     <div id="userPanel" @click="layoutStore.toggleUserPanel">
       <div v-if="userPanelCollapsed">
         <div v-if="userLoggedIn" class="flex flex-row items-center gap-5px">
           <router-link to="/profile">
             {{ userName }}
           </router-link>
-          <img v-if="userPicture" id="userPicture" :src="`http://localhost:3001/${userPicture}'}`" alt="userPicture">
+          <img v-if="userPicture" id="userPicture" :src="`http://localhost:3001/${userPicture}`" alt="user picture">
           <div v-else i="carbon-user-avatar-filled-alt" />
         </div>
         <div v-else class="flex gap-5px">
-          <router-link to="/login">
+          <router-link to="/login" class="btn" @click.stop.prevent>
             Log in
           </router-link>
-          <router-link to="/signup">
+          <router-link to="/signup" class="btn" @click.stop.prevent>
             Sign up
           </router-link>
         </div>
       </div>
       <div v-else class="flex flex-row-reverse">
+        <button class="icon-btn mx-2" title="Log out" @click.stop.prevent="user.logout">
+          <div i-carbon-logout />
+        </button>
         <button class="icon-btn mx-2 !outline-none" :title="t('button.toggle_dark')" @click.stop.prevent="toggleDark()">
           <div i="carbon-sun dark:carbon-moon" />
         </button>
-        <a class="icon-btn mx-2" :title="t('button.toggle_langs')" @click.stop.prevent="toggleLocales">
+        <button class="icon-btn mx-2" :title="t('button.toggle_langs')" @click.stop.prevent="toggleLocales">
           <div i-carbon-language />
-        </a>
+        </button>
       </div>
     </div>
   </header>

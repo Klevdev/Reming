@@ -129,7 +129,7 @@ userSchema.pre('save', async function(next) {
   }
   if (this.__tempPicture) {
     if (this.picture)
-      deleteFile(this.picture)
+      deleteFile(`.\\uploads\\${this.picture}`)
     this.picture = saveFile(this.__tempPicture)
     this.__tempPicture = undefined
   }
@@ -138,7 +138,7 @@ userSchema.pre('save', async function(next) {
 
 userSchema.post('remove', function() {
   if (this.picture)
-    deleteFile(this.picture)
+    deleteFile(`.\\uploads\\${this.picture}`)
 })
 
 module.exports = mongoose.model('Users', userSchema)
