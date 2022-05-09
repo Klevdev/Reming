@@ -14,13 +14,18 @@ app.use(extendedResponse)
 app.use(cors({ origin: 'http://localhost:3333' }))
 
 app.get('/test', (req, res) => {
+<<<<<<< HEAD
   return res.sendError(400, 'Test')
   // return res.sendData(200)
+=======
+  return res.sendError(418, 'Test', [req.cookies])
+>>>>>>> origin/main
 })
 
 /* - - - Routes: - - - */
 app.use(['/users', '/user'], require('./routes/users.route.js'))
 
+<<<<<<< HEAD
 app.use((err, req, res) => {
   res.sendError(500, 'Server error. Try again', { err: err.message })
 })
@@ -28,3 +33,7 @@ app.use((err, req, res) => {
 app.listen(process.env.PORT || 3000)
 console.log(`Server is listening on http://localhost:${process.env.PORT || 3000}`)
 
+=======
+app.listen(process.env.PORT || 3000)
+console.log(`Server is listening on http://localhost:${process.env.PORT || 3000}`)
+>>>>>>> origin/main

@@ -1,3 +1,5 @@
+layout:
+  toggle_sidebar: Toggle sidebar
 button:
   about: About
   back: Back

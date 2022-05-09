@@ -28,6 +28,7 @@ router.post('/login', sanitizeRequest, async (req, res) => {
   }
 })
 
+<<<<<<< HEAD
 router.get('/refresh', async (req, res) => {
   const jwt = require('jsonwebtoken')
   const refreshToken = req.cookies?.refreshToken
@@ -57,6 +58,8 @@ router.get('/refresh', async (req, res) => {
   return res.sendData(200)
 })
 
+=======
+>>>>>>> origin/main
 router.delete('/logout', auth, async (req, res) => {
   const user = await User.findById(req.user._id)
   if (!user)
@@ -70,7 +73,11 @@ router.delete('/logout', auth, async (req, res) => {
   }
 })
 
+<<<<<<< HEAD
 router.get('/:sid', async (req, res) => {
+=======
+router.get('/:sid', sanitizeRequest, async (req, res) => {
+>>>>>>> origin/main
   const user = await User.findByShortId(req.params.sid, { _id: 0, password: 0, sid: 0, refreshToken: 0 })
   if (!user)
     return res.sendError(400, 'User not found')
@@ -87,7 +94,11 @@ router.patch('/self', sanitizeRequest, auth, async (req, res) => {
   catch (err) {
     return res.sendError(500, 'Error', err.errors)
   }
+<<<<<<< HEAD
   return res.sendData(200)
+=======
+  return res.sendStatus(204)
+>>>>>>> origin/main
 })
 
 router.delete('/self', auth, async (req, res) => {

@@ -6,19 +6,31 @@ async function auth(req, res, next) {
   const accessToken = req.cookies?.accessToken
   const refreshToken = req.cookies?.refreshToken
 
+<<<<<<< HEAD
   let token
   if (accessToken) {
     try {
       token = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET)
+=======
+  let user
+  if (accessToken) {
+    try {
+      user = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET)
+>>>>>>> origin/main
     }
     catch (err) {
       // console.log(err)
     }
   }
+<<<<<<< HEAD
   if (token) {
     req.user = {
       _id: token._id,
     }
+=======
+  if (user) {
+    req.user = user
+>>>>>>> origin/main
     next()
     return
   }
@@ -26,6 +38,7 @@ async function auth(req, res, next) {
   if (!refreshToken)
     return res.sendError(403, 'Refresh token is empty')
 
+<<<<<<< HEAD
   try {
     token = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET)
   }
@@ -45,6 +58,19 @@ async function auth(req, res, next) {
     },
   }
   next()
+=======
+  jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, async (err, user) => {
+    if (err)
+      return res.sendError(403, 'Refresh token is invalid or expired')
+    const _user = await User.findById(user._id)
+    if (_user.refreshToken !== refreshToken)
+      return res.sendError(403, 'Refresh token is invalid or expired')
+    await _user.setRefreshToken()
+    user.refreshed = true
+    req.user = user
+    next()
+  })
+>>>>>>> origin/main
 }
 
 module.exports = auth
