@@ -4,6 +4,7 @@ const express = require('express')
 const cors = require('cors')
 const cookieParser = require('cookie-parser')
 const extendedResponse = require('./middleware/responses')
+const authorize = require('./middleware/auth')
 const app = express()
 
 require('dotenv').config({ path: path.join(__dirname, '.env') })
@@ -22,22 +23,12 @@ app.use(cors({
   credentials: true,
 }))
 
-// app.use((req, res, next) => {
-//   console.log(req.cookies)
-//   next()
-// })
-
-app.post('/test', (req, res) => {
-  // return res.sendError(418, 'Test')
-  return res.sendData(200, { message: 'test' })
+app.all('/test', authorize(false), (req, res) => {
+  return res.sendData(200, { test: 'Test', user: req.user || 'not authorized' })
 })
 
-/* - - - Routes: - - - */
 app.use(['/users', '/user'], require('./routes/users.route.js'))
-
-app.use((err, req, res) => {
-  res.sendError(500, 'Server error. Try again', { err: err.message })
-})
+// app.use(['/materials', '/material'], require('./routes/materials.route.js'))
 
 app.listen(process.env.PORT || 3000)
 console.log(`Server is listening on http://localhost:${process.env.PORT || 3000}`)

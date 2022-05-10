@@ -1,13 +1,17 @@
 const crypto = require('crypto')
 const mongoose = require('mongoose')
 const jwt = require('jsonwebtoken')
-const { nanoid } = require('nanoid/async')
+const { nanoid } = require('nanoid')
 const { saveFile, deleteFile } = require('../utils/files')
 
 mongoose.connect(process.env.DB_URL)
 
 const userSchema = new mongoose.Schema({
-  sid: String,
+  _id: {
+    type: String,
+    immutable: true,
+    default: () => nanoid(10),
+  },
   name: {
     type: String,
     trim: true,
@@ -67,12 +71,12 @@ userSchema.methods.setRefreshToken = async function(save = true) {
     await this.save()
 }
 
-userSchema.statics.findByShortId = async function(sid, projection) {
-  if (!projection)
-    projection = { _id: 0, password: 0, sid: 0, refreshToken: 0 }
-  const user = await this.findOne({ sid }, projection).exec()
-  return user || false
-}
+// userSchema.statics.findByShortId = async function(sid, projection) {
+//   if (!projection)
+//     projection = { _id: 0, password: 0, sid: 0, refreshToken: 0 }
+//   const user = await this.findOne({ sid }, projection).exec()
+//   return user || false
+// }
 
 const hashPassword = function(password) {
   return crypto
@@ -109,7 +113,7 @@ userSchema.methods.logout = async function() {
   await this.save()
 }
 
-userSchema.methods.getObject = function(projection) {
+userSchema.methods.project = function(projection) {
   const obj = {}
   for (const field in projection)
     obj[field] = this[field]
@@ -118,12 +122,6 @@ userSchema.methods.getObject = function(projection) {
 
 userSchema.pre('save', async function(next) {
   if (this.isNew) {
-    let safetyCounter = 0
-    do
-      this.sid = await nanoid(10)
-    while (await this.model('Users').findOne({ sid: this.sid }) || safetyCounter++ >= 100)
-    if (safetyCounter >= 100)
-      throw new Error('Cannot create short id')
     this.password = hashPassword(this.password)
     this.setRefreshToken(false)
   }

@@ -7,14 +7,28 @@ const router = useRouter()
 
 const user = useUserStore()
 
+const userData = reactive({})
+
+onMounted(async() => {
+  const { data, error } = await request.get('/user/self')
+  if (!error) {
+    userData.name = data.name
+    userData.email = data.email
+    userData.bio = data.bio
+  }
+})
+
 const submitForm = async() => {
   const form = document.getElementById('form') || undefined
   const formData = new FormData(form)
 
   const { data, error } = await request.patch('/user/self', formData)
 
-  if (!error)
-    alert('log in again to see update')
+  if (!error) {
+    if (data.picture)
+      userData.picture = data.picture
+    user.setData(userData)
+  }
 }
 
 const deleteUser = async() => {
@@ -29,12 +43,11 @@ const deleteUser = async() => {
   <div class="flex flex-col gap-1em">
     <h2>Edit profile information</h2>
     <form id="form" class="w-200px flex flex-col gap-15px" @submit.prevent="submitForm">
-      <input name="name" type="text">
-      <input name="email" type="email">
+      <input v-model="userData.name" name="name" type="text">
+      <input v-model="userData.email" name="email" type="email">
       <input name="password" type="password">
-      <textarea name="bio" />
+      <textarea v-model="userData.bio" name="bio" />
       <input name="picture" type="file">
-
       <button class="btn">
         Submit
       </button>

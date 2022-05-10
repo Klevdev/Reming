@@ -32,7 +32,7 @@ function _handleErrors(status: Number, resError: Error) {
     type: 'error',
     message: resError.message,
   })
-  if (status === 401 || status === 403) {
+  if (status === 401) {
     const user = useUserStore()
     user.logout()
   }
