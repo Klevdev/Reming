@@ -3,6 +3,14 @@ const mongoose = require('mongoose')
 const jwt = require('jsonwebtoken')
 const { nanoid } = require('nanoid')
 const { saveFile, deleteFile } = require('../utils/files')
+const Material = require('../models/material.model')
+
+const hashPassword = function(password) {
+  return crypto
+    .createHash('sha256')
+    .update(password)
+    .digest('base64')
+}
 
 mongoose.connect(process.env.DB_URL)
 
@@ -55,7 +63,7 @@ const userSchema = new mongoose.Schema({
     maxLength: 250,
   },
   favorites: {
-    type: Array,
+    type: [String],
     default: [],
   },
 })
@@ -71,18 +79,35 @@ userSchema.methods.setRefreshToken = async function(save = true) {
     await this.save()
 }
 
-// userSchema.statics.findByShortId = async function(sid, projection) {
-//   if (!projection)
-//     projection = { _id: 0, password: 0, sid: 0, refreshToken: 0 }
-//   const user = await this.findOne({ sid }, projection).exec()
-//   return user || false
-// }
+userSchema.methods.addToFavorites = async function(materialId) {
+  const material = await Material.findById(materialId)
+  if (!material)
+    return false
+  if (this.favorites.includes(materialId))
+    return false
+  this.favorites.push(materialId)
+  await this.save()
+  return true
+}
 
-const hashPassword = function(password) {
-  return crypto
-    .createHash('sha256')
-    .update(password)
-    .digest('base64')
+userSchema.methods.getFavorites = async function() {
+  const materials = []
+  for (let i = 0; i < this.favorites.length; i++) {
+    const material = await Material.findById(this.favorites[i])
+    if (!material)
+      return false
+    materials.push(material.short())
+  }
+  return materials
+}
+
+userSchema.methods.removeFromFavorites = async function(materialId) {
+  for (let i = 0; i < this.favorites.length; i++) {
+    if (this.favorites[i] === materialId)
+      this.favorites.splice(i, 1)
+  }
+  await this.save()
+  return true
 }
 
 userSchema.methods.update = async function(userObject) {
@@ -115,8 +140,8 @@ userSchema.methods.logout = async function() {
 
 userSchema.methods.project = function(projection) {
   const obj = {}
-  for (const field in projection)
-    obj[field] = this[field]
+  for (let i = 0; i < projection.length; i++)
+    obj[projection[i]] = this[projection[i]]
   return obj
 }
 
