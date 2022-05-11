@@ -117,10 +117,13 @@ router.patch('/favorites', auth(true), async (req, res) => {
   const user = await User.findById(req.user._id)
   if (!user)
     return res.sendError(401, 'User not found')
+  const material = await require('../models/material.model').findById(req.body.materialId)
+  if (!material)
+    return res.sendError(404, 'Material not found')
   try {
     const added = await user.addToFavorites(req.body.materialId)
     if (!added)
-      return res.sendError(404, 'Material not found')
+      return res.sendError(400, 'Material is already in favorites')
     return res.sendData(200)
   }
   catch (err) {

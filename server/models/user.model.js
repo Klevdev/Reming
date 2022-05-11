@@ -80,9 +80,6 @@ userSchema.methods.setRefreshToken = async function(save = true) {
 }
 
 userSchema.methods.addToFavorites = async function(materialId) {
-  const material = await Material.findById(materialId)
-  if (!material)
-    return false
   if (this.favorites.includes(materialId))
     return false
   this.favorites.push(materialId)
