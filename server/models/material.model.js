@@ -14,10 +14,12 @@ const materialSchema = new mongoose.Schema({
   userId: {
     type: String,
     required: true,
+    immutable: true,
     ref: 'Users',
   },
   contentId: {
     type: mongoose.Schema.ObjectId,
+    immutable: true,
     required: true,
   },
   title: {
@@ -31,6 +33,7 @@ const materialSchema = new mongoose.Schema({
     type: String,
     trim: true,
     required: true,
+    immutable: true,
     enum: ['folder', 'glossary', 'cardSet', 'questionBank', 'test', 'article'],
   },
   description: {

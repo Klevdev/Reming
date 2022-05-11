@@ -5,7 +5,8 @@ mongoose.connect(process.env.DB_URL)
 
 const glossarySchema = new mongoose.Schema({
   definitions: {
-    type: [mongoose.Schema.ObjectId],
+    type: Map,
+    of: mongoose.Schema.objectId,
     required: true,
   },
   __v: {
@@ -23,14 +24,21 @@ glossarySchema.methods.project = function(projection) {
 
 glossarySchema.statics._create = async function(definitionsObj) {
   const definitionsArr = definitionsObj.definitions
-  const definitions = []
-  for (let i = 0; i < definitionsArr.length; i++) {
-    const definition = definitionsArr[i]
+  const definitions = {}
+  for (const idx in definitionsArr) {
+    const definition = definitionsArr[idx]
     const { _id } = await Definition.create(definition)
-    definitions.push(_id)
+    definitions[idx] = _id
   }
 
   return await this.create({ definitions })
+}
+
+glossarySchema.methods._update = async function(definitionsObj) {
+  const definitionsArr = definitionsObj.definitions
+  for (let i = 0; i < definitionsArr.length; i++)
+    await Definition._update(definitionsArr[i])
+  await this.save()
 }
 
 glossarySchema.statics._get = async function(id) {

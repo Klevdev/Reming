@@ -3,10 +3,6 @@ const mongoose = require('mongoose')
 mongoose.connect(process.env.DB_URL)
 
 const definitionSchema = new mongoose.Schema({
-  _id: {
-    type: mongoose.Schema.ObjectId,
-    select: false,
-  },
   term: {
     txt: {
       type: String,
@@ -32,6 +28,13 @@ definitionSchema.methods.project = function(projection) {
   for (let i = 0; i < projection.length; i++)
     obj[projection[i]] = this[projection[i]]
   return obj
+}
+
+definitionSchema.methods._update = async function(definition) {
+  this.term = definition.term
+  this.def = definition.def
+
+  await this.save()
 }
 
 // definitionSchema.pre('save', async function(next) {
