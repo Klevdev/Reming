@@ -162,12 +162,6 @@ materialSchema.methods.updateContent = async function(content) {
   await this.save()
 }
 
-materialSchema.methods.deleteContent = async function() {
-  // const model = getContentModel(this.type)
-  // const content = await model.findById(this.contentId)
-  // return content.project(projection)
-}
-
 materialSchema.methods.checkAccess = function(userId) {
   if (this.userId === userId) // author can access its own material
     return true
@@ -180,14 +174,16 @@ materialSchema.methods.checkAccess = function(userId) {
   return false
 }
 
-materialSchema.post('remove', async function() {
-  try {
-    const user = await User.findById(this.userId)
-    user.removeFromFavorites(this._id)
-  }
-  catch (err) {
+materialSchema.pre('remove', async function(next) {
+  const model = getContentModel(this.type)
+  const content = await model.findById(this.contentId)
+  await content.delete()
 
-  }
+  const user = await User.findById(this.userId)
+  if (user)
+    user.removeFromFavorites(this._id)
+
+  next()
 })
 
 module.exports = mongoose.model('Materials', materialSchema)

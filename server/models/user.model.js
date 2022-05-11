@@ -3,7 +3,6 @@ const mongoose = require('mongoose')
 const jwt = require('jsonwebtoken')
 const { nanoid } = require('nanoid')
 const { saveFile, deleteFile } = require('../utils/files')
-const Material = require('../models/material.model')
 
 const hashPassword = function(password) {
   return crypto
@@ -94,9 +93,9 @@ userSchema.methods.addToFavorites = async function(materialId) {
 userSchema.methods.getFavorites = async function() {
   const materials = []
   for (let i = 0; i < this.favorites.length; i++) {
-    const material = await Material.findById(this.favorites[i])
-    if (!material)
-      return false
+    const material = await require('../models/material.model').findById(this.favorites[i])
+    // if (!material)
+    //   return false
     materials.push(material.short())
   }
   return materials
@@ -104,10 +103,12 @@ userSchema.methods.getFavorites = async function() {
 
 userSchema.methods.removeFromFavorites = async function(materialId) {
   for (let i = 0; i < this.favorites.length; i++) {
-    if (this.favorites[i] === materialId)
+    if (this.favorites[i] === materialId) {
       this.favorites.splice(i, 1)
+      await this.save()
+      break
+    }
   }
-  await this.save()
   return true
 }
 

@@ -75,8 +75,17 @@ router.patch('/:id', auth(), async (req, res) => {
   }
 })
 
-// router.delete('/:id', auth(), async (req, res) => {
-  
-// })
+router.delete('/:id', auth(), async (req, res) => {
+  const material = await Material.findById(req.params.id)
+  if (!material)
+    return res.sendError(404, 'Material not found')
+  try {
+    await material.delete()
+    return res.sendData(200)
+  }
+  catch (err) {
+    return res.sendError(400, err.message, err.errors)
+  }
+})
 
 module.exports = router

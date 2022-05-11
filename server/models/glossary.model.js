@@ -73,8 +73,11 @@ glossarySchema.methods._get = async function() {
     definitions,
   }
 }
-// glossarySchema.pre('save', async function(next) {
-//   next()
-// })
+glossarySchema.pre('remove', async function(next) {
+  for (const idx in this.definitions)
+    await Definition.findByIdAndDelete(this.definitions[idx])
+
+  next()
+})
 
 module.exports = mongoose.model('Glossaries', glossarySchema)
