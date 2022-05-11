@@ -135,14 +135,15 @@ materialSchema.statics.createContent = async function(type, content) {
 
 materialSchema.methods.getContent = async function() {
   const model = getContentModel(this.type)
-  const content = await model._get(this.contentId)
+  const doc = await model.findById(this.contentId)
+  const content = await doc._get()
   return content
 }
 
-materialSchema.methods.updateContent = async function() {
-  // const model = getContentModel(this.type)
-  // const content = await model.findById(this.contentId)
-  // return content.project(projection)
+materialSchema.methods.updateContent = async function(content) {
+  const model = getContentModel(this.type)
+  await model._update(content)
+  await this.save()
 }
 
 materialSchema.methods.deleteContent = async function() {

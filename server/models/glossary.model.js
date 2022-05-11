@@ -5,7 +5,7 @@ mongoose.connect(process.env.DB_URL)
 
 const glossarySchema = new mongoose.Schema({
   definitions: {
-    type: Map,
+    type: {},
     of: mongoose.Schema.objectId,
     required: true,
   },
@@ -35,18 +35,23 @@ glossarySchema.statics._create = async function(definitionsObj) {
 }
 
 glossarySchema.methods._update = async function(definitionsObj) {
-  const definitionsArr = definitionsObj.definitions
-  for (let i = 0; i < definitionsArr.length; i++)
-    await Definition._update(definitionsArr[i])
+  const definitionsNew = definitionsObj.definitions
+  for (const idx in this.definitions) {
+    if (!definitionsNew[idx])
+      continue
+    if (Object.keys(definitionsNew[idx]).length) // definitionsNew[idx] === {}
+      await Definition.findByIdAndDelete(this.definitions[idx])
+    const def = await Definition.findById(this.definitions[idx])
+    await def._update(definitionsNew[idx])
+  }
   await this.save()
 }
 
-glossarySchema.statics._get = async function(id) {
-  const glossary = await this.findById(id)
-  const definitions = []
-  for (let i = 0; i < glossary.definitions.length; i++) {
-    const def = await Definition.findById(glossary.definitions[i])
-    definitions.push(def)
+glossarySchema.methods._get = async function() {
+  const definitions = {}
+  for (const idx in this.definitions) {
+    const def = await Definition.findById(this.definitions[idx], { _id: 0 })
+    definitions[idx] = def
   }
   return {
     definitions,
