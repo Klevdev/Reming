@@ -14,19 +14,21 @@ const router = express.Router()
   
 // })
 
-// router.get('/:id/content', auth(false), async (req, res) => {
-//   const material = await Material.findById(req.params.id)
-//   if (!material)
-//     return res.sendError(404, 'Material not found')
-//   if (!material.checkAccess(req.user._id))
-//     return res.sendError(403, 'Access denied')
-// })
+router.get('/:id/content', auth(false), async (req, res) => {
+  const material = await Material.findById(req.params.id)
+  if (!material)
+    return res.sendError(404, 'Material not found')
+  if (!material.checkAccess(req.user?._id))
+    return res.sendError(403, 'Access denied')
+  const content = await material.getContent()
+  return res.sendData(200, content)
+})
 
 router.get('/:id', auth(false), async (req, res) => {
   const material = await Material.findById(req.params.id)
   if (!material)
     return res.sendError(404, 'Material not found')
-  if (!material.checkAccess(req.user._id))
+  if (!material.checkAccess(req.user?._id))
     return res.sendError(403, 'Access denied')
   return res.sendData(200, material.full())
 })

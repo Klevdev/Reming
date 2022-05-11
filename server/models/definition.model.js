@@ -3,19 +3,27 @@ const mongoose = require('mongoose')
 mongoose.connect(process.env.DB_URL)
 
 const definitionSchema = new mongoose.Schema({
+  _id: {
+    type: mongoose.Schema.ObjectId,
+    select: false,
+  },
   term: {
     txt: {
       type: String,
       required: true,
     },
-    attachment: mongoose.ObjectId,
+    attachment: mongoose.Schema.ObjectId,
   },
   def: {
     txt: {
       type: String,
       required: true,
     },
-    attachment: mongoose.ObjectId,
+    attachment: mongoose.Schema.ObjectId,
+  },
+  __v: {
+    type: Number,
+    select: false,
   },
 })
 

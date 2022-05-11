@@ -66,6 +66,10 @@ const userSchema = new mongoose.Schema({
     type: [String],
     default: [],
   },
+  __v: {
+    type: Number,
+    select: false,
+  },
 })
 
 userSchema.virtual('accessToken').get(function() {

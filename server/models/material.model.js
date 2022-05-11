@@ -17,7 +17,7 @@ const materialSchema = new mongoose.Schema({
     ref: 'Users',
   },
   contentId: {
-    type: mongoose.ObjectId,
+    type: mongoose.Schema.ObjectId,
     required: true,
   },
   title: {
@@ -65,6 +65,10 @@ const materialSchema = new mongoose.Schema({
   },
   ratings: [Object],
   views: Number,
+  __v: {
+    type: Number,
+    select: false,
+  },
 })
 
 materialSchema.statics._create = async function(materialFull, userId) {
@@ -126,10 +130,10 @@ materialSchema.statics.createContent = async function(type, content) {
   return _id
 }
 
-materialSchema.methods.getContent = async function(projection = []) {
+materialSchema.methods.getContent = async function() {
   const model = getContentModel(this.type)
-  const content = await model.findById(this.contentId)
-  return content.project(projection)
+  const content = await model._get(this.contentId)
+  return content
 }
 
 materialSchema.methods.updateContent = async function() {

@@ -5,8 +5,12 @@ mongoose.connect(process.env.DB_URL)
 
 const glossarySchema = new mongoose.Schema({
   definitions: {
-    type: [mongoose.ObjectId],
+    type: [mongoose.Schema.ObjectId],
     required: true,
+  },
+  __v: {
+    type: Number,
+    select: false,
   },
 })
 
@@ -29,6 +33,17 @@ glossarySchema.statics._create = async function(definitionsObj) {
   return await this.create({ definitions })
 }
 
+glossarySchema.statics._get = async function(id) {
+  const glossary = await this.findById(id)
+  const definitions = []
+  for (let i = 0; i < glossary.definitions.length; i++) {
+    const def = await Definition.findById(glossary.definitions[i])
+    definitions.push(def)
+  }
+  return {
+    definitions,
+  }
+}
 // glossarySchema.pre('save', async function(next) {
 //   next()
 // })
