@@ -87,6 +87,21 @@ materialSchema.statics._create = async function(materialFull, userId) {
   return await this.create(materialData)
 }
 
+materialSchema.methods._update = async function(materialFull) {
+  const contentData = materialFull.content
+  delete materialFull.content
+  await this.updateContent(contentData)
+  if (materialFull.title)
+    this.title = materialFull.title
+  if (materialFull.description)
+    this.description = materialFull.description
+  if (materialFull.tags)
+    this.tags = materialFull.tags
+  if (materialFull.privacy)
+    this.privacy = materialFull.privacy
+  await this.save()
+}
+
 materialSchema.methods.addRating = function(userId, score) {
   if (score < 1 || score > 5)
     return false
@@ -142,7 +157,8 @@ materialSchema.methods.getContent = async function() {
 
 materialSchema.methods.updateContent = async function(content) {
   const model = getContentModel(this.type)
-  await model._update(content)
+  const doc = await model.findById(this.contentId)
+  await doc._update(content)
   await this.save()
 }
 

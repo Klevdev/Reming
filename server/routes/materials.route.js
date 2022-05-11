@@ -62,9 +62,18 @@ router.patch('/:id/rate', sanitize, auth(), async (req, res) => {
   }
 })
 
-// router.patch('/:id', auth(), async (req, res) => {
-  
-// })
+router.patch('/:id', auth(), async (req, res) => {
+  const material = await Material.findById(req.params.id)
+  if (!material)
+    return res.sendError(404, 'Material not found')
+  try {
+    await material._update(req.body)
+    return res.sendData(200)
+  }
+  catch (err) {
+    return res.sendError(400, err.message, err.errors)
+  }
+})
 
 // router.delete('/:id', auth(), async (req, res) => {
   

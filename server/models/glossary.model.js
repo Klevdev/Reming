@@ -6,9 +6,10 @@ mongoose.connect(process.env.DB_URL)
 const glossarySchema = new mongoose.Schema({
   definitions: {
     type: {},
-    of: mongoose.Schema.objectId,
+    // of: mongoose.Schema.objectId,
     required: true,
   },
+  test: String,
   __v: {
     type: Number,
     select: false,
@@ -36,14 +37,29 @@ glossarySchema.statics._create = async function(definitionsObj) {
 
 glossarySchema.methods._update = async function(definitionsObj) {
   const definitionsNew = definitionsObj.definitions
+  // Update or delete definitions
   for (const idx in this.definitions) {
-    if (!definitionsNew[idx])
+    if (definitionsNew[idx] === undefined)
       continue
-    if (Object.keys(definitionsNew[idx]).length) // definitionsNew[idx] === {}
+    if (definitionsNew[idx] === false) {
       await Definition.findByIdAndDelete(this.definitions[idx])
+      delete this.definitions[idx]
+      continue
+    }
     const def = await Definition.findById(this.definitions[idx])
     await def._update(definitionsNew[idx])
   }
+
+  // Add new definitions
+  for (const idx in definitionsNew) {
+    if (Object.keys(this.definitions).includes(idx))
+      continue
+    if (definitionsNew[idx] === false)
+      continue
+    const { _id } = await Definition.create(definitionsNew[idx])
+    this.definitions[idx] = _id
+  }
+  this.markModified('definitions')
   await this.save()
 }
 
