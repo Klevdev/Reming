@@ -161,6 +161,13 @@ userSchema.pre('save', async function(next) {
   next()
 })
 
+userSchema.pre('remove', async function(next) {
+  const createdMaterials = await require('../models/material.model').find({ userId: this._id })
+  createdMaterials.forEach(async material => material.delete())
+
+  next()
+})
+
 userSchema.post('remove', function() {
   if (this.picture)
     deleteFile(`.\\uploads\\${this.picture}`)
