@@ -74,6 +74,19 @@ const materialSchema = new mongoose.Schema({
   },
 })
 
+materialSchema.virtual('user').get(async function() {
+  const user = await User.findById(this.userId)
+  return {
+    _id: user._id,
+    name: user.name,
+  }
+})
+
+materialSchema.virtual('isSaved').get(async function() {
+  const savedMaterials = await User.findById(this.userId, { savedMaterials: 1 }).savedMaterials
+  return savedMaterials.includes(this.id)
+})
+
 materialSchema.statics._create = async function(materialFull, userId) {
   const contentData = materialFull.content
   delete materialFull.content
@@ -126,14 +139,6 @@ materialSchema.methods.project = function(projection) {
   return obj
 }
 
-materialSchema.virtual('user').get(async function() {
-  const user = User.findById(this.userId)
-  return {
-    _id: user._id,
-    name: user.name,
-  }
-})
-
 materialSchema.methods.short = function() {
   return this.project(['_id', 'title', 'type'])
 }
@@ -160,6 +165,18 @@ materialSchema.methods.updateContent = async function(content) {
   const doc = await model.findById(this.contentId)
   await doc._update(content)
   await this.save()
+}
+
+materialSchema.statics.getPersonalMaterials = async function(userId) {
+  const created = await this.find({ userId })
+  const saved = await User.findById(userId).then(async user => await user.getSavedMaterials())
+  const shared = await this.find({ 'privacy.access': userId })
+
+  return {
+    created: created.map(m => m.short()),
+    saved,
+    shared: created.map(m => m.short()),
+  }
 }
 
 materialSchema.methods.checkAccess = function(userId) {

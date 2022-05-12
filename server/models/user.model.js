@@ -91,14 +91,10 @@ userSchema.methods.addToSavedMaterials = async function(materialId) {
 }
 
 userSchema.methods.getSavedMaterials = async function() {
-  const materials = []
-  for (let i = 0; i < this.savedMaterials.length; i++) {
-    const material = await require('../models/material.model').findById(this.savedMaterials[i])
-    // if (!material)
-    //   return false
-    materials.push(material.short())
-  }
-  return materials
+  const Materials = require('../models/material.model')
+  const savedMaterials = await Materials.find({ _id: { $in: this.savedMaterials } })
+
+  return savedMaterials.map(m => m.short())
 }
 
 userSchema.methods.removeFromSavedMaterials = async function(materialId) {

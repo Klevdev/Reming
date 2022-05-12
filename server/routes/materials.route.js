@@ -10,9 +10,11 @@ const router = express.Router()
 
 // })
 
-// router.get('/private', auth(), async (req, res) => {
-  
-// })
+// All materials that user created, saved or has access to
+router.get('/personal', auth(), async (req, res) => {
+  const materials = await Material.getPersonalMaterials(req.user._id)
+  return res.sendData(200, materials)
+})
 
 router.get('/:id/content', auth(false), async (req, res) => {
   const material = await Material.findById(req.params.id)
