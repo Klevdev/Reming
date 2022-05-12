@@ -175,7 +175,7 @@ materialSchema.statics.getPersonalMaterials = async function(userId) {
   return {
     created: created.map(m => m.short()),
     saved,
-    shared: created.map(m => m.short()),
+    shared: shared.map(m => m.short()),
   }
 }
 
