@@ -179,8 +179,8 @@ materialSchema.pre('remove', async function(next) {
   const content = await model.findById(this.contentId)
   await content.delete()
 
-  const users = await User.find({ favorites: this._id })
-  users.forEach(async user => user.removeFromFavorites(this._id))
+  const users = await User.find({ savedMaterials: this._id })
+  users.forEach(async user => user.removeFromSavedMaterials(this._id))
 
   next()
 })

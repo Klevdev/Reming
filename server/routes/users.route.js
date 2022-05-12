@@ -113,7 +113,7 @@ router.delete('/self', auth(true), async (req, res) => {
   }
 })
 
-router.patch('/favorites', auth(true), async (req, res) => {
+router.patch('/saved-materials', auth(true), async (req, res) => {
   const user = await User.findById(req.user._id)
   if (!user)
     return res.sendError(401, 'User not found')
@@ -121,9 +121,9 @@ router.patch('/favorites', auth(true), async (req, res) => {
   if (!material)
     return res.sendError(404, 'Material not found')
   try {
-    const added = await user.addToFavorites(req.body.materialId)
+    const added = await user.addToSavedMaterials(req.body.materialId)
     if (!added)
-      return res.sendError(400, 'Material is already in favorites')
+      return res.sendError(400, 'Material is already in saved materials')
     return res.sendData(200)
   }
   catch (err) {
@@ -131,12 +131,12 @@ router.patch('/favorites', auth(true), async (req, res) => {
   }
 })
 
-router.get('/favorites', auth(true), async (req, res) => {
+router.get('/saved-materials', auth(true), async (req, res) => {
   const user = await User.findById(req.user._id)
   if (!user)
     return res.sendError(401, 'User not found')
   try {
-    const favorites = await user.getFavorites()
+    const favorites = await user.getSavedMaterials()
     return res.sendData(200, favorites)
   }
   catch (err) {
@@ -144,12 +144,12 @@ router.get('/favorites', auth(true), async (req, res) => {
   }
 })
 
-router.delete('/favorites', sanitize, auth(true), async (req, res) => {
+router.delete('/saved-materials', sanitize, auth(true), async (req, res) => {
   const user = await User.findById(req.user._id)
   if (!user)
     return res.sendError(401, 'User not found')
   try {
-    await user.removeFromFavorites(req.query.materialId)
+    await user.removeFromSavedMaterials(req.query.materialId)
     return res.sendData(200)
   }
   catch (err) {

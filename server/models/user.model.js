@@ -61,7 +61,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     maxLength: 250,
   },
-  favorites: {
+  savedMaterials: {
     type: [String],
     default: [],
   },
@@ -82,18 +82,18 @@ userSchema.methods.setRefreshToken = async function(save = true) {
     await this.save()
 }
 
-userSchema.methods.addToFavorites = async function(materialId) {
-  if (this.favorites.includes(materialId))
+userSchema.methods.addToSavedMaterials = async function(materialId) {
+  if (this.savedMaterials.includes(materialId))
     return false
-  this.favorites.push(materialId)
+  this.savedMaterials.push(materialId)
   await this.save()
   return true
 }
 
-userSchema.methods.getFavorites = async function() {
+userSchema.methods.getSavedMaterials = async function() {
   const materials = []
-  for (let i = 0; i < this.favorites.length; i++) {
-    const material = await require('../models/material.model').findById(this.favorites[i])
+  for (let i = 0; i < this.savedMaterials.length; i++) {
+    const material = await require('../models/material.model').findById(this.savedMaterials[i])
     // if (!material)
     //   return false
     materials.push(material.short())
@@ -101,10 +101,10 @@ userSchema.methods.getFavorites = async function() {
   return materials
 }
 
-userSchema.methods.removeFromFavorites = async function(materialId) {
-  for (let i = 0; i < this.favorites.length; i++) {
-    if (this.favorites[i] === materialId) {
-      this.favorites.splice(i, 1)
+userSchema.methods.removeFromSavedMaterials = async function(materialId) {
+  for (let i = 0; i < this.savedMaterials.length; i++) {
+    if (this.savedMaterials[i] === materialId) {
+      this.savedMaterials.splice(i, 1)
       await this.save()
       break
     }

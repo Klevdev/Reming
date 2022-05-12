@@ -35,28 +35,28 @@ glossarySchema.statics._create = async function(definitionsObj) {
   return await this.create({ definitions })
 }
 
-glossarySchema.methods._update = async function(definitionsObj) {
-  const definitionsNew = definitionsObj.definitions
+glossarySchema.methods._update = async function(update) {
+  const definitionsUpdate = update.definitions
   // Update or delete definitions
   for (const idx in this.definitions) {
-    if (definitionsNew[idx] === undefined)
+    if (definitionsUpdate[idx] === undefined)
       continue
-    if (definitionsNew[idx] === false) {
+    if (definitionsUpdate[idx] === false) {
       await Definition.findByIdAndDelete(this.definitions[idx])
       delete this.definitions[idx]
       continue
     }
     const def = await Definition.findById(this.definitions[idx])
-    await def._update(definitionsNew[idx])
+    await def._update(definitionsUpdate[idx])
   }
 
   // Add new definitions
-  for (const idx in definitionsNew) {
+  for (const idx in definitionsUpdate) {
     if (Object.keys(this.definitions).includes(idx))
       continue
-    if (definitionsNew[idx] === false)
+    if (definitionsUpdate[idx] === false)
       continue
-    const { _id } = await Definition.create(definitionsNew[idx])
+    const { _id } = await Definition.create(definitionsUpdate[idx])
     this.definitions[idx] = _id
   }
   this.markModified('definitions')
