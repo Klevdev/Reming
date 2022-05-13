@@ -36,21 +36,21 @@ const toggleLocales = () => {
         </div>
         <div v-else class="flex gap-5px">
           <router-link to="/login" class="btn" @click.stop.prevent>
-            Log in
+            {{ t('layout.login') }}
           </router-link>
           <router-link to="/signup" class="btn" @click.stop.prevent>
-            Sign up
+            {{ t('layout.signup') }}
           </router-link>
         </div>
       </div>
       <div v-else class="flex flex-row-reverse">
-        <button class="icon-btn mx-2" title="Log out" @click="user.logout">
+        <button class="icon-btn mx-2" title="t('layout.logout')" @click="user.logout">
           <div i-carbon-logout />
         </button>
-        <button class="icon-btn mx-2 !outline-none" :title="t('button.toggle_dark')" @click.stop.prevent="toggleDark()">
+        <button class="icon-btn mx-2 !outline-none" :title="t('settings.toggle_dark')" @click.stop.prevent="toggleDark()">
           <div i="carbon-sun dark:carbon-moon" />
         </button>
-        <button class="icon-btn mx-2" :title="t('button.toggle_langs')" @click.stop.prevent="toggleLocales">
+        <button class="icon-btn mx-2" :title="t('settings.change_lang')" @click.stop.prevent="toggleLocales">
           <div i-carbon-language />
         </button>
       </div>
@@ -64,36 +64,30 @@ const toggleLocales = () => {
     font-weight: bold;
     font-size: 1.7em;
   }
+
   header {
+    user-select: none;
     display: flex;
     align-items: center;
     height: 60px;
     gap: 3vw;
-    background-color: #FAFAFA;
+    background-color: var(--bg);
   }
 
   header > button {
     display: none;
   }
 
-  .dark header {
-    background-color: #444;
-  }
-
   #userPanel {
     margin-left: auto;
-    padding-right: 1em;
+    padding: 0 1em;
     height: 100%;
-    width: 100px;
+    min-width: 100px;
+    width: max-content;
     display: flex;
     flex-direction: row-reverse;
     align-items: center;
     justify-content: flex-start;
-  }
-
-  #userPanel:hover {
-    cursor: pointer;
-    background-color: teal;
   }
 
   @media only screen and (min-width: 600px) {

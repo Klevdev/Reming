@@ -9,33 +9,21 @@
 <template>
   <footer>
     <nav>
-      <ul>
-        <li class="menu-item">
-          <router-link to="">
-            1
-          </router-link>
-        </li>
-        <li class="menu-item">
-          <router-link to="">
-            2
-          </router-link>
-        </li>
-        <li class="menu-item">
-          <router-link to="">
-            3
-          </router-link>
-        </li>
-        <li class="menu-item">
-          <router-link to="">
-            4
-          </router-link>
-        </li>
-        <li class="menu-item">
-          <router-link to="">
-            5
-          </router-link>
-        </li>
-      </ul>
+      <router-link class="menu-item" to="">
+        <div i-carbon-book />
+      </router-link>
+      <router-link class="menu-item" to="">
+        <div i-carbon-folder />
+      </router-link>
+      <router-link class="menu-item" to="">
+        <div i-carbon-home />
+      </router-link>
+      <router-link class="menu-item" to="">
+        <div i-carbon-calendar />
+      </router-link>
+      <router-link class="menu-item" to="">
+        <div i-carbon-dashboard />
+      </router-link>
     </nav>
   </footer>
 </template>
@@ -44,19 +32,15 @@
   footer {
     position: absolute;
     bottom: 0;
-    background-color: #FAFAFA;
+    background-color: var(--bg);
     height: 60px;
     width: 100%;
   }
   nav {
     height: 100%;
-  }
-  ul {
-    height: 100%;
     display: grid;
     grid-template-columns: repeat(5, 1fr);
   }
-
   .menu-item {
     width: 100%;
     height: 100%;
@@ -64,13 +48,9 @@
     place-items: center;
   }
 
-  .menu-item:hover {
-    cursor: pointer;
-    background-color: teal;
-  }
-
-  .dark footer {
-    background-color: #444;
+  .menu-item:active {
+    background-color: var(--primary-active);
+    transition: all .2s ease-in-out;
   }
 
   @media only screen and (min-width: 600px) {

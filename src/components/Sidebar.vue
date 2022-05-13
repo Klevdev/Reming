@@ -2,6 +2,7 @@
 import { storeToRefs } from 'pinia'
 import { useLayoutStore } from '~/stores/layout'
 
+const { t } = useI18n()
 const layoutStore = useLayoutStore()
 const { sidebarCollapsed } = storeToRefs(layoutStore)
 
@@ -14,52 +15,61 @@ const { sidebarCollapsed } = storeToRefs(layoutStore)
 <template>
   <aside :class="sidebarCollapsed && 'collapsed'">
     <nav>
-      <ul>
-        <li class="menu-item">
-          <router-link to="">
-            1
-          </router-link>
-        </li>
-        <li class="menu-item">
-          <router-link to="">
-            2
-          </router-link>
-        </li>
-        <li class="menu-item">
-          <router-link to="">
-            3
-          </router-link>
-        </li>
-        <li class="menu-item">
-          <router-link to="">
-            4
-          </router-link>
-        </li>
-      </ul>
+      <router-link class="menu-item" to="">
+        <div i-carbon-home /><span v-show="!sidebarCollapsed">{{ t('layout.menu.main') }}</span>
+      </router-link>
+      <router-link class="menu-item" to="">
+        <div i-carbon-book /><span v-show="!sidebarCollapsed">{{ t('layout.menu.library') }}</span>
+      </router-link>
+      <router-link class="menu-item" to="">
+        <div i-carbon-folder /><span v-show="!sidebarCollapsed">{{ t('layout.menu.my-materials') }}</span>
+      </router-link>
+      <router-link class="menu-item" to="">
+        <div i-carbon-calendar /><span v-show="!sidebarCollapsed">{{ t('layout.menu.calendar') }}</span>
+      </router-link>
+      <router-link class="menu-item" to="">
+        <div i-carbon-dashboard /><span v-show="!sidebarCollapsed">{{ t('layout.menu.stats') }}</span>
+      </router-link>
     </nav>
   </aside>
 </template>
 
 <style scoped>
   aside {
+    user-select: none;
     display: none;
   }
+
+  .menu-item {
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 1em;
+    padding-left: 19px;
+  }
+
+  .menu-item:hover,
+  .menu-item:active {
+    cursor: pointer;
+    background-color: var(--primary-active);
+    transition: all .2s ease-in-out;
+  }
+
   @media only screen and (min-width: 600px) {
     aside {
       display: block;
       width: 250px;
-      background-color: #FAFAFA;
+      background-color: var(--bg);
       height: 100%;
     }
-    .collapsed {
+    aside.collapsed {
       width: 60px;
     }
     .collapsed .menu-item {
-      font-style: italic;
+      justify-content: center;
+      padding-left: 0;
     }
-  }
-  .dark aside {
-      background-color: #444;
   }
 
 </style>

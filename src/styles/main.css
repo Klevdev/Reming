@@ -1,4 +1,31 @@
-@import './markdown.css';
+/* @import './markdown.css'; */
+
+:root {
+  --primary: teal;
+  --primary-active: teal;
+  --btn-disabled: #888;
+  --bg: #F0F0F0;
+}
+
+html.dark:root {
+  --primary: teal;
+  --primary-active: teal;
+  --btn-disabled: #888;
+  --bg: #444;
+}
+
+.btn {
+  color: #FFF;
+  background-color: var(--primary)
+}
+
+.btn:hover, .btn:active {
+  background-color: var(--primary-active)
+}
+
+.btn:disabled {
+  background-color: var(--btn-disabled)
+}
 
 html,
 body,
@@ -18,7 +45,7 @@ html.dark {
 }
 
 #nprogress .bar {
-  background: rgb(13,148,136);
+  background: var(--primary-color);
   opacity: 0.75;
   position: fixed;
   z-index: 1031;
@@ -27,8 +54,3 @@ html.dark {
   width: 100%;
   height: 2px;
 }
-
-/* a:hover {
-  color: teal;
-  transition: color .2s;
-} */
