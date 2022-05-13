@@ -12,3 +12,14 @@ layout:
 settings:
   toggle_dark: Switch color mode
   change_lang: Change language
+pages:
+  index:
+    title: Main
+  login:
+    title: Log in to account
+  signup:
+    title: Create new account
+  profile:
+    title: Edit profile
+  my-materials:
+    title: My materials

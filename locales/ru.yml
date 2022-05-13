@@ -12,3 +12,14 @@ layout:
 settings:
   toggle_dark: Переключить тему
   change_lang: Сменить язык
+pages:
+  index:
+    title: Главная
+  login:
+    title: Вход в аккаунт
+  signup:
+    title: Регистрация аккаунта
+  profile:
+    title: Редатирование профиля
+  my-materials:
+    title: Мои материалы

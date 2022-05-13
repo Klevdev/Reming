@@ -67,7 +67,6 @@ const deleteUser = async() => {
 
 <route lang="yaml">
 meta:
-  name: Profile
-  title: Profile
+  name: profile
   layout: default
 </route>

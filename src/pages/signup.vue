@@ -32,7 +32,6 @@ const submitForm = async() => {
 
 <route lang="yaml">
 meta:
-  name: Signup
-  title: Sign up
+  name: signup
   layout: default
 </route>

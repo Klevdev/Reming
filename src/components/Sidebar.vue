@@ -21,7 +21,7 @@ const { sidebarCollapsed } = storeToRefs(layoutStore)
       <router-link class="menu-item" to="">
         <div i-carbon-book /><span v-show="!sidebarCollapsed">{{ t('layout.menu.library') }}</span>
       </router-link>
-      <router-link class="menu-item" to="">
+      <router-link class="menu-item" to="/my-materials">
         <div i-carbon-folder /><span v-show="!sidebarCollapsed">{{ t('layout.menu.my-materials') }}</span>
       </router-link>
       <router-link class="menu-item" to="">

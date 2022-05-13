@@ -11,6 +11,6 @@ import request from '~/composables/request'
 
 <route lang="yaml">
 meta:
-  title: Home
+  name: index
   layout: default
 </route>

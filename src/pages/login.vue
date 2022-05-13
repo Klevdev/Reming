@@ -30,7 +30,6 @@ const submitForm = async() => {
 
 <route lang="yaml">
 meta:
-  name: Login
-  title: Log in
+  name: login
   layout: default
 </route>

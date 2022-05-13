@@ -1,10 +1,14 @@
+<script lang="ts" setup>
+const { t } = useI18n()
+</script>
+
 <template>
   <Header />
   <div class="layout-wrapper h100%">
     <Sidebar />
     <main>
       <h1 class="page-title">
-        {{ $route.meta.title }}
+        {{ t(`pages.${$route.meta.name}.title`) }}
       </h1>
       <RouterView />
     </main>
