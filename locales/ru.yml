@@ -23,3 +23,8 @@ pages:
     title: Редатирование профиля
   my-materials:
     title: Мои материалы
+    all: Все материалы
+    created: Созданные мною
+    saved: Сохранённые
+    shared: Доступные
+    create_new: Создать

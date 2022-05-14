@@ -72,7 +72,7 @@ async function _request(
 
   if (Object.prototype.hasOwnProperty.call(resJson, 'refresh')) {
     const user = useUserStore()
-    user.refresh(resJson.refresh.accessToken, resJson.refresh.refreshToken)
+    user.refresh(resJson.refresh)
   }
   if (Object.prototype.hasOwnProperty.call(resJson, 'error')) {
     if (!silent)

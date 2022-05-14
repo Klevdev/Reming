@@ -41,7 +41,7 @@ const { sidebarCollapsed } = storeToRefs(layoutStore)
   }
 
   .menu-item {
-    height: 50px;
+    height: 60px;
     display: flex;
     align-items: center;
     justify-content: flex-start;

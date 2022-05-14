@@ -23,3 +23,8 @@ pages:
     title: Edit profile
   my-materials:
     title: My materials
+    all: All materials
+    created: Created by me
+    saved: Saved
+    shared: Shared
+    create_new: Create

@@ -44,7 +44,7 @@ const toggleLocales = () => {
         </div>
       </div>
       <div v-else class="flex flex-row-reverse">
-        <button class="icon-btn mx-2" title="t('layout.logout')" @click="user.logout">
+        <button class="icon-btn mx-2" :title="t('layout.logout')" @click="user.logout">
           <div i-carbon-logout />
         </button>
         <button class="icon-btn mx-2 !outline-none" :title="t('settings.toggle_dark')" @click.stop.prevent="toggleDark()">
