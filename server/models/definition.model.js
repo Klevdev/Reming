@@ -4,14 +4,14 @@ mongoose.connect(process.env.DB_URL)
 
 const definitionSchema = new mongoose.Schema({
   term: {
-    txt: {
+    text: {
       type: String,
       required: true,
     },
     attachment: mongoose.Schema.ObjectId,
   },
   def: {
-    txt: {
+    text: {
       type: String,
       required: true,
     },

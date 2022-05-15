@@ -40,7 +40,7 @@ const deleteUser = async() => {
 </script>
 
 <template>
-  <div class="flex flex-col gap-1em">
+  <main class="flex flex-col gap-1em">
     <h2>Edit profile information</h2>
     <form id="form" class="w-200px flex flex-col gap-15px" @submit.prevent="submitForm">
       <input v-model="userData.name" name="name" type="text">
@@ -62,7 +62,7 @@ const deleteUser = async() => {
         Delete profile
       </button>
     </div>
-  </div>
+  </main>
 </template>
 
 <route lang="yaml">

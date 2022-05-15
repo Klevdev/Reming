@@ -18,14 +18,16 @@ const submitForm = async() => {
 </script>
 
 <template>
-  <form class="w-200px flex flex-col gap-5px" @submit.prevent="submitForm">
-    <input v-model="formData.email" type="email">
-    <input v-model="formData.password" type="password">
+  <main>
+    <form class="w-200px flex flex-col gap-5px" @submit.prevent="submitForm">
+      <input v-model="formData.email" type="email">
+      <input v-model="formData.password" type="password">
 
-    <button class="btn">
-      Submit
-    </button>
-  </form>
+      <button class="btn">
+        Submit
+      </button>
+    </form>
+  </main>
 </template>
 
 <route lang="yaml">

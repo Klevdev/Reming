@@ -4,9 +4,11 @@ import request from '~/composables/request'
 </script>
 
 <template>
-  <button class="btn" @click="request.get('/test')">
-    Test
-  </button>
+  <main>
+    <button class="btn" @click="request.get('/test')">
+      Test
+    </button>
+  </main>
 </template>
 
 <route lang="yaml">

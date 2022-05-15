@@ -17,25 +17,27 @@ onMounted(async() => {
 </script>
 
 <template>
-  <section v-if="[...materials.created, ...materials.saved,...materials.shared].length">
-    <h2>{{ t('pages.my-materials.all') }}</h2>
-    <materials-container :materials="[...materials.created, ...materials.saved, ...materials.shared]" />
-  </section>
-  <section v-if="materials.created.length">
-    <h2>{{ t('pages.my-materials.created') }}</h2>
-    <materials-container :materials="materials.created" />
-  </section>
-  <section v-if="materials.saved.length">
-    <h2>{{ t('pages.my-materials.saved') }}</h2>
-    <materials-container :materials="materials.saved" />
-  </section>
-  <section v-if="materials.shared.length">
-    <h2>{{ t('pages.my-materials.shared') }}</h2>
-    <materials-container :materials="materials.shared" />
-  </section>
-  <button id="btnCreateNew" class="btn">
-    {{ t('pages.my-materials.create_new') }}
-  </button>
+  <main>
+    <section v-if="[...materials.created, ...materials.saved,...materials.shared].length">
+      <h2>{{ t('pages.my-materials.all') }}</h2>
+      <materials-container :materials="[...materials.created, ...materials.saved, ...materials.shared]" />
+    </section>
+    <section v-if="materials.created.length">
+      <h2>{{ t('pages.my-materials.created') }}</h2>
+      <materials-container :materials="materials.created" />
+    </section>
+    <section v-if="materials.saved.length">
+      <h2>{{ t('pages.my-materials.saved') }}</h2>
+      <materials-container :materials="materials.saved" />
+    </section>
+    <section v-if="materials.shared.length">
+      <h2>{{ t('pages.my-materials.shared') }}</h2>
+      <materials-container :materials="materials.shared" />
+    </section>
+    <router-link id="btnCreateNew" to="/materials/create" class="btn">
+      {{ t('pages.my-materials.create_new') }}
+    </router-link>
+  </main>
 </template>
 
 <style>

@@ -12,7 +12,7 @@
       <router-link class="menu-item" to="">
         <div i-carbon-book />
       </router-link>
-      <router-link class="menu-item" to="">
+      <router-link class="menu-item" to="/my-materials">
         <div i-carbon-folder />
       </router-link>
       <router-link class="menu-item" to="">
