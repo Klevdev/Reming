@@ -23,6 +23,7 @@ onMounted(async() => {
     }
   }
   else {
+    user.loggedIn = false
     user.refresh({ accessToken: '', refreshToken: '' })
   }
 })

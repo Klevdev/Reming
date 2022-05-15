@@ -6,12 +6,11 @@ const { materials } = defineProps({
 
 <template>
   <div class="grid gap-4 auto-cols-max">
-    <div v-for="material in materials" :key="material._id" class="material">
+    <router-link v-for="material in materials" :key="material._id" class="material" :to="`/materials/${material._id}`">
       <!-- <div>{{ icons[material.type] }}</div> -->
       <span>{{ material.title }}</span>
       <span>{{ material.type }}</span>
-      <span>{{ material._id }}</span>
-    </div>
+    </router-link>
   </div>
 </template>
 

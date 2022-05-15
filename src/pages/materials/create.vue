@@ -61,6 +61,10 @@ const addEntry = () => {
   }
 }
 
+const cancel = () => {
+  router.go(-1)
+}
+
 const submitForms = async() => {
   const formData = {
     ...materialInfo.value,
@@ -88,22 +92,22 @@ const submitForms = async() => {
           <option :value="privacySettings.private">
             Private
           </option>
-          <option :value="privacySettings.private">
+          <option :value="privacySettings.public">
             Public
           </option>
-          <option :value="privacySettings.private">
+          <option :value="privacySettings.byLink">
             Anyone with the link
           </option>
-          <option :value="privacySettings.private">
+          <option :value="privacySettings.byUser">
             Only selected users
           </option>
         </select>
       </form>
       <div id="actions" class="pt-1em border w-max">
-        <button class="btn" @click="submitForms">
+        <button class="btn" :disabled="Object.keys(content).length < 1" @click="submitForms">
           Create
         </button>
-        <button class="btn">
+        <button class="btn" @click="cancel">
           Cancel
         </button>
       </div>

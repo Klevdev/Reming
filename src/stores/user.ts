@@ -9,21 +9,25 @@ interface userTokens {
 }
 
 interface userData {
+  _id: string
   name: string
   picture?: string
 }
 
 export const useUserStore = defineStore('user', () => {
   const loggedIn = ref(false)
+  const _id = ref('')
   const name = ref('')
   const picture = ref('')
 
   const setData = (user: userData, save = true) => {
+    _id.value = user._id
     name.value = user.name
     picture.value = user.picture || ''
 
     if (save) {
       localStorage.setItem('user', JSON.stringify({
+        id: _id.value,
         name: name.value,
         picture: picture.value,
       }))
@@ -31,12 +35,13 @@ export const useUserStore = defineStore('user', () => {
   }
 
   const refresh = (tokens: userTokens) => {
-    document.cookie = `accessToken=${tokens.accessToken};expires=Mon, 18 Dec 2023 12:00:00 UTC;`
-    document.cookie = `refreshToken=${tokens.refreshToken};expires=Mon, 18 Dec 2023 12:00:00 UTC;`
+    document.cookie = `accessToken=${tokens.accessToken};expires=Mon, 18 Dec 2023 12:00:00 UTC;path=/;`
+    document.cookie = `refreshToken=${tokens.refreshToken};expires=Mon, 18 Dec 2023 12:00:00 UTC;path=/;`
   }
 
   const login = (user: user) => {
     setData({
+      _id: user._id,
       name: user.name,
       picture: user.picture,
     })
@@ -54,6 +59,7 @@ export const useUserStore = defineStore('user', () => {
       document.cookie = 'refreshToken=;expires=Mon, 18 Dec 2003 12:00:00 UTC;'
     })
 
+    _id.value = ''
     name.value = ''
     picture.value = ''
 

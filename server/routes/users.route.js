@@ -12,7 +12,7 @@ const router = express.Router()
 router.post('/signup', sanitize, async (req, res) => {
   try {
     const user = await User.create(req.body)
-    const projection = ['name', 'picture', 'accessToken', 'refreshToken']
+    const projection = ['_id', 'name', 'picture', 'accessToken', 'refreshToken']
     return res.sendData(201, user.project(projection))
   }
   catch (err) {
@@ -25,7 +25,7 @@ router.post('/login', sanitize, async (req, res) => {
     const user = await User.login(req.body.email, req.body.password)
     if (!user)
       return res.sendError(400, 'Incorrect e-mail or password')
-    const projection = ['name', 'picture', 'accessToken', 'refreshToken']
+    const projection = ['_id', 'name', 'picture', 'accessToken', 'refreshToken']
     return res.sendData(201, user.project(projection))
   }
   catch (err) {
