@@ -2,6 +2,7 @@
 import request from '~/composables/request'
 import { useUserStore } from '~/stores/user'
 
+const { t } = useI18n()
 const user = useUserStore()
 const formData = ref({
   email: '',
@@ -24,7 +25,7 @@ const submitForm = async() => {
       <input v-model="formData.password" type="password">
 
       <button class="btn">
-        Submit
+        {{ t('pages.login.btn-submit') }}
       </button>
     </form>
   </main>

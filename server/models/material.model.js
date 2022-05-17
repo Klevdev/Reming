@@ -74,18 +74,13 @@ const materialSchema = new mongoose.Schema({
   },
 })
 
-materialSchema.virtual('user').get(async function() {
-  const user = await User.findById(this.userId)
-  return {
-    _id: user._id,
-    name: user.name,
-  }
-})
-
-materialSchema.virtual('isSaved').get(async function() {
-  const savedMaterials = await User.findById(this.userId, { savedMaterials: 1 }).savedMaterials
-  return savedMaterials.includes(this.id)
-})
+// materialSchema.virtual('user').get(async function() {
+//   const user = await User.findById(this.userId)
+//   return {
+//     _id: user._id,
+//     name: user.name,
+//   }
+// })
 
 materialSchema.statics._create = async function(materialFull, userId) {
   const contentData = materialFull.content
@@ -144,7 +139,7 @@ materialSchema.methods.short = function() {
 }
 
 materialSchema.methods.full = function() {
-  return this.project(['_id', 'title', 'type', 'description', 'createdAt', 'updatedAt', 'avgRating', 'views', 'tags'])
+  return this.project(['_id', 'title', 'type', 'userId', 'description', 'createdAt', 'updatedAt', 'avgRating', 'views', 'tags'])
 }
 
 materialSchema.statics.createContent = async function(type, content) {

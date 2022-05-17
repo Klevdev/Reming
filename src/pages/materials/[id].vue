@@ -36,29 +36,32 @@ onMounted(async() => {
 <template>
   <main>
     <section class="max-w-45vw">
-      <h2>Material information</h2>
       <div class="flex flex-col gap-1em max-w-300px">
-        <div>{{ materialInfo.title }}</div>
+        <h2>{{ materialInfo.title }}</h2>
         <div>{{ materialInfo.description }}</div>
-        <div>{{ materialInfo.userId }}</div>
-        <div>{{ dateToString(materialInfo.createdAt) }}</div>
-        <div>{{ dateToString(materialInfo.updatedAt) }}</div>
+        <dl>
+          <dt>{{ t('pages.material-view.user') }}</dt>
+          <dd>{{ materialInfo.userId }}</dd>
+          <dt>{{ t('pages.material-view.created-at') }}</dt>
+          <dd>{{ dateToString(materialInfo.createdAt) }}</dd>
+          <dt>{{ t('pages.material-view.updated-at') }}</dt>
+          <dd>{{ dateToString(materialInfo.updatedAt) }}</dd>
+        </dl>
         <div>{{ materialInfo.tags }}</div>
       </div>
       <div id="actions" class="pt-1em w-max">
         <button class="btn">
-          Save to my materials
+          {{ t('pages.material-view.save') }}
         </button>
         <button class="btn">
-          Edit
+          {{ t('pages.material-view.edit') }}
         </button>
         <button class="btn" @click="deleteMaterial">
-          Delete
+          {{ t('pages.material-view.delete') }}
         </button>
       </div>
     </section>
     <section class="max-w-45vw">
-      <h2>Material content</h2>
       <div id="materialContent" class="w-max">
         <div v-for="entry in materialContent" :key="entry" class="grid grid-cols-2 gap-1em">
           <div class="w-max">

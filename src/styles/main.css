@@ -14,9 +14,9 @@ html.dark:root {
   --bg: #444;
 }
 
-* {
+/* * {
   border: 1px dotted #888
-}
+} */
 
 .btn {
   color: #FFF;

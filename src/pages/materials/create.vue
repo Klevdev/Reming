@@ -2,6 +2,7 @@
 import request from '~/composables/request'
 
 const router = useRouter()
+const { t } = useI18n()
 
 const selectedUsers = ref([])
 
@@ -84,8 +85,7 @@ const submitForms = async() => {
 <template>
   <main>
     <section class="max-w-45vw">
-      <h2>Material information</h2>
-      <form class="flex flex-col gap-1em max-w-300px border" @submit.prevent="">
+      <form class="flex flex-col gap-1em max-w-300px" @submit.prevent="">
         <input v-model="materialInfo.title" type="text">
         <input v-model="materialInfo.description" type="text">
         <select v-model="materialInfo.privacy">
@@ -103,18 +103,18 @@ const submitForms = async() => {
           </option>
         </select>
       </form>
-      <div id="actions" class="pt-1em border w-max">
+      <div id="actions" class="pt-1em w-max">
         <button class="btn" :disabled="Object.keys(content).length < 1" @click="submitForms">
-          Create
+          {{ t('pages.create.btn-create') }}
         </button>
         <button class="btn" @click="cancel">
-          Cancel
+          {{ t('pages.create.btn-cancel') }}
         </button>
       </div>
     </section>
     <section class="max-w-45vw">
       <h2>Material content</h2>
-      <form class="flex flex-col gap-1em max-w-300px border" @submit.prevent="addEntry">
+      <form class="flex flex-col gap-1em max-w-300px" @submit.prevent="addEntry">
         <input v-model="newContentEntry.term.text" type="text">
         <input v-model="newContentEntry.def.text" type="text">
         <button class="btn">

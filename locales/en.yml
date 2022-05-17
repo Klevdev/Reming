@@ -17,10 +17,17 @@ pages:
     title: Main
   login:
     title: Log in to account
+    btn-submit: Log in
   signup:
     title: Create new account
+    btn-submit: Sign up
   profile:
-    title: Edit profile
+    title: User profile
+    edit-info: Edit profile information
+    actions: Profile actions
+    btn-submit: Submit
+    btn-logout: Log out
+    btn-delete: Delete profile
   my-materials:
     title: My materials
     all: All materials
@@ -28,3 +35,15 @@ pages:
     saved: Saved
     shared: Shared
     create_new: Create
+  create:
+    title: Create new material
+    btn-create: Create
+    btn-cancel: Cancel
+  material-view:
+    title: Material page
+    user: Created by
+    created-at: Created at
+    updated-at: Last update
+    save: Save to my materials
+    edit: Edit
+    delete: Delete

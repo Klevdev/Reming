@@ -17,10 +17,17 @@ pages:
     title: Главная
   login:
     title: Вход в аккаунт
+    btn-submit: Войти
   signup:
     title: Регистрация аккаунта
+    btn-submit: Зарегистрироваться
   profile:
-    title: Редатирование профиля
+    title: Управление профилем
+    edit-info: Редактировать данные
+    actions: Действия
+    btn-submit: Подтвердить
+    btn-logout: Выйти
+    btn-delete: Удалить профиль
   my-materials:
     title: Мои материалы
     all: Все материалы
@@ -28,3 +35,15 @@ pages:
     saved: Сохранённые
     shared: Доступные
     create_new: Создать
+  create:
+    title: Создание нового материала
+    btn-create: Создать
+    btn-cancel: Отмена
+  material-view:
+    title: Страница материала
+    user: Автор
+    created-at: Дата создания
+    updated-at: Последнее изменение
+    save: Сохранить
+    edit: Редактировать
+    delete: Удалить
