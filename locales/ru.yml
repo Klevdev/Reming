@@ -14,6 +14,13 @@ layout:
 settings:
   toggle_dark: Переключить тему
   change_lang: Сменить язык
+material:
+  types:
+    glossary: Словарь
+    cardSet: Набор карточек
+    questionBank: Банк вопросов
+    test: Тест
+    article: Статья
 pages:
   index:
     title: Главная

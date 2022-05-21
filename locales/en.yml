@@ -14,6 +14,13 @@ layout:
 settings:
   toggle_dark: Switch color mode
   change_lang: Change language
+material:
+  types:
+    glossary: Glossary
+    cardSet: Cards
+    questionBank: Questions Bank
+    test: Test
+    article: Article
 pages:
   index:
     title: Main

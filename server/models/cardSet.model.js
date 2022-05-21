@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 
 mongoose.connect(process.env.DB_URL)
 
-const cardsSetSchema = new mongoose.Schema({
+const cardSetSchema = new mongoose.Schema({
   term: {
     text: {
       type: String,
@@ -23,14 +23,14 @@ const cardsSetSchema = new mongoose.Schema({
   },
 })
 
-cardsSetSchema.methods.project = function(projection) {
+cardSetSchema.methods.project = function(projection) {
   const obj = {}
   for (let i = 0; i < projection.length; i++)
     obj[projection[i]] = this[projection[i]]
   return obj
 }
 
-cardsSetSchema.methods._update = async function(definition) {
+cardSetSchema.methods._update = async function(definition) {
   this.term = definition.term
   this.def = definition.def
 
@@ -41,4 +41,4 @@ cardsSetSchema.methods._update = async function(definition) {
 //   next()
 // })
 
-module.exports = mongoose.model('CardsSets', cardsSetSchema)
+module.exports = mongoose.model('CardSets', cardSetSchema)

@@ -22,22 +22,28 @@ const { materials } = defineProps({
 
 <template>
   <div class="flex gap-1em flex-wrap">
-    <router-link
-      v-for="material in materials" :key="material._id"
-      class="material"
-      :to="`/materials/${material._id}`"
-    >
+    <div v-for="material in materials" :key="material._id" class="material">
       <!-- <div>{{ icons[material.type] }}</div> -->
-      <span class="font-bold">{{ material.title }}</span>
+      <div class="flex justify-between">
+        <span class="font-bold">{{ material.title }}</span>
+        <div v-if="material.type === 'glossary'" i="carbon-book" :title="t(`material.types.${material.type}`)" />
+        <div v-if="material.type === 'cardSet'" i="mdi-cards-outline" :title="t(`material.types.${material.type}`)" />
+        <div v-if="material.type === 'questionBank'" i="carbon-book" :title="t(`material.types.${material.type}`)" />
+        <div v-if="material.type === 'test'" i="carbon-text-annotation-toggle" :title="t(`material.types.${material.type}`)" />
+        <div v-if="material.type === 'article'" i="majesticons-article-line" :title="t(`material.types.${material.type}`)" />
+      </div>
       <span>{{ material.description }}</span>
-      <span>{{ material.type }}</span>
+      <span class="font-italic">{{ material.user?.name }}</span>
       <!-- <button v-if="material.isSaved" class="btn" @click="unsave(material._id)">
         {{ t('material.unsave') }}
       </button>
       <button v-else class="btn">
         {{ t('material.save') }}
       </button> -->
-    </router-link>
+      <router-link :to="`/materials/${material._id}`" class="btn w-max">
+        <div i="carbon-view" />
+      </router-link>
+    </div>
   </div>
 </template>
 
@@ -49,5 +55,6 @@ const { materials } = defineProps({
     background-color: var(--bg);
     min-width: 200px;
     padding: 1em;
+    gap: 1em;
   }
 </style>

@@ -82,6 +82,15 @@ const materialSchema = new mongoose.Schema({
 //   }
 // })
 
+materialSchema.methods.getUserInfo = async function() {
+  const user = await User.findById(this.userId)
+  return {
+    _id: user._id,
+    name: user.name,
+    picture: user.picture,
+  }
+}
+
 materialSchema.methods.isSaved = async function(userId) {
   const user = await User.findById(userId)
   if (this.userId === userId || user?.savedMaterials.includes(this._id))
@@ -140,15 +149,17 @@ materialSchema.methods.project = async function(projection, userId) {
     obj[projection[i]] = this[projection[i]]
   if (userId)
     obj.isSaved = await this.isSaved(userId)
+  if (projection.includes('user'))
+    obj.user = await this.getUserInfo()
   return obj
 }
 
 materialSchema.methods.short = async function(userId) {
-  return await this.project(['_id', 'title', 'type', 'description'], userId)
+  return await this.project(['_id', 'title', 'type', 'description', 'user'], userId)
 }
 
 materialSchema.methods.full = async function(userId) {
-  return await this.project(['_id', 'title', 'type', 'userId', 'description', 'createdAt', 'updatedAt', 'avgRating', 'views', 'tags'], userId)
+  return await this.project(['_id', 'title', 'type', 'user', 'description', 'createdAt', 'updatedAt', 'avgRating', 'views', 'tags'], userId)
 }
 
 materialSchema.statics.createContent = async function(type, content) {

@@ -41,7 +41,7 @@ onMounted(async() => {
         <div>{{ materialInfo.description }}</div>
         <dl>
           <dt>{{ t('pages.material-view.user') }}</dt>
-          <dd>{{ materialInfo.userId }}</dd>
+          <dd>{{ materialInfo.user.name }}</dd>
           <dt>{{ t('pages.material-view.created-at') }}</dt>
           <dd>{{ dateToString(materialInfo.createdAt) }}</dd>
           <dt>{{ t('pages.material-view.updated-at') }}</dt>
