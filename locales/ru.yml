@@ -1,8 +1,10 @@
 layout:
-  toggle_sidebar: Свернуть/резвернуть меню
+  toggle_sidebar: Свернуть/развернуть меню
   login: Вход
   signup: Регистрация
   logout: Выйти
+  buttons:
+    collapse: Свернуть/развернуть
   menu:
     main: Главная
     library: Библиотека
@@ -18,9 +20,13 @@ pages:
   login:
     title: Вход в аккаунт
     btn-submit: Войти
+    signup-text: Ещё не зарегистрированы?
+    signup-link: Создать аккаунт
   signup:
     title: Регистрация аккаунта
     btn-submit: Зарегистрироваться
+    login-text: Уже есть аккаунт?
+    login-link: Войти
   profile:
     title: Управление профилем
     edit-info: Редактировать данные

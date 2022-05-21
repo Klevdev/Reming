@@ -32,7 +32,7 @@ router.get('/:id', auth(false), async (req, res) => {
     return res.sendError(404, 'Material not found')
   if (!material.checkAccess(req.user?._id))
     return res.sendError(403, 'Access denied')
-  return res.sendData(200, material.full())
+  return res.sendData(200, await material.full(req.user?._id))
 })
 
 router.post('/', sanitize, auth(), async (req, res) => {

@@ -27,6 +27,14 @@ const submitForm = async() => {
       <button class="btn">
         {{ t('pages.login.btn-submit') }}
       </button>
+      <div class="mt-1em">
+        <span>{{ t('pages.login.signup-text') }}
+          <br>
+          <router-link class="link" to="/signup">
+            {{ t('pages.login.signup-link') }}
+          </router-link>
+        </span>
+      </div>
     </form>
   </main>
 </template>
@@ -36,3 +44,17 @@ meta:
   name: login
   layout: default
 </route>
+
+<style>
+  form {
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  @media only screen and (min-width: 600px) {
+  form {
+    margin: 0;
+    text-align: left;
+  }
+  }
+</style>

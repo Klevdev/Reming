@@ -82,6 +82,13 @@ const materialSchema = new mongoose.Schema({
 //   }
 // })
 
+materialSchema.methods.isSaved = async function(userId) {
+  const user = await User.findById(userId)
+  if (this.userId === userId || user?.savedMaterials.includes(this._id))
+    return true
+  return false
+}
+
 materialSchema.statics._create = async function(materialFull, userId) {
   const contentData = materialFull.content
   delete materialFull.content
@@ -127,19 +134,21 @@ materialSchema.methods.addRating = function(userId, score) {
   return true
 }
 
-materialSchema.methods.project = function(projection) {
+materialSchema.methods.project = async function(projection, userId) {
   const obj = {}
   for (let i = 0; i < projection.length; i++)
     obj[projection[i]] = this[projection[i]]
+  if (userId)
+    obj.isSaved = await this.isSaved(userId)
   return obj
 }
 
-materialSchema.methods.short = function() {
-  return this.project(['_id', 'title', 'type'])
+materialSchema.methods.short = async function(userId) {
+  return await this.project(['_id', 'title', 'type', 'description'], userId)
 }
 
-materialSchema.methods.full = function() {
-  return this.project(['_id', 'title', 'type', 'userId', 'description', 'createdAt', 'updatedAt', 'avgRating', 'views', 'tags'])
+materialSchema.methods.full = async function(userId) {
+  return await this.project(['_id', 'title', 'type', 'userId', 'description', 'createdAt', 'updatedAt', 'avgRating', 'views', 'tags'], userId)
 }
 
 materialSchema.statics.createContent = async function(type, content) {
@@ -167,10 +176,19 @@ materialSchema.statics.getPersonalMaterials = async function(userId) {
   const saved = await User.findById(userId).then(async user => await user.getSavedMaterials())
   const shared = await this.find({ 'privacy.access': userId })
 
+  for (let i = 0; i < created.length; i++)
+    created[i] = await created[i].short(userId)
+
+  for (let i = 0; i < saved.length; i++)
+    saved[i] = await saved[i].short(userId)
+
+  for (let i = 0; i < shared.length; i++)
+    shared[i] = await shared[i].short(userId)
+
   return {
-    created: created.map(m => m.short()),
+    created,
     saved,
-    shared: shared.map(m => m.short()),
+    shared,
   }
 }
 
@@ -181,7 +199,7 @@ materialSchema.methods.checkAccess = function(userId) {
     return true
   if (this.privacy.access === true) // if material can be accessed via link by everyone
     return true
-  if (this.privacy.access.includes(userId)) // if material's access list includes user
+  if (this.privacy.access !== false && this.privacy.access.includes(userId)) // if material's access list includes user
     return true
   return false
 }

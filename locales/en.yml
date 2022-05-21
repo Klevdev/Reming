@@ -3,8 +3,10 @@ layout:
   login: Log in
   signup: Sign up
   logout: Log out
+  buttons:
+    collapse: Collapse/show
   menu:
-    main: Main
+    main: Home
     library: Library
     my-materials: My materials
     calendar: Calendar
@@ -18,9 +20,13 @@ pages:
   login:
     title: Log in to account
     btn-submit: Log in
+    signup-text: Don't have account yet?
+    signup-link: Sign up
   signup:
     title: Create new account
     btn-submit: Sign up
+    login-text: Already have an account?
+    login-link: Log in
   profile:
     title: User profile
     edit-info: Edit profile information

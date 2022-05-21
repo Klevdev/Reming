@@ -1,7 +1,7 @@
 const types = {
   // folder: require('../models/folder.model'),
   glossary: require('../models/glossary.model'),
-  cardSet: require('../models/cardSet.model'),
+  cardSet: require('../models/cardsSet.model'),
   questionBank: require('../models/questionBank.model'),
   test: require('../models/test.model'),
   // article: require('../models/article.model'),

@@ -94,7 +94,9 @@ userSchema.methods.getSavedMaterials = async function() {
   const Materials = require('../models/material.model')
   const savedMaterials = await Materials.find({ _id: { $in: this.savedMaterials } })
 
-  return savedMaterials.map(m => m.short())
+  for (let i = 0; i < savedMaterials.length; i++)
+    savedMaterials[i] = await savedMaterials[i].short(this._id)
+  return savedMaterials
 }
 
 userSchema.methods.removeFromSavedMaterials = async function(materialId) {

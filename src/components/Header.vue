@@ -24,7 +24,7 @@ const toggleLocales = () => {
     <button class="w-60px h-60px icon-btn !outline-none" :title="t('layout.toggle_sidebar')" @click="layoutStore.toggleSidebar">
       <div class="mx-auto" i="carbon-menu" />
     </button>
-    <span id="logo"><router-link to="/">Reming</router-link></span>
+    <span id="logo" class="font-serif"><router-link to="/">Reming</router-link></span>
     <div id="userPanel" @click="layoutStore.toggleUserPanel">
       <div v-if="userPanelCollapsed">
         <div v-if="userLoggedIn" class="flex flex-row items-center gap-1em">
@@ -37,9 +37,6 @@ const toggleLocales = () => {
         <div v-else class="flex gap-5px">
           <router-link to="/login" class="btn" @click.stop.prevent>
             {{ t('layout.login') }}
-          </router-link>
-          <router-link to="/signup" class="btn" @click.stop.prevent>
-            {{ t('layout.signup') }}
           </router-link>
         </div>
       </div>

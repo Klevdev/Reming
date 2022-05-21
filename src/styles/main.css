@@ -4,19 +4,33 @@
   --primary: teal;
   --primary-active: teal;
   --btn-disabled: #888;
-  --bg: #F0F0F0;
+  --bg: #FFF;
+  --bg-back: #E7EAED;
+  --bg-input: #FFFFFF80;
 }
 
 html.dark:root {
   --primary: teal;
   --primary-active: teal;
   --btn-disabled: #888;
-  --bg: #444;
+  --bg: #35363A;
+  --bg-back: #202124;
+  --bg-input: #35363A80;
 }
 
 /* * {
   border: 1px dotted #888
 } */
+
+input[type="text"],
+input[type="number"],
+input[type="email"],
+input[type="password"] {
+  @apply rounded;
+  padding: 0.25em;
+  background: var(--bg-input);
+  border: 1px solid var(--bg);
+}
 
 .btn {
   color: #FFF;
@@ -31,6 +45,11 @@ html.dark:root {
   background-color: var(--btn-disabled)
 }
 
+.link {
+  color: var(--primary);
+  text-decoration: underline var(--primary);
+}
+
 html,
 body,
 #app {
@@ -38,10 +57,7 @@ body,
   margin: 0;
   padding: 0;
   overflow: hidden;
-}
-
-html.dark {
-  background: #121212;
+  background: var(--bg-back);
 }
 
 #nprogress {

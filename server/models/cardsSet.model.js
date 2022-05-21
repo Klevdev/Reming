@@ -41,4 +41,4 @@ cardsSetSchema.methods._update = async function(definition) {
 //   next()
 // })
 
-module.exports = mongoose.model('Definitions', cardsSetSchema)
+module.exports = mongoose.model('CardsSets', cardsSetSchema)
