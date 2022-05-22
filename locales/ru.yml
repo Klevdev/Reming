@@ -11,6 +11,9 @@ layout:
     my-materials: Мои материалы
     calendar: Календарь
     stats: Статистика
+  user:
+    profile: Профиль
+    logout: Выйти
 settings:
   toggle_dark: Переключить тему
   change_lang: Сменить язык

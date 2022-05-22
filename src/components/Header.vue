@@ -1,22 +1,8 @@
 <script setup lang="ts">
-import { storeToRefs } from 'pinia'
-// import { ref } from 'vue'
-import { toggleDark } from '~/composables'
 import { useLayoutStore } from '~/stores/layout'
-import { useUserStore } from '~/stores/user'
-const { t, availableLocales, locale } = useI18n()
-
+const { t } = useI18n()
 const layoutStore = useLayoutStore()
-const { userPanelCollapsed } = storeToRefs(layoutStore)
-const user = useUserStore()
-const { loggedIn: userLoggedIn, name: userName, picture: userPicture } = storeToRefs(user)
-// const { toggleUserPanel, toggleSidebar } = mapActions(useLayoutStore, ['toggleUserPanel', 'toggleSidebar'])
 
-const toggleLocales = () => {
-  // change to some real logic
-  const locales = availableLocales
-  locale.value = locales[(locales.indexOf(locale.value) + 1) % locales.length]
-}
 </script>
 
 <template>
@@ -25,32 +11,8 @@ const toggleLocales = () => {
       <div class="mx-auto" i="carbon-menu" />
     </button>
     <span id="logo" class="font-serif"><router-link to="/">Reming</router-link></span>
-    <div id="userPanel" @click="layoutStore.toggleUserPanel">
-      <div v-if="userPanelCollapsed">
-        <div v-if="userLoggedIn" class="flex flex-row items-center gap-1em">
-          <router-link to="/profile" class="text-1.2em">
-            {{ userName }}
-          </router-link>
-          <img v-if="userPicture" id="userPicture" :src="`http://localhost:3001/${userPicture}`" alt="user picture">
-          <div v-else class="text-2em" i="carbon-user-avatar-filled-alt" />
-        </div>
-        <div v-else class="flex gap-5px">
-          <router-link to="/login" class="btn" @click.stop.prevent>
-            {{ t('layout.login') }}
-          </router-link>
-        </div>
-      </div>
-      <div v-else class="flex flex-row-reverse">
-        <button class="icon-btn mx-2" :title="t('layout.logout')" @click="user.logout">
-          <div i-carbon-logout />
-        </button>
-        <button class="icon-btn mx-2 !outline-none" :title="t('settings.toggle_dark')" @click.stop.prevent="toggleDark()">
-          <div i="carbon-sun dark:carbon-moon" />
-        </button>
-        <button class="icon-btn mx-2" :title="t('settings.change_lang')" @click.stop.prevent="toggleLocales">
-          <div i-carbon-language />
-        </button>
-      </div>
+    <div class="ml-a">
+      <UserPanel />
     </div>
   </header>
 </template>
@@ -63,6 +25,7 @@ const toggleLocales = () => {
   }
 
   header {
+    z-index: 10;
     user-select: none;
     display: flex;
     align-items: center;
@@ -73,18 +36,6 @@ const toggleLocales = () => {
 
   header > button {
     display: none;
-  }
-
-  #userPanel {
-    margin-left: auto;
-    padding: 0 1em;
-    height: 100%;
-    min-width: 100px;
-    width: max-content;
-    display: flex;
-    flex-direction: row-reverse;
-    align-items: center;
-    justify-content: flex-start;
   }
 
   @media only screen and (min-width: 600px) {
@@ -100,9 +51,4 @@ const toggleLocales = () => {
     }
   }
 
-  #userPicture {
-    height: 2em;
-    width: 2em;
-    border-radius: 50%;
-  }
 </style>

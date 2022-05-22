@@ -11,6 +11,9 @@ layout:
     my-materials: My materials
     calendar: Calendar
     stats: Statistics
+  user:
+    profile: Profile
+    logout: Log out
 settings:
   toggle_dark: Switch color mode
   change_lang: Change language
