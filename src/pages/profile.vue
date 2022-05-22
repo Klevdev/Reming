@@ -20,6 +20,23 @@ onMounted(async() => {
   }
 })
 
+const inputProps = {
+  name: {
+    label: 'Username',
+    placeholder: userData.name,
+  },
+  email: {
+    label: 'E-mail',
+    type: 'email',
+    placeholder: userData.email,
+  },
+  password: {
+    label: 'Password',
+    type: 'password',
+    placeholder: userData.password,
+  },
+}
+
 const submitForm = async() => {
   const form = document.getElementById('form') || undefined
   const formData = new FormData(form)
@@ -51,10 +68,17 @@ const toggleLocales = () => {
   <main class="flex flex-col gap-1em">
     <h2>{{ t('pages.profile.edit-info') }}</h2>
     <form id="form" class="w-200px flex flex-col gap-15px" @submit.prevent="submitForm">
-      <input v-model="userData.name" name="name" type="text">
-      <input v-model="userData.email" name="email" type="email">
-      <input name="password" type="password">
+      <Input v-model="userData.name" :props="inputProps.name" />
+      <Input v-model="userData.email" :props="inputProps.email" />
+      <Input v-model="userData.password" :props="inputProps.password" />
       <textarea v-model="userData.bio" name="bio" />
+      <button class="btn">
+        {{ t('pages.profile.btn-submit') }}
+      </button>
+    </form>
+
+    <h2>{{ t('pages.profile.edit-picture') }}</h2>
+    <form id="form" class="w-200px flex flex-col gap-15px" @submit.prevent="submitForm">
       <input name="picture" type="file">
       <button class="btn">
         {{ t('pages.profile.btn-submit') }}

@@ -26,17 +26,6 @@ html.dark:root {
   border: 1px dotted #888
 } */
 
-input[type="text"],
-input[type="number"],
-input[type="email"],
-input[type="password"],
-textarea {
-  @apply rounded;
-  padding: 0.25em;
-  background: var(--bg-input);
-  border: 1px solid var(--bg);
-}
-
 .block {
   @apply rounded;
   background: var(--bg);

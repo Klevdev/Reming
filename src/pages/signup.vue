@@ -10,6 +10,22 @@ const formData = ref({
   password: '',
 })
 
+const inputProps = {
+  name: {
+    label: 'Username',
+    placeholder: 'MyUniqueName',
+  },
+  email: {
+    label: 'E-mail',
+    type: 'email',
+    placeholder: 'examplemail@mail.com',
+  },
+  password: {
+    label: 'Password',
+    type: 'password',
+  },
+}
+
 const submitForm = async() => {
   const { data, error } = await request.post('/user/signup', formData.value)
 
@@ -21,10 +37,10 @@ const submitForm = async() => {
 
 <template>
   <main>
-    <form class="w-200px flex flex-col gap-15px" @submit.prevent="submitForm">
-      <input v-model="formData.name" type="text">
-      <input v-model="formData.email" type="email">
-      <input v-model="formData.password" type="password">
+    <form class="w-200px flex flex-col gap-0.5em" @submit.prevent="submitForm">
+      <Input v-model="formData.name" :props="inputProps.name" />
+      <Input v-model="formData.email" :props="inputProps.email" />
+      <Input v-model="formData.password" :props="inputProps.password" />
 
       <button class="btn">
         {{ t('pages.signup.btn-submit') }}

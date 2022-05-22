@@ -1,13 +1,19 @@
 <script setup lang="ts">
 import request from '~/composables/request'
 
+const val = ref('')
+const props = {
+  type: 'text',
+  label: 'test',
+  placeholder: 'afsfsfg',
+}
+
 </script>
 
 <template>
   <main>
-    <button class="btn" @click="request.get('/test')">
-      Test
-    </button>
+    <Input v-model="val" :props="props" />
+    {{ val }}
   </main>
 </template>
 
