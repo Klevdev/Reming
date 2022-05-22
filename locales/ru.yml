@@ -15,8 +15,8 @@ layout:
     profile: Профиль
     logout: Выйти
 settings:
-  toggle_dark: Переключить тему
-  change_lang: Сменить язык
+  change-lang: Сменить язык
+  toggle-color: Переключить тему
 material:
   types:
     glossary: Словарь
@@ -40,6 +40,7 @@ pages:
   profile:
     title: Управление профилем
     edit-info: Редактировать данные
+    settings: Настройки
     actions: Действия
     btn-submit: Подтвердить
     btn-logout: Выйти

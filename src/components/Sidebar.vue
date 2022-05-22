@@ -52,7 +52,7 @@ const { sidebarCollapsed } = storeToRefs(layoutStore)
   .menu-item:hover,
   .menu-item:active {
     cursor: pointer;
-    background-color: var(--primary-active);
+    background-color: var(--primary);
     transition: all .2s ease-in-out;
   }
 

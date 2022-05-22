@@ -1,20 +1,13 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
-import { toggleDark } from '~/composables'
 import { useLayoutStore } from '~/stores/layout'
 import { useUserStore } from '~/stores/user'
-const { t, availableLocales, locale } = useI18n()
 
+const { t } = useI18n()
 const layoutStore = useLayoutStore()
 const { userPanelCollapsed } = storeToRefs(layoutStore)
 const user = useUserStore()
 const { loggedIn: userLoggedIn, name: userName, picture: userPicture } = storeToRefs(user)
-
-const toggleLocales = () => {
-  // change to some real logic
-  const locales = availableLocales
-  locale.value = locales[(locales.indexOf(locale.value) + 1) % locales.length]
-}
 
 </script>
 
@@ -74,8 +67,8 @@ const toggleLocales = () => {
   }
 
   #userPicture {
-    height: 2em;
-    width: 2em;
+    height: 2.2em;
+    width: 2.2em;
     border-radius: 50%;
   }
 
@@ -106,7 +99,7 @@ const toggleLocales = () => {
   .menu-item:hover,
   .menu-item:active {
     cursor: pointer;
-    background-color: var(--primary-active);
+    background-color: var(--primary);
     transition: all .2s ease-in-out;
   }
   .menu-item:first-child {

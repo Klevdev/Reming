@@ -1,8 +1,10 @@
 /* @import './markdown.css'; */
 
 :root {
-  --primary: teal;
-  --primary-active: teal;
+  --primary: #00A0A0;
+  --primary-active: #008080;
+  --danger: #F87171;
+  --danger-active: #FF5151;
   --btn-disabled: #888;
   --bg: #FFF;
   --bg-back: #E7EAED;
@@ -10,8 +12,10 @@
 }
 
 html.dark:root {
-  --primary: teal;
-  --primary-active: teal;
+  --primary: #008080;
+  --primary-active: #007070;
+  --danger: #F87171;
+  --danger-active: #FF5151;
   --btn-disabled: #888;
   --bg: #35363A;
   --bg-back: #202124;
@@ -41,20 +45,37 @@ textarea {
 
 .btn {
   color: #FFF;
-  background-color: var(--primary)
+  background-color: var(--primary);
+  transition: background .2s ease-in-out;
 }
 
-.btn:hover, .btn:active {
-  background-color: var(--primary-active)
+.btn:hover,
+.btn:active {
+  background-color: var(--primary-active);
 }
 
 .btn:disabled {
-  background-color: var(--btn-disabled)
+  background-color: var(--btn-disabled);
+}
+
+.btn.danger {
+  background-color: var(--danger);
+}
+
+.btn.danger:hover,
+.btn.danger:active {
+  background-color: var(--danger-active);
 }
 
 .link {
   color: var(--primary);
   text-decoration: underline var(--primary);
+}
+
+.link:hover,
+.link:active {
+  color: var(--primary-active);
+  text-decoration: underline var(--primary-active);
 }
 
 html,

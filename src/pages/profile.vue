@@ -1,10 +1,11 @@
 <script setup lang="ts">
 
 import request from '~/composables/request'
+import { isDark, toggleDark } from '~/composables'
 import { useUserStore } from '~/stores/user'
 
 const router = useRouter()
-const { t } = useI18n()
+const { t, availableLocales, locale } = useI18n()
 
 const user = useUserStore()
 
@@ -38,6 +39,12 @@ const deleteUser = async() => {
   router.push('/')
 }
 
+const toggleLocales = () => {
+  // change to some real logic
+  const locales = availableLocales
+  locale.value = locales[(locales.indexOf(locale.value) + 1) % locales.length]
+}
+
 </script>
 
 <template>
@@ -54,12 +61,28 @@ const deleteUser = async() => {
       </button>
     </form>
 
+    <h2>{{ t('pages.profile.settings') }}</h2>
+    <div class="w-max flex flex-col gap-1em">
+      <div class="flex gap-1em items-center">
+        <span>{{ t('settings.toggle-color') }}</span>
+        <button class="btn h-2em flex justify-center items-center w-max" @click.stop.prevent="toggleDark">
+          <div i="carbon-sun dark:carbon-moon" />
+        </button>
+      </div>
+      <div class="flex gap-1em items-center">
+        <span>{{ t('settings.change-lang') }}</span>
+        <button class="btn flex justify-center items-center w-max" @click.stop.prevent="toggleLocales">
+          {{ locale }}
+        </button>
+      </div>
+    </div>
+
     <h2>{{ t('pages.profile.actions') }}</h2>
     <div class="w-max flex flex-col gap-1em">
       <button type="button" class="btn" @click="user.logout">
         {{ t('pages.profile.btn-logout') }}
       </button>
-      <button type="button" class="btn bg-red" @click="deleteUser">
+      <button type="button" class="btn danger" @click="deleteUser">
         {{ t('pages.profile.btn-delete') }}
       </button>
     </div>
@@ -71,3 +94,10 @@ meta:
   name: profile
   layout: default
 </route>
+
+<style scoped>
+h2 {
+  font-weight: bold;
+  font-size: 1.2em;
+}
+</style>
