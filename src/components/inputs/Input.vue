@@ -19,7 +19,6 @@ const id = nanoid(5)
     <textarea
       v-if="props?.type === 'textarea'"
       :id="id"
-      :class="`w-${props?.width || 200}px`"
       :value="modelValue"
       :name="props?.name"
       :placeholder="props?.placeholder"
@@ -28,7 +27,6 @@ const id = nanoid(5)
     <input
       v-else
       :id="id"
-      :class="`w-${props?.width || 200}px`"
       :type="props?.type || 'text'"
       :value="modelValue"
       :name="props?.name"
@@ -49,6 +47,7 @@ const id = nanoid(5)
     @apply rounded;
     outline: none;
     padding: .25em;
+    width: 200px;
     background: var(--bg-input);
     border: 2px solid var(--bg);
     transition: border .2s ease-in-out;
@@ -64,4 +63,10 @@ const id = nanoid(5)
   textarea:hover {
     border: 2px solid var(--primary)
   }
+
+@media only screen and (min-width: 600px) {
+  input {
+    width: 300px;
+  }
+}
 </style>

@@ -37,7 +37,7 @@ const submitForm = async() => {
 
 <template>
   <main>
-    <form class="w-200px flex flex-col gap-0.5em" @submit.prevent="submitForm">
+    <form class="flex flex-col gap-0.5em" @submit.prevent="submitForm">
       <Input v-model="formData.name" :props="inputProps.name" />
       <Input v-model="formData.email" :props="inputProps.email" />
       <Input v-model="formData.password" :props="inputProps.password" />
@@ -62,3 +62,19 @@ meta:
   name: signup
   layout: default
 </route>
+
+<style scoped>
+  form {
+    width: 300px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  @media only screen and (min-width: 600px) {
+    form {
+      width: 300px;
+      margin: 0;
+      text-align: left;
+    }
+  }
+</style>

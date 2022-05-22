@@ -57,14 +57,16 @@ meta:
   layout: default
 </route>
 
-<style>
+<style scoped>
   form {
+    width: 300px;
     margin: 0 auto;
     text-align: center;
   }
 
   @media only screen and (min-width: 600px) {
     form {
+      width: 300px;
       margin: 0;
       text-align: left;
     }

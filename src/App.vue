@@ -13,16 +13,18 @@ useHead({
 })
 onMounted(async() => {
   const user = useUserStore()
-  const userData = localStorage.getItem('user')
-  if (userData) {
+  try {
+    const userData = JSON.parse(localStorage.getItem('user'))
     const { data, error } = await request.get('/user/refresh', true)
     if (!error) {
       user.refresh(data)
       user.loggedIn = true
-      user.setData(JSON.parse(userData), false)
+      user.setData(userData, false)
+      if (userData.picture)
+        user.setPicture(userData.picture, false)
     }
   }
-  else {
+  catch {
     user.loggedIn = false
     user.refresh({ accessToken: '', refreshToken: '' })
   }

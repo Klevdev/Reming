@@ -12,7 +12,7 @@ const { loggedIn: userLoggedIn, name: userName, picture: userPicture } = storeTo
 </script>
 
 <template>
-  <div class="pr-2em">
+  <div class="container">
     <div v-if="!userLoggedIn" class="flex gap-5px">
       <router-link to="/login" class="btn" @click.stop.prevent>
         {{ t('layout.login') }}
@@ -45,6 +45,9 @@ const { loggedIn: userLoggedIn, name: userName, picture: userPicture } = storeTo
 </template>
 
 <style scoped>
+  .container {
+    margin-right: 1em;
+  }
   .userDropdown-enter-active,
   .userDropdown-leave-active {
     transition: opacity .2s ease-in-out;
@@ -62,7 +65,7 @@ const { loggedIn: userLoggedIn, name: userName, picture: userPicture } = storeTo
     top: calc(60px + 1em);
     @apply rounded;
     position: absolute;
-    right: 2em;
+    right: 1em;
     background-color: var(--bg);
   }
 
@@ -108,4 +111,14 @@ const { loggedIn: userLoggedIn, name: userName, picture: userPicture } = storeTo
   .menu-item:last-child {
     border-radius: 0 0 0.25rem 0.25rem;
   }
+
+  @media only screen and (min-width: 600px) {
+  .container {
+    margin-right: 3em;
+  }
+    #userDropdown {
+      right: 3em;
+    }
+  }
+
 </style>
