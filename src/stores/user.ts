@@ -23,7 +23,17 @@ export const useUserStore = defineStore('user', () => {
   const setData = (user: userData, save = true) => {
     _id.value = user._id
     name.value = user.name
-    picture.value = user.picture || ''
+
+    if (save) {
+      localStorage.setItem('user', JSON.stringify({
+        id: _id.value,
+        name: name.value,
+        picture: picture.value,
+      }))
+    }
+  }
+  const setPicture = (picturePath: string, save = true) => {
+    picture.value = picturePath || ''
 
     if (save) {
       localStorage.setItem('user', JSON.stringify({
@@ -43,8 +53,8 @@ export const useUserStore = defineStore('user', () => {
     setData({
       _id: user._id,
       name: user.name,
-      picture: user.picture,
     })
+    setPicture(user.picture)
     refresh({
       accessToken: user.accessToken,
       refreshToken: user.refreshToken,
@@ -76,6 +86,7 @@ export const useUserStore = defineStore('user', () => {
     logout,
     refresh,
     setData,
+    setPicture,
   }
 })
 

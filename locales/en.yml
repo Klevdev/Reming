@@ -44,6 +44,7 @@ pages:
     edit-info: Edit profile information
     settings: Settings
     actions: Profile actions
+    edit-picture: Upload picture
     btn-submit: Submit
     btn-logout: Log out
     btn-delete: Delete profile

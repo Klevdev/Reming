@@ -16,7 +16,17 @@ const id = nanoid(5)
   <!-- <div class="flex" :class="inline ? 'flex-row items-center' : 'flex-col'"> -->
   <div>
     <label v-show="props?.label" :for="id">{{ props?.label }}</label>
+    <textarea
+      v-if="props?.type === 'textarea'"
+      :id="id"
+      :class="`w-${props?.width || 200}px`"
+      :value="modelValue"
+      :name="props?.name"
+      :placeholder="props?.placeholder"
+      @input="$emit('update:modelValue', $event.target.value)"
+    />
     <input
+      v-else
       :id="id"
       :class="`w-${props?.width || 200}px`"
       :type="props?.type || 'text'"

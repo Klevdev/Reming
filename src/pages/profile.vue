@@ -35,19 +35,28 @@ const inputProps = {
     type: 'password',
     placeholder: userData.password,
   },
+  bio: {
+    label: 'About',
+    type: 'textarea',
+    placeholder: 'Write something',
+  },
 }
 
-const submitForm = async() => {
-  const form = document.getElementById('form') || undefined
+const editInfo = async() => {
+  const { data, error } = await request.patch('/user/self', userData)
+
+  if (!error)
+    user.setData(userData)
+}
+
+const editPicture = async() => {
+  const form = document.getElementById('pictureForm') || undefined
   const formData = new FormData(form)
 
-  const { data, error } = await request.patch('/user/self', formData)
+  const { data, error } = await request.patch('/user/picture', formData)
 
-  if (!error) {
-    if (data.picture)
-      userData.picture = data.picture
-    user.setData(userData)
-  }
+  if (!error)
+    user.setPicture(data.picture)
 }
 
 const deleteUser = async() => {
@@ -67,18 +76,18 @@ const toggleLocales = () => {
 <template>
   <main class="flex flex-col gap-1em">
     <h2>{{ t('pages.profile.edit-info') }}</h2>
-    <form id="form" class="w-200px flex flex-col gap-15px" @submit.prevent="submitForm">
+    <form class="w-200px flex flex-col gap-15px" @submit.prevent="editInfo">
       <Input v-model="userData.name" :props="inputProps.name" />
       <Input v-model="userData.email" :props="inputProps.email" />
       <Input v-model="userData.password" :props="inputProps.password" />
-      <textarea v-model="userData.bio" name="bio" />
+      <Input v-model="userData.bio" :props="inputProps.bio" />
       <button class="btn">
         {{ t('pages.profile.btn-submit') }}
       </button>
     </form>
 
     <h2>{{ t('pages.profile.edit-picture') }}</h2>
-    <form id="form" class="w-200px flex flex-col gap-15px" @submit.prevent="submitForm">
+    <form id="pictureForm" class="w-200px flex flex-col gap-15px" @submit.prevent="editPicture">
       <input name="picture" type="file">
       <button class="btn">
         {{ t('pages.profile.btn-submit') }}

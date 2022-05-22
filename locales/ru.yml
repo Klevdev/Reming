@@ -42,6 +42,7 @@ pages:
     edit-info: Редактировать данные
     settings: Настройки
     actions: Действия
+    edit-picture: Изменить фото профиля
     btn-submit: Подтвердить
     btn-logout: Выйти
     btn-delete: Удалить профиль

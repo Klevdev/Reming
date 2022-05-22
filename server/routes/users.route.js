@@ -79,13 +79,12 @@ router.get('/self', auth(true), async (req, res) => {
   return res.sendData(200, user.project(['name', 'email', 'bio', 'picture']))
 })
 
-router.patch('/self', sanitize, auth(true), upload.single('picture'), async (req, res) => {
+router.patch('/picture', sanitize, auth(true), upload.single('picture'), async (req, res) => {
   const user = await User.findById(req.user._id)
   if (!user)
     return res.sendError(401, 'User not found')
   try {
     const update = {
-      ...req.body,
       __tempPicture: req.file,
     }
     await user.update(update)
@@ -97,6 +96,19 @@ router.patch('/self', sanitize, auth(true), upload.single('picture'), async (req
   }
   if (user.picture)
     return res.sendData(200, { picture: user.picture })
+  return res.sendData(200)
+})
+
+router.patch('/self', sanitize, auth(true), async (req, res) => {
+  const user = await User.findById(req.user._id)
+  if (!user)
+    return res.sendError(401, 'User not found')
+  try {
+    await user.update(req.body)
+  }
+  catch (err) {
+    return res.sendError(500, 'Error', err.errors)
+  }
   return res.sendData(200)
 })
 
