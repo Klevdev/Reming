@@ -8,7 +8,7 @@
   --btn-disabled: #888;
   --bg: #FFF;
   --bg-back: #E7EAED;
-  --bg-input: #FFFFFF80;
+  --border-input: #FFFFFF80;
 }
 
 html.dark:root {
@@ -19,7 +19,7 @@ html.dark:root {
   --btn-disabled: #888;
   --bg: #35363A;
   --bg-back: #202124;
-  --bg-input: #35363A80;
+  --border-input: #35363A80;
 }
 
 /* * {
@@ -34,6 +34,7 @@ html.dark:root {
 
 .btn {
   color: #FFF;
+  max-width: 300px;
   background-color: var(--primary);
   transition: background .2s ease-in-out;
 }

@@ -47,9 +47,9 @@ const id = nanoid(5)
     @apply rounded;
     outline: none;
     padding: .25em;
-    width: 200px;
-    background: var(--bg-input);
-    border: 2px solid var(--bg);
+    width: 300px;
+    background: var(--bg-back);
+    border: 2px solid var(--border-input);
     transition: border .2s ease-in-out;
   }
 

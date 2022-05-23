@@ -32,39 +32,49 @@ const submitForm = async() => {
 
 <template>
   <main>
-    <form class="w-200px flex flex-col gap-0.5em" @submit.prevent="submitForm">
-      <Input v-model="formData.email" :props="inputProps.email" />
-      <Input v-model="formData.password" :props="inputProps.password" />
+    <section class="container">
+      <form class="w-200px flex flex-col gap-0.5em" @submit.prevent="submitForm">
+        <Input v-model="formData.email" :props="inputProps.email" />
+        <Input v-model="formData.password" :props="inputProps.password" />
 
-      <button class="btn">
-        {{ t('pages.login.btn-submit') }}
-      </button>
-      <div class="mt-1em">
-        <span>{{ t('pages.login.signup-text') }}
-          <br>
-          <router-link class="link" to="/signup">
-            {{ t('pages.login.signup-link') }}
-          </router-link>
-        </span>
-      </div>
-    </form>
+        <button class="btn">
+          {{ t('pages.login.btn-submit') }}
+        </button>
+        <div class="mt-1em">
+          <span>{{ t('pages.login.signup-text') }}
+            <br>
+            <router-link class="link" to="/signup">
+              {{ t('pages.login.signup-link') }}
+            </router-link>
+          </span>
+        </div>
+      </form>
+    </section>
   </main>
 </template>
 
 <style scoped>
-  form {
-    width: 300px;
-    margin: 0 auto;
-    text-align: center;
+.container {
+  @apply rounded;
+  width: max-content;
+  padding: .7em;
+  background: var(--bg);
+  margin: 0 auto;
+}
+form {
+  width: max-content;
+  text-align: center;
+}
+
+@media only screen and (min-width: 600px) {
+  .container {
+    margin: 0;
   }
 
-  @media only screen and (min-width: 600px) {
-    form {
-      width: 300px;
-      margin: 0;
-      text-align: left;
-    }
+  form {
+    text-align: left;
   }
+}
 </style>
 
 <route lang="yaml">

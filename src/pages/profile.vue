@@ -75,7 +75,7 @@ const toggleLocales = () => {
 
 <template>
   <main class="flex flex-col gap-1em">
-    <section>
+    <section class="container">
       <h2>{{ t('pages.profile.edit-info') }}</h2>
       <form class="flex flex-col gap-15px" @submit.prevent="editInfo">
         <Input v-model="userData.name" :props="inputProps.name" />
@@ -87,7 +87,7 @@ const toggleLocales = () => {
         </button>
       </form>
     </section>
-    <section>
+    <section class="container">
       <h2>{{ t('pages.profile.edit-picture') }}</h2>
       <form id="pictureForm" class="flex flex-col gap-15px" @submit.prevent="editPicture">
         <input name="picture" type="file">
@@ -96,7 +96,7 @@ const toggleLocales = () => {
         </button>
       </form>
     </section>
-    <section>
+    <section class="container">
       <h2>{{ t('pages.profile.settings') }}</h2>
       <div class="w-max flex flex-col gap-1em">
         <div class="flex gap-1em items-center">
@@ -113,9 +113,9 @@ const toggleLocales = () => {
         </div>
       </div>
     </section>
-    <section>
+    <section class="container">
       <h2>{{ t('pages.profile.actions') }}</h2>
-      <div class="w-max flex flex-col gap-1em">
+      <div class="w-max flex gap-1em">
         <button type="button" class="btn" @click="user.logout">
           {{ t('pages.profile.btn-logout') }}
         </button>
@@ -128,17 +128,21 @@ const toggleLocales = () => {
 </template>
 
 <style scoped>
-  section {
-    width: max-content;
-    margin: 0 auto;
-  }
+.container {
+  @apply rounded;
+  width: max-content;
+  padding: .7em;
+  background: var(--bg);
+}
+
 h2 {
   font-weight: bold;
   font-size: 1.2em;
   text-align: center;
+  margin-bottom: .5em;
 }
 form {
-  width: 300px;
+  align-items: center;
 }
 
 @media only screen and (min-width: 600px) {
@@ -146,7 +150,7 @@ form {
     text-align: left;
   }
   form {
-    width: 300px;
+    align-items: flex-start;
   }
   section {
     margin: 0;
