@@ -11,13 +11,16 @@ interface PopupPayload {
 
 export const useLayoutStore = defineStore('layout', () => {
   const sidebarCollapsed = ref(true)
-  const userPanelCollapsed = ref(true)
+  const userPanelShow = ref(false)
 
   function toggleSidebar() {
     sidebarCollapsed.value = !sidebarCollapsed.value
   }
-  function toggleUserPanel() {
-    userPanelCollapsed.value = !userPanelCollapsed.value
+  function toggleUserPanel(value = undefined) {
+    if (value === undefined)
+      userPanelShow.value = !userPanelShow.value
+    else
+      userPanelShow.value = value
   }
 
   function popup(payload: PopupPayload) {
@@ -26,7 +29,7 @@ export const useLayoutStore = defineStore('layout', () => {
 
   return {
     sidebarCollapsed,
-    userPanelCollapsed,
+    userPanelShow,
     toggleSidebar,
     toggleUserPanel,
     popup,

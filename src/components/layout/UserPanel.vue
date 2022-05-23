@@ -5,10 +5,12 @@ import { useUserStore } from '~/stores/user'
 
 const { t } = useI18n()
 const layoutStore = useLayoutStore()
-const { userPanelCollapsed } = storeToRefs(layoutStore)
+const { userPanelShow } = storeToRefs(layoutStore)
 const user = useUserStore()
 const { loggedIn: userLoggedIn, name: userName, picture: userPicture } = storeToRefs(user)
 
+const userPanelSwitch = ref(null)
+onClickOutside(userPanelSwitch, () => layoutStore.toggleUserPanel(false))
 </script>
 
 <template>
@@ -22,13 +24,13 @@ const { loggedIn: userLoggedIn, name: userName, picture: userPicture } = storeTo
       <div id="notifications">
         <div i="carbon-notification" />
       </div>
-      <div id="user" @click="layoutStore.toggleUserPanel">
+      <div id="user" ref="userPanelSwitch" @click="layoutStore.toggleUserPanel()">
         <img v-if="userPicture" id="userPicture" :src="`http://localhost:3001/${userPicture}`" alt="user picture">
         <div v-else class="text-2em" i="carbon-user-avatar-filled-alt" />
       </div>
     </div>
     <transition name="userDropdown">
-      <div v-show="userLoggedIn && userPanelCollapsed" id="userDropdown">
+      <div v-show="userLoggedIn && userPanelShow" id="userDropdown">
         <nav>
           <router-link class="menu-item" to="/profile">
             <div i-carbon-user />
@@ -64,6 +66,7 @@ const { loggedIn: userLoggedIn, name: userName, picture: userPicture } = storeTo
     z-index: 0;
     top: calc(60px + 1em);
     @apply rounded;
+    @apply drop-shadow-lg;
     position: absolute;
     right: 1em;
     background-color: var(--bg);
