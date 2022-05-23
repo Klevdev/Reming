@@ -27,6 +27,7 @@ onMounted(async() => {
   catch {
     user.loggedIn = false
     user.refresh({ accessToken: '', refreshToken: '' })
+    localStorage.removeItem('user')
   }
 })
 </script>

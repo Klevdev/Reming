@@ -48,7 +48,7 @@ router.get('/refresh', async (req, res) => {
     return res.sendError(401, 'Refresh token is invalid or expired')
   }
   const _user = await User.findById(token._id)
-  if (_user.refreshToken !== refreshToken)
+  if (!_user || _user.refreshToken !== refreshToken)
     return res.sendError(401, 'Refresh token is invalid or expired')
   await _user.setRefreshToken()
 
