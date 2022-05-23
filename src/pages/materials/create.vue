@@ -4,6 +4,8 @@ import request from '~/composables/request'
 const router = useRouter()
 const { t } = useI18n()
 
+const type = localStorage.getItem('currentMaterialType') || 'cardSet'
+
 const selectedUsers = ref([])
 
 const privacySettings = {
@@ -25,8 +27,23 @@ const privacySettings = {
   },
 }
 
+const inputProps = {
+  title: {
+    type: 'text',
+    required: true,
+    label: 'Название',
+    placeholder: 'Название',
+  },
+  description: {
+    type: 'textarea',
+    required: false,
+    label: 'Описание',
+    placeholder: 'Описание',
+  },
+}
+
 const materialInfo = ref({
-  type: 'glossary',
+  type,
   title: '',
   description: '',
   privacy: {
@@ -36,31 +53,7 @@ const materialInfo = ref({
   tags: [],
 })
 
-const newContentEntry = ref({
-  term: {
-    text: '',
-  },
-  def: {
-    text: '',
-  },
-})
-
 const content = ref({})
-let contentLastIdx = 0
-
-const addEntry = () => {
-  content.value[contentLastIdx] = {
-    term: newContentEntry.value.term,
-    def: newContentEntry.value.def,
-  }
-  contentLastIdx++
-  newContentEntry.value.term = {
-    text: '',
-  }
-  newContentEntry.value.def = {
-    text: '',
-  }
-}
 
 const cancel = () => {
   router.go(-1)
@@ -69,9 +62,7 @@ const cancel = () => {
 const submitForms = async() => {
   const formData = {
     ...materialInfo.value,
-    content: {
-      definitions: content.value,
-    },
+    content: content.value,
   }
 
   const { data, error } = await request.post('/materials', formData)
@@ -84,10 +75,10 @@ const submitForms = async() => {
 
 <template>
   <main>
-    <section class="max-w-45vw">
-      <form class="flex flex-col gap-1em max-w-300px" @submit.prevent="">
-        <input v-model="materialInfo.title" type="text">
-        <input v-model="materialInfo.description" type="text">
+    <section id="materialInfo" class="container">
+      <form class="flex flex-col gap-1em max-w-45vw" @submit.prevent="">
+        <Input v-model="materialInfo.title" :props="inputProps.title" />
+        <Input v-model="materialInfo.description" :props="inputProps.description" />
         <select v-model="materialInfo.privacy">
           <option :value="privacySettings.private">
             Private
@@ -98,39 +89,22 @@ const submitForms = async() => {
           <option :value="privacySettings.byLink">
             Anyone with the link
           </option>
-          <option :value="privacySettings.byUser">
+          <!-- <option :value="privacySettings.byUser">
             Only selected users
-          </option>
+          </option> -->
         </select>
       </form>
-      <div id="actions" class="pt-1em w-max">
-        <button class="btn" :disabled="Object.keys(content).length < 1" @click="submitForms">
-          {{ t('pages.create.btn-create') }}
-        </button>
-        <button class="btn" @click="cancel">
-          {{ t('pages.create.btn-cancel') }}
-        </button>
-      </div>
     </section>
-    <section class="max-w-45vw">
-      <h2>Material content</h2>
-      <form class="flex flex-col gap-1em max-w-300px" @submit.prevent="addEntry">
-        <input v-model="newContentEntry.term.text" type="text">
-        <input v-model="newContentEntry.def.text" type="text">
-        <button class="btn">
-          Add
-        </button>
-      </form>
-      <div id="addedContent" class="border w-max">
-        <div v-for="entry in content" :key="entry" class="border grid grid-cols-2 gap-1em">
-          <div class="w-max">
-            <span>{{ entry.term.text }}</span>
-          </div>
-          <div class="w-max">
-            <span>{{ entry.def.text }}</span>
-          </div>
-        </div>
-      </div>
+    <section id="actions" class="container pt-1em w-max flex gap-.5em">
+      <button class="btn" :disabled="Object.keys(content).length < 1" @click="submitForms">
+        {{ t('pages.create.btn-create') }}
+      </button>
+      <button class="btn" @click="cancel">
+        {{ t('pages.create.btn-cancel') }}
+      </button>
+    </section>
+    <section id="materialContent" class="container">
+      <glossary-editor v-if="type === 'glossary'" v-model="content" />
     </section>
   </main>
 </template>
@@ -138,9 +112,30 @@ const submitForms = async() => {
 <style scoped>
 main {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 2em;
-  margin-right: 1em;
+  grid-template-columns: 1fr;
+  row-gap: 1em;
+}
+
+.container {
+  @apply rounded;
+  width: 100%;
+  padding: .7em;
+  background: var(--bg);
+}
+
+@media only screen and (min-width: 600px) {
+  main {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 2em;
+    row-gap: 1em;
+    margin-right: 3em;
+  }
+
+  #actions {
+    grid-column: 1;
+    grid-row: 2;
+  }
 }
 
 </style>
@@ -148,5 +143,5 @@ main {
 <route lang="yaml">
 meta:
   name: create
-  template: default
+  layout: default
 </route>

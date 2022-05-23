@@ -6,6 +6,7 @@ import '@vue/runtime-core'
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     Bottombar: typeof import('./components/layout/Bottombar.vue')['default']
+    GlossaryEditor: typeof import('./components/editors/GlossaryEditor.vue')['default']
     Header: typeof import('./components/layout/Header.vue')['default']
     Input: typeof import('./components/inputs/Input.vue')['default']
     MaterialsContainer: typeof import('./components/MaterialsContainer.vue')['default']

@@ -18,6 +18,8 @@ const sectionsShown = ref({
 })
 
 const createMenuOpened = ref(false)
+const createMenu = ref(null)
+onClickOutside(createMenu, () => createMenuOpened.value = false)
 
 const goToEditor = (type) => {
   localStorage.setItem('currentMaterialType', type)
@@ -76,11 +78,11 @@ onMounted(async() => {
       <materials-container v-show="sectionsShown.shared" :materials="materials.shared" />
     </section>
     <div>
-      <button id="btnCreateNew" class="btn" @click="createMenuOpened = !createMenuOpened">
+      <button id="btnCreateNew" ref="createMenu" class="btn" @click="createMenuOpened = !createMenuOpened">
         {{ t('pages.my-materials.create_new') }}
       </button>
       <transition name="createMenu">
-        <div v-show="createMenuOpened" id="createMenu">
+        <div v-if="createMenuOpened" id="createMenu">
           <nav>
             <button class="menu-item" @click="goToEditor('glossary')">
               <div i-carbon-book />
