@@ -26,7 +26,7 @@ export const useUserStore = defineStore('user', () => {
 
     if (save) {
       localStorage.setItem('user', JSON.stringify({
-        id: _id.value,
+        _id: _id.value,
         name: name.value,
         picture: picture.value,
       }))
@@ -37,7 +37,7 @@ export const useUserStore = defineStore('user', () => {
 
     if (save) {
       localStorage.setItem('user', JSON.stringify({
-        id: _id.value,
+        _id: _id.value,
         name: name.value,
         picture: picture.value,
       }))
@@ -64,10 +64,10 @@ export const useUserStore = defineStore('user', () => {
   }
 
   const logout = () => {
-    request.delete('/user/logout', true).then(() => {
-      document.cookie = 'accessToken=;expires=Mon, 18 Dec 2003 12:00:00 UTC;'
-      document.cookie = 'refreshToken=;expires=Mon, 18 Dec 2003 12:00:00 UTC;'
-    })
+    request.delete('/user/logout', true)
+
+    document.cookie = 'accessToken=;expires=Mon, 18 Dec 2003 12:00:00 UTC;'
+    document.cookie = 'refreshToken=;expires=Mon, 18 Dec 2003 12:00:00 UTC;'
 
     _id.value = ''
     name.value = ''
@@ -80,6 +80,7 @@ export const useUserStore = defineStore('user', () => {
 
   return {
     loggedIn,
+    _id,
     name,
     picture,
     login,

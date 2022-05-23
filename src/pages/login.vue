@@ -51,12 +51,6 @@ const submitForm = async() => {
   </main>
 </template>
 
-<route lang="yaml">
-meta:
-  name: login
-  layout: default
-</route>
-
 <style scoped>
   form {
     width: 300px;
@@ -72,3 +66,9 @@ meta:
     }
   }
 </style>
+
+<route lang="yaml">
+meta:
+  name: login
+  layout: default
+</route>

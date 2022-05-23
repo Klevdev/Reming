@@ -127,12 +127,6 @@ const toggleLocales = () => {
   </main>
 </template>
 
-<route lang="yaml">
-meta:
-  name: profile
-  layout: default
-</route>
-
 <style scoped>
   section {
     width: max-content;
@@ -159,3 +153,9 @@ form {
   }
 }
 </style>
+
+<route lang="yaml">
+meta:
+  name: profile
+  layout: default
+</route>

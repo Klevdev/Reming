@@ -59,7 +59,7 @@ const { sidebarCollapsed } = storeToRefs(layoutStore)
   @media only screen and (min-width: 600px) {
     aside {
       display: block;
-      width: 250px;
+      width: 260px;
       background-color: var(--bg);
       height: 100%;
     }

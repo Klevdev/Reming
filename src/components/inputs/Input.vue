@@ -5,7 +5,6 @@ import { nanoid } from 'nanoId'
 const { modelValue, props } = defineProps({
   modelValue: String,
   props: Object,
-  inline: Boolean,
 })
 
 const id = nanoid(5)
@@ -30,6 +29,7 @@ const id = nanoid(5)
       :type="props?.type || 'text'"
       :value="modelValue"
       :name="props?.name"
+      :required="props?.required"
       :placeholder="props?.placeholder"
       @input="$emit('update:modelValue', $event.target.value)"
     >

@@ -2,7 +2,9 @@
 
 import request from '~/composables/request'
 import { dateToString } from '~/composables/date'
+import { useUserStore } from '~/stores/user'
 
+const userStore = useUserStore()
 const props = defineProps<{ id: string }>()
 const router = useRouter()
 const { t } = useI18n()
@@ -35,13 +37,13 @@ onMounted(async() => {
 
 <template>
   <main>
-    <section class="max-w-45vw">
-      <div class="flex flex-col gap-1em max-w-300px">
+    <section id="materialInfo" class="container">
+      <div class="flex flex-col gap-1em max-w-45vw">
         <h2>{{ materialInfo.title }}</h2>
         <div>{{ materialInfo.description }}</div>
         <dl>
           <dt>{{ t('pages.material-view.user') }}</dt>
-          <dd>{{ materialInfo.user.name }}</dd>
+          <dd>{{ materialInfo.user?.name }}</dd>
           <dt>{{ t('pages.material-view.created-at') }}</dt>
           <dd>{{ dateToString(materialInfo.createdAt) }}</dd>
           <dt>{{ t('pages.material-view.updated-at') }}</dt>
@@ -49,20 +51,20 @@ onMounted(async() => {
         </dl>
         <div>{{ materialInfo.tags }}</div>
       </div>
-      <div id="actions" class="pt-1em w-max">
-        <button class="btn">
-          {{ t('pages.material-view.save') }}
-        </button>
-        <button class="btn">
-          {{ t('pages.material-view.edit') }}
-        </button>
-        <button class="btn" @click="deleteMaterial">
-          {{ t('pages.material-view.delete') }}
-        </button>
-      </div>
     </section>
-    <section class="max-w-45vw">
-      <div id="materialContent" class="w-max">
+    <section id="actions" class="container pt-1em w-max flex gap-.5em">
+      <button class="btn">
+        {{ t('pages.material-view.save') }}
+      </button>
+      <button v-show="materialInfo.user?._id === userStore._id" class="btn">
+        {{ t('pages.material-view.edit') }}
+      </button>
+      <button v-show="materialInfo.user?._id === userStore._id" class="btn danger" @click="deleteMaterial">
+        {{ t('pages.material-view.delete') }}
+      </button>
+    </section>
+    <section id="materialContent" class="container">
+      <div class="container pt-1em w-max flex gap-.5em">
         <div v-for="entry in materialContent" :key="entry" class="grid grid-cols-2 gap-1em">
           <div class="w-max">
             <span>{{ entry.term.text }}</span>
@@ -79,9 +81,30 @@ onMounted(async() => {
 <style scoped>
 main {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 2em;
-  margin-right: 1em;
+  grid-template-columns: 1fr;
+  row-gap: 1em;
+}
+
+.container {
+  @apply rounded;
+  width: 100%;
+  padding: .7em;
+  background: var(--bg);
+}
+
+@media only screen and (min-width: 600px) {
+  main {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 2em;
+    row-gap: 1em;
+    margin-right: 3em;
+  }
+
+  #actions {
+    grid-column: 1;
+    grid-row: 2;
+  }
 }
 
 </style>
@@ -89,5 +112,5 @@ main {
 <route lang="yaml">
 meta:
   name: material-view
-  template: default
+  layout: default
 </route>

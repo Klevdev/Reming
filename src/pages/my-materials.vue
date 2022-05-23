@@ -1,5 +1,7 @@
 <script lang="ts" setup>
 import request from '~/composables/request'
+
+const router = useRouter()
 const { t } = useI18n()
 
 const materials = ref({
@@ -14,6 +16,13 @@ const sectionsShown = ref({
   saved: false,
   shared: false,
 })
+
+const createMenuOpened = ref(false)
+
+const goToEditor = (type) => {
+  localStorage.setItem('currentMaterialType', type)
+  router.push('/materials/create')
+}
 
 onMounted(async() => {
   const { data, error } = await request.get('/materials/personal')
@@ -66,22 +75,92 @@ onMounted(async() => {
       </div>
       <materials-container v-show="sectionsShown.shared" :materials="materials.shared" />
     </section>
-    <router-link id="btnCreateNew" to="/materials/create" class="btn">
-      {{ t('pages.my-materials.create_new') }}
-    </router-link>
+    <div>
+      <button id="btnCreateNew" class="btn" @click="createMenuOpened = !createMenuOpened">
+        {{ t('pages.my-materials.create_new') }}
+      </button>
+      <transition name="createMenu">
+        <div v-show="createMenuOpened" id="createMenu">
+          <nav>
+            <button class="menu-item" @click="goToEditor('glossary')">
+              <div i-carbon-book />
+              <span>{{ t('material.types.glossary') }}</span>
+            </button>
+            <button class="menu-item" @click="goToEditor('cardSet')">
+              <div i-carbon-collapse-all />
+              <span>{{ t('material.types.cardSet') }}</span>
+            </button>
+            <button class="menu-item" @click="goToEditor('questionBank')">
+              <div i-carbon-book />
+              <span>{{ t('material.types.questionBank') }}</span>
+            </button>
+            <button class="menu-item" @click="goToEditor('test')">
+              <div i-carbon-text-annotation-toggle />
+              <span>{{ t('material.types.test') }}</span>
+            </button>
+          </nav>
+        </div>
+      </transition>
+    </div>
   </main>
 </template>
 
-<style>
+<style scoped>
+  .createMenu-enter-active,
+  .createMenu-leave-active {
+    transition: opacity .2s ease-in-out;
+  }
+  .createMenu-enter-from,
+  .createMenu-leave-to {
+    opacity: 0;
+  }
+  .createMenu-enter-to,
+  .createMenu-leave-from {
+    opacity: 1;
+  }
+  #createMenu {
+    z-index: 0;
+    @apply rounded drop-shadow-lg;
+    position: absolute;
+    bottom: calc(60px + 4em);
+    right: 3em;
+    background-color: var(--bg);
+  }
+  .menu-item {
+    display: block;
+    height: 45px;
+    padding: .25em 1em;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 1em;
+    justify-content: start;
+  }
+  .menu-item:hover,
+  .menu-item:active {
+    cursor: pointer;
+    background-color: var(--primary);
+    transition: all .2s ease-in-out;
+  }
+  .menu-item:first-child {
+    border-radius: 0.25rem 0.25rem 0 0;
+  }
+  .menu-item:last-child {
+    border-radius: 0 0 0.25rem 0.25rem;
+  }
   #btnCreateNew {
     position: absolute;
     bottom: calc(1em + 60px);
-    right: 1em;
+    right: 3em;
   }
 
   @media only screen and (min-width: 600px) {
     #btnCreateNew {
       bottom: 1em;
+    }
+
+    #createMenu {
+      bottom: 60px;
     }
   }
 </style>

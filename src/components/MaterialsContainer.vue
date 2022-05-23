@@ -27,7 +27,7 @@ const { materials } = defineProps({
       <div class="flex justify-between">
         <span class="font-bold">{{ material.title }}</span>
         <div v-if="material.type === 'glossary'" i="carbon-book" :title="t(`material.types.${material.type}`)" />
-        <div v-if="material.type === 'cardSet'" i="mdi-cards-outline" :title="t(`material.types.${material.type}`)" />
+        <div v-if="material.type === 'cardSet'" i="carbon-collapse-all" :title="t(`material.types.${material.type}`)" />
         <div v-if="material.type === 'questionBank'" i="carbon-book" :title="t(`material.types.${material.type}`)" />
         <div v-if="material.type === 'test'" i="carbon-text-annotation-toggle" :title="t(`material.types.${material.type}`)" />
         <div v-if="material.type === 'article'" i="majesticons-article-line" :title="t(`material.types.${material.type}`)" />
