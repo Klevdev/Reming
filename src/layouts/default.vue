@@ -29,13 +29,13 @@ const { t } = useI18n()
     text-align: center;
   }
   .layout-wrapper-inner {
-      padding: 1em 1em calc(60px + 60px + 1em) 1em;
+      padding: 1em 1rem calc(60px + 60px + 1em) 1em;
       width: 100%;
       overflow-y: auto;
   }
   @media only screen and (min-width: 600px) {
     .layout-wrapper-inner {
-      padding-left: 3.7em;
+      padding-left: 3rem;
       padding-bottom: calc(60px + 1em);
     }
     .page-title {

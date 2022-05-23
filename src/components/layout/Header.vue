@@ -10,7 +10,11 @@ const layoutStore = useLayoutStore()
     <button class="w-60px h-60px icon-btn !outline-none" :title="t('layout.toggle_sidebar')" @click="layoutStore.toggleSidebar">
       <div class="mx-auto" i="carbon-menu" />
     </button>
-    <span id="logo" class="font-serif"><router-link to="/">Reming</router-link></span>
+    <div id="logo" class="font-serif">
+      <router-link to="/">
+        Reming
+      </router-link>
+    </div>
     <div class="ml-a">
       <UserPanel />
     </div>
@@ -19,7 +23,7 @@ const layoutStore = useLayoutStore()
 
 <style scoped>
   #logo {
-    margin-left: 3vw;
+    margin-left: 1rem;
     font-weight: bold;
     font-size: 1.7em;
   }
@@ -30,7 +34,6 @@ const layoutStore = useLayoutStore()
     display: flex;
     align-items: center;
     height: 60px;
-    gap: 3vw;
     background-color: var(--bg);
   }
 
@@ -40,13 +43,13 @@ const layoutStore = useLayoutStore()
 
   @media only screen and (min-width: 600px) {
     #logo {
-    margin-left: 0;
+      margin-left: 2.8rem;
     }
     header > button {
       display: block;
     }
     #userPanel {
-    padding-right: 2em;
+      padding-right: 2em;
       width: 300px;
     }
   }
