@@ -9,7 +9,7 @@
 <template>
   <footer>
     <nav>
-      <router-link class="menu-item" to="">
+      <router-link class="menu-item" to="/library">
         <div i-carbon-book />
       </router-link>
       <router-link class="menu-item" to="/my-materials">
