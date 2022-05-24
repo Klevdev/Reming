@@ -75,34 +75,36 @@ const submitForms = async() => {
 
 <template>
   <main>
-    <section id="materialInfo" class="container">
-      <form class="flex flex-col gap-1em max-w-45vw" @submit.prevent="">
-        <Input v-model="materialInfo.title" :props="inputProps.title" />
-        <Input v-model="materialInfo.description" :props="inputProps.description" />
-        <select v-model="materialInfo.privacy">
-          <option :value="privacySettings.private">
-            Private
-          </option>
-          <option :value="privacySettings.public">
-            Public
-          </option>
-          <option :value="privacySettings.byLink">
-            Anyone with the link
-          </option>
-          <!-- <option :value="privacySettings.byUser">
-            Only selected users
-          </option> -->
-        </select>
-      </form>
-    </section>
-    <section id="actions" class="container pt-1em w-max flex gap-.5em">
-      <button class="btn" :disabled="Object.keys(content).length < 1" @click="submitForms">
-        {{ t('pages.create.btn-create') }}
-      </button>
-      <button class="btn" @click="cancel">
-        {{ t('pages.create.btn-cancel') }}
-      </button>
-    </section>
+    <div class="flex flex-col gap-1em ">
+      <section id="materialInfo" class="container">
+        <form class="flex flex-col gap-1em max-w-45vw" @submit.prevent="">
+          <Input v-model="materialInfo.title" :props="inputProps.title" />
+          <Input v-model="materialInfo.description" :props="inputProps.description" />
+          <select v-model="materialInfo.privacy">
+            <option :value="privacySettings.private">
+              Private
+            </option>
+            <option :value="privacySettings.public">
+              Public
+            </option>
+            <option :value="privacySettings.byLink">
+              Anyone with the link
+            </option>
+            <!-- <option :value="privacySettings.byUser">
+              Only selected users
+            </option> -->
+          </select>
+        </form>
+      </section>
+      <section id="actions" class="container pt-1em w-max flex gap-.5em mb-1em">
+        <button class="btn" :disabled="Object.keys(content).length < 1" @click="submitForms">
+          {{ t('pages.create.btn-create') }}
+        </button>
+        <button class="btn" @click="cancel">
+          {{ t('pages.create.btn-cancel') }}
+        </button>
+      </section>
+    </div>
     <section id="materialContent" class="container">
       <glossary-editor v-if="type === 'glossary'" v-model="content" />
     </section>
@@ -111,9 +113,8 @@ const submitForms = async() => {
 
 <style scoped>
 main {
-  display: grid;
-  grid-template-columns: 1fr;
-  row-gap: 1em;
+  display: flex;
+  flex-direction: column;
 }
 
 .container {
@@ -125,11 +126,15 @@ main {
 
 @media only screen and (min-width: 600px) {
   main {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    column-gap: 2em;
-    row-gap: 1em;
-    margin-right: 3em;
+    flex-direction: row;
+  }
+
+  main > div {
+    margin-right: 2em;
+  }
+
+  #materialContent {
+    width: max-content;
   }
 
   #actions {

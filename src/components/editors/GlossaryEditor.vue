@@ -7,11 +7,11 @@ const { modelValue } = defineProps({
 const inputProps = {
   termText: {
     type: 'text',
-    label: 'Term',
+    label: 'Термин',
   },
   defText: {
     type: 'text',
-    label: 'Definition',
+    label: 'Определение',
   },
 }
 
@@ -28,22 +28,30 @@ const newEntry = ref({
   },
 })
 
-let glossaryLastIdx = 0
+const definitions = ref([])
 
 const addEntry = () => {
-  glossary.value.definitions[glossaryLastIdx] = {
+  definitions.value.push({
     term: newEntry.value.term,
     def: newEntry.value.def,
-  }
-  glossaryLastIdx++
-  newEntry.value.term = {
-    text: '',
-  }
-  newEntry.value.def = {
-    text: '',
-  }
+  })
+  glossary.value.definitions[definitions.value.length - 1] = newEntry.value
 
-  // emit('update:modelValue', glossary)
+  console.log(newEntry.value, definitions)
+
+  newEntry.value = {
+    term: {
+      text: '',
+    },
+    def: {
+      text: '',
+    },
+  }
+}
+
+const deleteEntry = (index) => {
+  definitions.value.splice(index, 1)
+  glossary.value.definitions = Object.assign({}, definitions.value)
 }
 
 </script>
@@ -53,17 +61,45 @@ const addEntry = () => {
     <Input v-model="newEntry.term.text" :props="inputProps.termText" />
     <Input v-model="newEntry.def.text" :props="inputProps.defText" />
     <button class="btn" :disabled="newEntry.term.text === '' || newEntry.def.text === ''">
-      Add
+      Добавить
     </button>
   </form>
-  <div id="addedContent" class="border w-max">
-    <div v-for="entry in glossary.definitions" :key="entry" class="border grid grid-cols-2 gap-1em">
-      <div class="w-max">
-        <span>{{ entry.term.text }}</span>
+  <h2 class="my-.5em w-max">
+    Определения:
+  </h2>
+  <div id="addedContent" class="flex flex-col gap-.5em">
+    <div v-for="(entry, index) in definitions" :key="index" class="entry flex w-100% justify-between gap-.25em pt-.5em">
+      <div>
+        {{ index }}
       </div>
-      <div class="w-max">
-        <span>{{ entry.def.text }}</span>
+      <div class="w-30%">
+        <div class="w-100% text-left text-ellipsis overflow-hidden" :title="entry.term.text">
+          {{ entry.term.text }}
+        </div>
       </div>
+      <div class="w-30%">
+        <div class="w-100% text-left text-ellipsis overflow-hidden" :title="entry.def.text">
+          {{ entry.def.text }}
+        </div>
+      </div>
+      <button i-carbon-close class="grid items-center" @click="deleteEntry(index)" />
     </div>
   </div>
 </template>
+
+<style scoped>
+  .entry:not(:first-child) {
+    border-top: 1px solid var(--bg-back)
+  }
+
+@media only screen and (min-width: 1250px) {
+  form {
+    flex-direction: row;
+    align-items: flex-end;
+  }
+  form > button {
+    height: max-content;
+    margin-bottom: 2px;
+  }
+}
+</style>

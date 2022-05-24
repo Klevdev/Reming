@@ -56,9 +56,9 @@ onMounted(async() => {
       <button class="btn">
         {{ t('pages.material-view.save') }}
       </button>
-      <button v-show="materialInfo.user?._id === userStore._id" class="btn">
+      <!-- <button v-show="materialInfo.user?._id === userStore._id" class="btn">
         {{ t('pages.material-view.edit') }}
-      </button>
+      </button> -->
       <button v-show="materialInfo.user?._id === userStore._id" class="btn danger" @click="deleteMaterial">
         {{ t('pages.material-view.delete') }}
       </button>
