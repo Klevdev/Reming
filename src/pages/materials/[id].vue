@@ -83,6 +83,9 @@ onMounted(async() => {
         </div>
       </section>
       <section id="actions" class="container pt-1em w-max flex gap-.5em mb-1em">
+        <router-link v-if="materialInfo.type === 'cardSet'" class="btn" :to="`/materials/study/${materialInfo._id}`">
+          {{ t('pages.material-view.study') }}
+        </router-link>
         <button v-if="!materialInfo.isSaved" class="btn" @click="save">
           {{ t('pages.material-view.save') }}
         </button>
