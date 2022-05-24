@@ -4,6 +4,13 @@ import request from '~/composables/request'
 const router = useRouter()
 const { t } = useI18n()
 
+useHead({
+  title: t('pages.create.title'),
+  meta: [
+    { name: 'description', content: '' },
+  ],
+})
+
 const type = localStorage.getItem('currentMaterialType') || 'cardSet'
 
 const selectedUsers = ref([])

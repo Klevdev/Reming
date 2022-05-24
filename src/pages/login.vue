@@ -3,6 +3,14 @@ import request from '~/composables/request'
 import { useUserStore } from '~/stores/user'
 
 const { t } = useI18n()
+
+useHead({
+  title: t('pages.login.title'),
+  meta: [
+    { name: 'description', content: '' },
+  ],
+})
+
 const user = useUserStore()
 const formData = ref({
   email: '',

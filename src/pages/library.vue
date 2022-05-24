@@ -4,6 +4,13 @@ import request from '~/composables/request'
 const router = useRouter()
 const { t } = useI18n()
 
+useHead({
+  title: t('pages.library.title'),
+  meta: [
+    { name: 'description', content: '' },
+  ],
+})
+
 const materials = ref([])
 
 onMounted(async() => {

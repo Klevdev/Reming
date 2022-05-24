@@ -7,6 +7,13 @@ import { useUserStore } from '~/stores/user'
 const router = useRouter()
 const { t, availableLocales, locale } = useI18n()
 
+useHead({
+  title: t('pages.profile.title'),
+  meta: [
+    { name: 'description', content: '' },
+  ],
+})
+
 const user = useUserStore()
 
 const userData = reactive({})

@@ -9,6 +9,13 @@ const props = defineProps<{ id: string }>()
 const router = useRouter()
 const { t } = useI18n()
 
+useHead({
+  title: t('pages.material-view.title'),
+  meta: [
+    { name: 'description', content: '' },
+  ],
+})
+
 const materialInfo = ref({})
 
 const materialContent = ref({})

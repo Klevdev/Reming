@@ -33,7 +33,7 @@ material:
     by-user: Accessible by selected users
 pages:
   index:
-    title: Main
+    title: Home
   login:
     title: Log in to account
     btn-submit: Log in
@@ -69,9 +69,12 @@ pages:
     user: Created by
     created-at: Created at
     updated-at: Last update
+    study: Study
     save: Save to my materials
     remove: Remove from saved materials
     edit: Edit
     delete: Delete
   library:
     title: Materials library
+  study:
+    title: Material study
