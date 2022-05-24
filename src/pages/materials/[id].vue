@@ -92,6 +92,7 @@ onMounted(async() => {
     </div>
     <section id="materialContent" class="container">
       <glossary-content v-if="materialInfo.type === 'glossary'" :content="materialContent" />
+      <card-set-content v-if="materialInfo.type === 'cardSet'" :content="materialContent" />
     </section>
   </main>
 </template>

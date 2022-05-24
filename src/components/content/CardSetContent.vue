@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 
-const { content: glossary } = defineProps({
+const { content: cardSet } = defineProps({
   content: Object,
 })
 </script>
@@ -8,9 +8,9 @@ const { content: glossary } = defineProps({
 <template>
   <div class="flex flex-col gap-.5em">
     <h2 class="font-bold">
-      Определения:
+      Карточки:
     </h2>
-    <div v-for="(entry, index) in glossary.definitions" :key="index" class="entry flex w-100% justify-between gap-.25em pt-.5em">
+    <div v-for="(entry, index) in cardSet.definitions" :key="index" class="entry flex w-100% justify-between gap-.25em pt-.5em">
       <div>
         {{ index }}
       </div>

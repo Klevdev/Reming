@@ -6,10 +6,8 @@ mongoose.connect(process.env.DB_URL)
 const glossarySchema = new mongoose.Schema({
   definitions: {
     type: {},
-    // of: mongoose.Schema.objectId,
     required: true,
   },
-  test: String,
   __v: {
     type: Number,
     select: false,

@@ -82,16 +82,16 @@ const submitForms = async() => {
           <Input v-model="materialInfo.description" :props="inputProps.description" />
           <select v-model="materialInfo.privacy">
             <option :value="privacySettings.private">
-              Private
+              {{ t('material.privacy.private') }}
             </option>
             <option :value="privacySettings.public">
-              Public
+              {{ t('material.privacy.public') }}
             </option>
             <option :value="privacySettings.byLink">
-              Anyone with the link
+              {{ t('material.privacy.by-link') }}
             </option>
             <!-- <option :value="privacySettings.byUser">
-              Only selected users
+              {{ t('material.privacy.by-user')}}
             </option> -->
           </select>
         </form>
@@ -107,6 +107,7 @@ const submitForms = async() => {
     </div>
     <section id="materialContent" class="container">
       <glossary-editor v-if="type === 'glossary'" v-model="content" />
+      <card-set-editor v-if="type === 'cardSet'" v-model="content" />
     </section>
   </main>
 </template>
@@ -129,6 +130,9 @@ main {
     flex-direction: row;
   }
 
+  form {
+    text-align: left;
+  }
   main > div {
     margin-right: 2em;
   }

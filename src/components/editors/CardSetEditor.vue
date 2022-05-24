@@ -26,6 +26,7 @@ const newEntry = ref({
   def: {
     text: '',
   },
+  reversible: false,
 })
 
 const definitions = ref([])
@@ -44,6 +45,7 @@ const addEntry = () => {
     def: {
       text: '',
     },
+    reversable: false,
   }
 }
 
@@ -58,12 +60,13 @@ const deleteEntry = (index) => {
   <form class="flex flex-col gap-1em max-w-300px" @submit.prevent="() => {addEntry(); $emit('update:modelValue', glossary)}">
     <Input v-model="newEntry.term.text" :props="inputProps.termText" />
     <Input v-model="newEntry.def.text" :props="inputProps.defText" />
+    <!-- <input v-model="newEntry.reversible" type="checkbox"> -->
     <button class="btn" :disabled="newEntry.term.text === '' || newEntry.def.text === ''">
       Добавить
     </button>
   </form>
   <h2 class="my-.5em w-max">
-    Определения:
+    Карточки:
   </h2>
   <div id="addedContent" class="flex flex-col gap-.5em">
     <div v-for="(entry, index) in definitions" :key="index" class="entry flex w-100% justify-between gap-.25em pt-.5em">

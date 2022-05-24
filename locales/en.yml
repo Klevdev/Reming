@@ -26,6 +26,11 @@ material:
     questionBank: Questions Bank
     test: Test
     article: Article
+  privacy:
+    public: Public
+    private: Private
+    by-link: Accessible by link
+    by-user: Accessible by selected users
 pages:
   index:
     title: Main

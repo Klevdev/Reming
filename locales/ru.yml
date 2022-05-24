@@ -24,6 +24,11 @@ material:
     questionBank: Банк вопросов
     test: Тест
     article: Статья
+  privacy:
+    public: Доступен в библиотеке
+    private: Личный
+    by-link: Доступ по ссылке
+    by-user: Доступ выбранным пользователям
 pages:
   index:
     title: Главная

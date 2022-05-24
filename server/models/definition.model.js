@@ -17,6 +17,9 @@ const definitionSchema = new mongoose.Schema({
     },
     attachment: mongoose.Schema.ObjectId,
   },
+  reversible: {
+    type: Boolean,
+  },
   __v: {
     type: Number,
     select: false,
