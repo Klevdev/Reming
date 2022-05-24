@@ -1,0 +1,43 @@
+<script lang="ts" setup>
+
+const { content: glossary } = defineProps({
+  content: Object,
+})
+</script>
+
+<template>
+  <div class="flex flex-col gap-.5em">
+    <div v-for="(entry, index) in glossary.definitions" :key="index" class="entry flex w-100% justify-between gap-.25em pt-.5em">
+      <div>
+        {{ index }}
+      </div>
+      <div class="w-30%">
+        <div class="w-100% text-left text-ellipsis overflow-hidden" :title="entry.term.text">
+          {{ entry.term.text }}
+        </div>
+      </div>
+      <div class="w-30%">
+        <div class="w-100% text-left text-ellipsis overflow-hidden" :title="entry.def.text">
+          {{ entry.def.text }}
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<style scoped>
+  .entry:not(:first-child) {
+    border-top: 1px solid var(--bg-back)
+  }
+
+@media only screen and (min-width: 1250px) {
+  form {
+    flex-direction: row;
+    align-items: flex-end;
+  }
+  form > button {
+    height: max-content;
+    margin-bottom: 2px;
+  }
+}
+</style>

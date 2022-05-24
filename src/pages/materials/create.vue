@@ -77,7 +77,7 @@ const submitForms = async() => {
   <main>
     <div class="flex flex-col gap-1em ">
       <section id="materialInfo" class="container">
-        <form class="flex flex-col gap-1em max-w-45vw" @submit.prevent="">
+        <form class="flex flex-col justify-center text-center gap-1em max-w-45vw" @submit.prevent="">
           <Input v-model="materialInfo.title" :props="inputProps.title" />
           <Input v-model="materialInfo.description" :props="inputProps.description" />
           <select v-model="materialInfo.privacy">
@@ -136,10 +136,11 @@ main {
   #materialContent {
     width: max-content;
   }
+}
 
-  #actions {
-    grid-column: 1;
-    grid-row: 2;
+@media only screen and (min-width: 1250px) {
+  #materialContent {
+    min-width: 762px;
   }
 }
 

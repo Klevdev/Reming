@@ -17,7 +17,7 @@ const getContent = async() => {
   const { data, error } = await request.get(`/materials/${props.id}/content`)
 
   if (!error)
-    materialContent.value = data.definitions
+    materialContent.value = data
 }
 const deleteMaterial = async() => {
   const { data, error } = await request.delete(`/materials/${props.id}`)
@@ -37,52 +37,52 @@ onMounted(async() => {
 
 <template>
   <main>
-    <section id="materialInfo" class="container">
-      <div class="flex flex-col gap-1em max-w-45vw">
-        <h2>{{ materialInfo.title }}</h2>
-        <div>{{ materialInfo.description }}</div>
-        <dl>
-          <dt>{{ t('pages.material-view.user') }}</dt>
-          <dd>{{ materialInfo.user?.name }}</dd>
-          <dt>{{ t('pages.material-view.created-at') }}</dt>
-          <dd>{{ dateToString(materialInfo.createdAt) }}</dd>
-          <dt>{{ t('pages.material-view.updated-at') }}</dt>
-          <dd>{{ dateToString(materialInfo.updatedAt) }}</dd>
-        </dl>
-        <div>{{ materialInfo.tags }}</div>
-      </div>
-    </section>
-    <section id="actions" class="container pt-1em w-max flex gap-.5em">
-      <button class="btn">
-        {{ t('pages.material-view.save') }}
-      </button>
-      <!-- <button v-show="materialInfo.user?._id === userStore._id" class="btn">
+    <div class="flex flex-col gap-1em min-w-40vw">
+      <section id="materialInfo" class="container">
+        <div class="flex flex-col gap-1em max-w-45vw">
+          <h2 class="font-bold text-1.2em">
+            {{ materialInfo.title }}
+          </h2>
+          <div>{{ materialInfo.description }}</div>
+          <dl>
+            <div class="flex flex-row gap-1em">
+              <dt>{{ t('pages.material-view.user') }}:</dt>
+              <dd>{{ materialInfo.user?.name }}</dd>
+            </div>
+            <div class="flex flex-row gap-1em">
+              <dt>{{ t('pages.material-view.created-at') }}:</dt>
+              <dd>{{ dateToString(materialInfo.createdAt) }}</dd>
+            </div>
+            <div class="flex flex-row gap-1em">
+              <dt>{{ t('pages.material-view.updated-at') }}:</dt>
+              <dd>{{ dateToString(materialInfo.updatedAt) }}</dd>
+            </div>
+          </dl>
+          <!-- <div>{{ materialInfo.tags }}</div> -->
+        </div>
+      </section>
+      <section id="actions" class="container pt-1em w-max flex gap-.5em mb-1em">
+        <button class="btn">
+          {{ t('pages.material-view.save') }}
+        </button>
+        <!-- <button v-show="materialInfo.user?._id === userStore._id" class="btn">
         {{ t('pages.material-view.edit') }}
       </button> -->
-      <button v-show="materialInfo.user?._id === userStore._id" class="btn danger" @click="deleteMaterial">
-        {{ t('pages.material-view.delete') }}
-      </button>
-    </section>
+        <button v-show="materialInfo.user?._id === userStore._id" class="btn danger" @click="deleteMaterial">
+          {{ t('pages.material-view.delete') }}
+        </button>
+      </section>
+    </div>
     <section id="materialContent" class="container">
-      <div class="container pt-1em w-max flex gap-.5em">
-        <div v-for="entry in materialContent" :key="entry" class="grid grid-cols-2 gap-1em">
-          <div class="w-max">
-            <span>{{ entry.term.text }}</span>
-          </div>
-          <div class="w-max">
-            <span>{{ entry.def.text }}</span>
-          </div>
-        </div>
-      </div>
+      <glossary-content v-if="materialInfo.type === 'glossary'" :content="materialContent" />
     </section>
   </main>
 </template>
 
 <style scoped>
 main {
-  display: grid;
-  grid-template-columns: 1fr;
-  row-gap: 1em;
+  display: flex;
+  flex-direction: column;
 }
 
 .container {
@@ -94,11 +94,15 @@ main {
 
 @media only screen and (min-width: 600px) {
   main {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    column-gap: 2em;
-    row-gap: 1em;
-    margin-right: 3em;
+    flex-direction: row;
+  }
+
+  main > div {
+    margin-right: 2em;
+  }
+
+  #materialContent {
+    width: max-content;
   }
 
   #actions {
