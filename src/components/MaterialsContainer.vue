@@ -24,7 +24,7 @@ const { materials } = defineProps({
   <div class="flex gap-1em flex-wrap">
     <div v-for="material in materials" :key="material._id" class="material">
       <!-- <div>{{ icons[material.type] }}</div> -->
-      <div class="flex justify-between items-center">
+      <div class="flex justify-between">
         <span class="font-bold">{{ material.title }}</span>
         <div v-if="material.type === 'glossary'" i="carbon-book" :title="t(`material.types.${material.type}`)" />
         <div v-if="material.type === 'cardSet'" i="carbon-collapse-all" :title="t(`material.types.${material.type}`)" />
@@ -40,12 +40,9 @@ const { materials } = defineProps({
       <button v-else class="btn">
         {{ t('material.save') }}
       </button> -->
-      <div class="flex flex-row justify-between items-center">
-        <router-link :to="`/materials/${material._id}`" class="btn w-max">
-          <div i="carbon-view" />
-        </router-link>
-        <div v-if="material.isSaved" i-carbon-checkmark />
-      </div>
+      <router-link :to="`/materials/${material._id}`" class="btn w-max">
+        <div i="carbon-view" />
+      </router-link>
     </div>
   </div>
 </template>
