@@ -6,9 +6,10 @@ const Material = require('../models/material.model')
 
 const router = express.Router()
 
-// router.get('/public', async (req, res) => {
-
-// })
+router.get('/public', auth(false), async (req, res) => {
+  const materials = await Material.getPublic(req.user?._id)
+  return res.sendData(200, materials)
+})
 
 // All materials that user created, saved or has access to
 router.get('/personal', auth(), async (req, res) => {

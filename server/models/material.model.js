@@ -182,6 +182,15 @@ materialSchema.methods.updateContent = async function(content) {
   await this.save()
 }
 
+materialSchema.statics.getPublic = async function(userId) {
+  const materials = await this.find({ 'privacy.public': true })
+
+  for (let i = 0; i < materials.length; i++)
+    materials[i] = await materials[i].short(userId)
+
+  return materials
+}
+
 materialSchema.statics.getPersonalMaterials = async function(userId) {
   const created = await this.find({ userId })
   const saved = await User.findById(userId).then(async user => await user.getSavedMaterials())

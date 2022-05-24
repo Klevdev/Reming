@@ -68,3 +68,5 @@ pages:
     remove: Remove from saved materials
     edit: Edit
     delete: Delete
+  library:
+    title: Materials library
