@@ -26,6 +26,20 @@ const deleteMaterial = async() => {
     router.push('/my-materials')
 }
 
+const save = async() => {
+  const { data, error } = await request.patch('/user/saved-materials', { materialId: materialInfo.value._id })
+
+  if (!error)
+    materialInfo.value.isSaved = true
+}
+
+const remove = async() => {
+  const { data, error } = await request.delete(`/user/saved-materials?materialId=${materialInfo.value._id}`)
+
+  if (!error)
+    materialInfo.value.isSaved = false
+}
+
 onMounted(async() => {
   const { data, error } = await request.get(`/materials/${props.id}`)
 
@@ -62,8 +76,11 @@ onMounted(async() => {
         </div>
       </section>
       <section id="actions" class="container pt-1em w-max flex gap-.5em mb-1em">
-        <button class="btn">
+        <button v-if="!materialInfo.isSaved" class="btn" @click="save">
           {{ t('pages.material-view.save') }}
+        </button>
+        <button v-else class="btn" :disabled="materialInfo.user?._id === userStore._id" @click="remove">
+          {{ t('pages.material-view.remove') }}
         </button>
         <!-- <button v-show="materialInfo.user?._id === userStore._id" class="btn">
         {{ t('pages.material-view.edit') }}

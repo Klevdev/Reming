@@ -29,15 +29,4 @@ const { content: glossary } = defineProps({
   .entry:not(:first-child) {
     border-top: 1px solid var(--bg-back)
   }
-
-@media only screen and (min-width: 1250px) {
-  form {
-    flex-direction: row;
-    align-items: flex-end;
-  }
-  form > button {
-    height: max-content;
-    margin-bottom: 2px;
-  }
-}
 </style>

@@ -65,5 +65,6 @@ pages:
     created-at: Created at
     updated-at: Last update
     save: Save to my materials
+    remove: Remove from saved materials
     edit: Edit
     delete: Delete
