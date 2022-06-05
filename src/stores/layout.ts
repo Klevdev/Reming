@@ -27,12 +27,30 @@ export const useLayoutStore = defineStore('layout', () => {
     alert(payload.message)
   }
 
+  const confirm = {
+    shown: ref(false),
+    message: ref(''),
+    open: (message: string, confirmedCallback, declinedCallback = null) => {
+      confirm.shown.value = true
+      confirm.message.value = message
+      confirm.confirmedCallback = confirmedCallback
+      confirm.declinedCallback = declinedCallback
+    },
+    close: () => {
+      confirm.shown.value = false
+      confirm.message.value = ''
+    },
+    confirmedCallback: ref(() => {}),
+    declinedCallback: ref(() => {}),
+  }
+
   return {
     sidebarCollapsed,
     userPanelShow,
     toggleSidebar,
     toggleUserPanel,
     popup,
+    confirm,
   }
 })
 

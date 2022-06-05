@@ -2,10 +2,12 @@
 
 import request from '~/composables/request'
 import { isDark, toggleDark } from '~/composables'
+import { useLayoutStore } from '~/stores/layout'
 import { useUserStore } from '~/stores/user'
 
 const router = useRouter()
 const { t, availableLocales, locale } = useI18n()
+const layoutStore = useLayoutStore()
 
 useHead({
   title: t('pages.profile.title'),
@@ -66,8 +68,8 @@ const editPicture = async() => {
     user.setPicture(data.picture)
 }
 
-const deleteUser = async() => {
-  await request.delete('/user/self')
+const deleteUser = () => {
+  request.delete('/user/self')
   user.logout()
   router.push('/')
 }
@@ -126,7 +128,7 @@ const toggleLocales = () => {
         <button type="button" class="btn" @click="user.logout">
           {{ t('pages.profile.btn-logout') }}
         </button>
-        <button type="button" class="btn danger" @click="deleteUser">
+        <button type="button" class="btn danger" @click="layoutStore.confirm.open('Вы уверены что хотите удалить свой профиль? Это действие нельзя отменить', deleteUser)">
           {{ t('pages.profile.btn-delete') }}
         </button>
       </div>

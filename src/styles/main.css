@@ -36,7 +36,7 @@ html.dark:root {
   color: #FFF;
   max-width: 300px;
   background-color: var(--primary);
-  transition: background .2s ease-in-out;
+  transition: background .2s ease-in-out, border .2s ease-in-out;
 }
 
 .btn:hover,
@@ -55,6 +55,17 @@ html.dark:root {
 .btn.danger:hover,
 .btn.danger:active {
   background-color: var(--danger-active);
+}
+
+.btn.secondary {
+  background-color: #00000000;
+  border: 2px var(--primary) solid;
+}
+
+.btn.secondary:hover,
+.btn.secondary:active {
+  background-color: none;
+  border: 2px var(--primary-active) solid;
 }
 
 .link {

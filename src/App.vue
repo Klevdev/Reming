@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import request from '~/composables/request'
+import { useLayoutStore } from '~/stores/layout'
 import { useUserStore } from '~/stores/user'
+const layoutStore = useLayoutStore()
 
 // https://github.com/vueuse/head
 // you can use this to manipulate the document head in any components,
@@ -34,4 +36,6 @@ onMounted(async() => {
 
 <template>
   <RouterView />
+
+  <Confirm v-if="layoutStore.confirm.shown" />
 </template>
