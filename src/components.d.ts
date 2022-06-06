@@ -21,6 +21,7 @@ declare module '@vue/runtime-core' {
     'InputModal copy': typeof import('./components/modals/InputModal copy.vue')['default']
     MaterialsContainer: typeof import('./components/MaterialsContainer.vue')['default']
     Modal: typeof import('./components/modals/Modal.vue')['default']
+    Popup: typeof import('./components/modals/Popup.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Sidebar: typeof import('./components/layout/Sidebar.vue')['default']

@@ -28,7 +28,7 @@ interface Response {
 
 function _handleErrors(status: Number, resError: Error) {
   const layout = useLayoutStore()
-  layout.popup({
+  layout.popup.show({
     type: 'error',
     message: resError.message,
   })

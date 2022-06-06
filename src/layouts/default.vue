@@ -1,9 +1,12 @@
 <script lang="ts" setup>
+import { useLayoutStore } from '~/stores/layout'
+const layoutStore = useLayoutStore()
 const { t } = useI18n()
 </script>
 
 <template>
   <Header />
+  <Popup v-if="layoutStore.popup.shown" />
   <div class="layout-wrapper-outer h100%">
     <Sidebar />
     <div class="layout-wrapper-inner">

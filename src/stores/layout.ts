@@ -23,8 +23,33 @@ export const useLayoutStore = defineStore('layout', () => {
       userPanelShow.value = value
   }
 
-  function popup(payload: PopupPayload) {
-    alert(payload.message)
+  const popup = {
+    shown: ref(false),
+    message: ref(''),
+    type: ref(''),
+    action: ref({}),
+    closeTO: null,
+    show: (payload: PopupPayload) => {
+      if (popup.shown)
+        popup.close()
+      if (popup.closeTO) {
+        clearTimeout(popup.closeTO)
+        popup.close()
+      }
+      popup.closeTO = null
+      popup.shown.value = true
+      popup.message.value = payload.message
+      popup.type.value = payload.type
+      popup.action.value = payload.action
+    },
+    close: () => {
+      if (popup.closeTO)
+        clearTimeout(popup.closeTO)
+      popup.shown.value = false
+      popup.message.value = ''
+      popup.type.value = ''
+      popup.action.value = {}
+    },
   }
 
   const confirm = {

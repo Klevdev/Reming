@@ -43,7 +43,7 @@ onMounted(() => {
       </div>
       <input v-model="layoutStore.inputModal.inputValue.value" type="text">
       <div class="flex gap-1em">
-        <button class="btn" :disabled="layoutStore.inputModal.inputValue.value.length < 1" @click="close()">
+        <button class="btn" :disabled="layoutStore.inputModal.inputValue.value?.length < 1" @click="close()">
           Подтвердить
         </button>
         <button class="btn secondary" @click="close(true)">
