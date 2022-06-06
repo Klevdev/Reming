@@ -5,6 +5,8 @@ import '@vue/runtime-core'
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    Assets: typeof import('./components/modals/Assets.vue')['default']
+    AssetsMenu: typeof import('./components/modals/AssetsMenu.vue')['default']
     Bottombar: typeof import('./components/layout/Bottombar.vue')['default']
     CardSetContent: typeof import('./components/content/CardSetContent.vue')['default']
     CardSetEditor: typeof import('./components/editors/CardSetEditor.vue')['default']

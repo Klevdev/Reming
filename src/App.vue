@@ -38,4 +38,5 @@ onMounted(async() => {
   <RouterView />
 
   <Confirm v-if="layoutStore.confirm.shown" />
+  <AssetsMenu v-if="layoutStore.assetsMenu.shown" />
 </template>

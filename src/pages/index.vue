@@ -11,24 +11,18 @@ useHead({
   ],
 })
 
-const message = ref('')
-
-const sayHi = () => {
-  message.value = 'Hi'
-}
-
-const sayBye = () => {
-  message.value = 'Bye'
-}
+const asset = reactive({
+  title: '',
+})
 
 </script>
 
 <template>
   <main>
-    <button @click="layoutStore.confirm.open('Test', sayHi, sayBye)">
-      show
+    <button @click="layoutStore.assetsMenu.open(asset)">
+      assetsMenu
     </button>
-    <div>{{ message }}</div>
+    <div>{{ asset }}</div>
   </main>
 </template>
 

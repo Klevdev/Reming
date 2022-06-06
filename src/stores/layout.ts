@@ -46,6 +46,19 @@ export const useLayoutStore = defineStore('layout', () => {
     declinedCallback: ref(() => {}),
   }
 
+  const assetsMenu = {
+    shown: ref(false),
+    open: (assetRef) => {
+      assetsMenu.shown.value = true
+      assetsMenu.assetRef = assetRef
+      console.log(assetsMenu.assetRef)
+    },
+    close: () => {
+      assetsMenu.shown.value = false
+      confirm.message.value = ''
+    },
+    assetRef: ref(null),
+  }
   return {
     sidebarCollapsed,
     userPanelShow,
@@ -53,6 +66,7 @@ export const useLayoutStore = defineStore('layout', () => {
     toggleUserPanel,
     popup,
     confirm,
+    assetsMenu,
   }
 })
 

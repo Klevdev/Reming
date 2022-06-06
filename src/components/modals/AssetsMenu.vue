@@ -6,11 +6,7 @@ const layoutStore = useLayoutStore()
 const bgTransparent = ref(true)
 const modalTransparent = ref(true)
 
-const close = (confirmed = false) => {
-  if (confirmed)
-    layoutStore.confirm.confirmedCallback()
-  else
-    layoutStore.confirm.declinedCallback()
+const close = () => {
   modalTransparent.value = true
   setTimeout(() => {
     bgTransparent.value = true
@@ -19,8 +15,8 @@ const close = (confirmed = false) => {
     layoutStore.confirm.close()
   }, 400)
 }
-const confirmModal = ref(null)
-onClickOutside(confirmModal, () => close())
+const assetsMenuModal = ref(null)
+onClickOutside(assetsMenuModal, () => close())
 
 onMounted(() => {
   setTimeout(() => {
@@ -31,26 +27,36 @@ onMounted(() => {
   }, 200)
 })
 
+const list = [
+  { title: 'One' },
+  { title: 'Two' },
+  { title: 'Three' },
+]
+
 </script>
 
 <template>
   <div class="modal-container" :class=" {'transparent': bgTransparent}">
-    <div ref="confirmModal" class="modal" :class=" {'transparent': modalTransparent}">
+    <div ref="assetsMenuModal" class="modal" :class=" {'transparent': modalTransparent}">
       <div class="flex justify-between items-center">
         <h3 class="font-bold">
-          Подтверждение
+          Мои вложения
         </h3>
         <button class="icon-btn" i="carbon-close" @click="close()" />
       </div>
-      <div>{{ layoutStore.confirm.message }}</div>
-      <div class="flex gap-1em">
+      <div>
+        <div v-for="el in list" :key="el" @click="layoutStore.assetsMenu.assetRef.value = el">
+          {{ el.title }}
+        </div>
+      </div>
+      <!-- <div class="flex gap-1em">
         <button class="btn" @click="close(true)">
           Подвердить
         </button>
         <button class="btn secondary" @click="close(false)">
           Отмена
         </button>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
