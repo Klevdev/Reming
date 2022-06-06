@@ -8,6 +8,7 @@ declare module '@vue/runtime-core' {
     Assets: typeof import('./components/modals/Assets.vue')['default']
     AssetsMenu: typeof import('./components/modals/AssetsMenu.vue')['default']
     AssetUpload: typeof import('./components/modals/AssetUpload.vue')['default']
+    AssetView: typeof import('./components/modals/AssetView.vue')['default']
     Bottombar: typeof import('./components/layout/Bottombar.vue')['default']
     CardSetContent: typeof import('./components/content/CardSetContent.vue')['default']
     CardSetEditor: typeof import('./components/editors/CardSetEditor.vue')['default']

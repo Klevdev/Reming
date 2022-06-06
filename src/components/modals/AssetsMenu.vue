@@ -17,7 +17,7 @@ const close = () => {
   }, 400)
 }
 const assetsMenuModal = ref(null)
-onClickOutside(assetsMenuModal, () => close())
+// onClickOutside(assetsMenuModal, () => close())
 
 onMounted(() => {
   setTimeout(() => {
@@ -28,9 +28,26 @@ onMounted(() => {
   }, 200)
 })
 
+const selectedAsset = ref({})
+
+const selectAsset = (asset) => {
+  selectedAsset.value = asset
+  layoutStore.assetsMenu.assetRef.value = asset
+}
+
 const upload = () => {
   layoutStore.assetUpload.open()
   close()
+}
+
+const deleteAsset = (assetId, assetTitle) => {
+  layoutStore.confirm.open(`Подтвердите что хотите удалить вложение "${assetTitle}"`, async() => {
+    const { data, error } = await request.delete(`/user/assets?assetId=${assetId}`)
+  })
+}
+
+const viewAsset = (assetId) => {
+  layoutStore.assetView.open(assetId)
 }
 
 const assets = ref([])
@@ -56,31 +73,26 @@ onMounted(async() => {
         <button class="icon-btn" i="carbon-close" @click="close()" />
       </div>
       <div class="flex gap-1em flex-wrap">
-        <div v-for="asset in assets" :key="asset._id" class="asset" @click="layoutStore.assetsMenu.assetRef.value = asset">
+        <div v-for="asset in assets" :key="asset._id" class="asset" :class="{'selected' : selectedAsset._id === asset._id}" @click="selectAsset(asset)">
+          <div class="asset-actions">
+            <button class="btn danger" i="carbon-trash-can" title="Удалить" @click="deleteAsset(asset._id, asset.title)" />
+            <button class="btn" i="carbon-view" title="Просмотреть" @click="viewAsset(asset._id)" />
+          </div>
           <img :src="`http://localhost:3001/${asset.file}`" alt="Вложение">
           {{ asset.title }}
         </div>
         <div class="asset" @click="upload">
           <div i="carbon-add" class="text-2em" title="Загрузить" />
-        <!-- <div class="text-.8em">
-          Загрузить
-        </div> -->
         </div>
       </div>
-      <!-- <div class="flex gap-1em">
-        <button class="btn" @click="close(true)">
-          Подвердить
-        </button>
-        <button class="btn secondary" @click="close(false)">
-          Отмена
-        </button>
-      </div> -->
     </div>
   </div>
 </template>
 
 <style scoped>
   .modal-container {
+    padding: 60px 0;
+    overflow-y: scroll;
     position: absolute;
     width: 100%;
     height: 100%;
@@ -102,7 +114,7 @@ onMounted(async() => {
   .modal {
     @apply rounded;
     width: max-content;
-    max-width: 690px;
+    max-width: 360px;
     height: max-content;
     padding: 1em;
     background-color: var(--bg);
@@ -116,6 +128,7 @@ onMounted(async() => {
 
   .asset {
     @apply rounded;
+    position: relative;
     width: 150px;
     height: 150px;
     display: flex;
@@ -127,9 +140,42 @@ onMounted(async() => {
   }
 
   .asset:hover,
-  .asset:active {
+  .asset:active,
+  .asset.selected {
     cursor: pointer;
     border: 2px solid var(--primary-active);
+  }
+
+  .asset-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    background-color: #00000055;
+    width: 100%;
+    padding: 10px 0;
+    position: absolute;
+    top: 0;
+  }
+
+  @media only screen and (min-width: 600px) {
+    .modal {
+      max-width: 520px;
+    }
+  }
+  @media only screen and (min-width: 1200px) {
+    .modal {
+      max-width: 690px;
+    }
+    .asset-actions {
+      opacity: 0;
+    padding: 5px 0;
+      display: none;
+      transition: opacity 2s ease-in-out;
+    }
+    .asset:hover > .asset-actions {
+      opacity: 1;
+      display: flex;
+    }
   }
 
   .asset > img {

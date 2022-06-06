@@ -84,6 +84,18 @@ export const useLayoutStore = defineStore('layout', () => {
       assetUpload.shown.value = false
     },
   }
+  const assetView = {
+    shown: ref(false),
+    assetId: ref(''),
+    open: (assetId) => {
+      assetView.assetId.value = assetId
+      assetView.shown.value = true
+    },
+    close: () => {
+      assetView.assetId.value = ''
+      assetView.shown.value = false
+    },
+  }
 
   return {
     sidebarCollapsed,
@@ -95,6 +107,7 @@ export const useLayoutStore = defineStore('layout', () => {
     assetsMenu,
     inputModal,
     assetUpload,
+    assetView,
   }
 })
 

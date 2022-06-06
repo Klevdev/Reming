@@ -5,6 +5,7 @@ const sanitize = require('../middleware/sanitizeRequest')
 const auth = require('../middleware/auth')
 const User = require('../models/user.model')
 const { deleteFile } = require('../utils/files')
+const Asset = require('../models/asset.model')
 
 const upload = multer({ dest: './server/temp' })
 const router = express.Router()
@@ -195,6 +196,21 @@ router.get('/assets', auth(true), async (req, res) => {
   try {
     const assets = await user.getAssets()
     return res.sendData(200, assets)
+  }
+  catch (err) {
+    return res.sendError(500, err.message, err.errors)
+  }
+})
+
+router.get('/assets/:assetId', auth(true), async (req, res) => {
+  const user = await User.findById(req.user._id)
+  if (!user)
+    return res.sendError(401, 'User not found')
+  try {
+    const asset = await Asset.findById(req.params.assetId)
+    if (!asset)
+      return res.sendError(404, 'Asset not found')
+    return res.sendData(200, asset)
   }
   catch (err) {
     return res.sendError(500, err.message, err.errors)

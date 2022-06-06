@@ -1,63 +1,62 @@
 <script lang="ts" setup>
+import request from '~/composables/request'
 import { useLayoutStore } from '~/stores/layout'
 const { t } = useI18n()
 const layoutStore = useLayoutStore()
 
-const confirmBgTransparent = ref(true)
-const confirmModalTransparent = ref(true)
+const assetViewBgTransparent = ref(true)
+const assetViewModalTransparent = ref(true)
 
-const close = (confirmed = false) => {
-  if (confirmed)
-    layoutStore.confirm.confirmedCallback()
-  else
-    layoutStore.confirm.declinedCallback()
-  confirmModalTransparent.value = true
+const close = () => {
+  assetViewModalTransparent.value = true
   setTimeout(() => {
-    confirmBgTransparent.value = true
+    assetViewBgTransparent.value = true
   }, 200)
   setTimeout(() => {
-    layoutStore.confirm.close()
+    layoutStore.assetView.close()
   }, 400)
 }
-const confirmModal = ref(null)
-onClickOutside(confirmModal, () => close())
+const assetViewModal = ref(null)
+onClickOutside(assetViewModal, () => close())
 
 onMounted(() => {
   setTimeout(() => {
-    confirmBgTransparent.value = false
+    assetViewBgTransparent.value = false
   }, 1)
   setTimeout(() => {
-    confirmModalTransparent.value = false
+    assetViewModalTransparent.value = false
   }, 200)
+})
+
+const asset = ref({})
+
+onMounted(async() => {
+  const { data, error } = await request.get(`/user/assets/${layoutStore.assetView.assetId}`)
+
+  if (error)
+    close()
+  else
+    asset.value = data
 })
 
 </script>
 
 <template>
-  <div class="modal-container" :class=" {'transparent': confirmBgTransparent}">
-    <div ref="confirmModal" class="modal" :class=" {'transparent': confirmModalTransparent}">
+  <div class="modal-container" :class=" {'transparent': assetViewBgTransparent}">
+    <div ref="assetViewModal" class="modal" :class=" {'transparent': assetViewModalTransparent}">
       <div class="flex justify-between items-center">
         <h3 class="font-bold">
-          Подтверждение
+          {{ asset.title }}
         </h3>
         <button class="icon-btn" i="carbon-close" @click="close()" />
       </div>
-      <div>{{ layoutStore.confirm.message }}</div>
-      <div class="flex gap-1em">
-        <button class="btn" @click="close(true)">
-          Подтвердить
-        </button>
-        <button class="btn secondary" @click="close(false)">
-          Отмена
-        </button>
-      </div>
+      <img :src="`http://localhost:3001/${asset.file}`" alt="Вложение">
     </div>
   </div>
 </template>
 
 <style scoped>
   .modal-container {
-    z-index: 9000;
     position: absolute;
     width: 100%;
     height: 100%;
@@ -78,7 +77,8 @@ onMounted(() => {
 
   .modal {
     @apply rounded;
-    width: 300px;
+    width: max-content;
+    max-width: 690px;
     height: max-content;
     padding: 1em;
     background-color: var(--bg);
@@ -89,4 +89,5 @@ onMounted(() => {
     opacity: 1;
     transition: opacity .2s ease-in-out;
   }
+
 </style>
