@@ -4,6 +4,7 @@ const multer = require('multer')
 const sanitize = require('../middleware/sanitizeRequest')
 const auth = require('../middleware/auth')
 const User = require('../models/user.model')
+const Asset = require('../models/asset.model')
 const { deleteFile } = require('../utils/files')
 
 const upload = multer({ dest: './server/temp' })
@@ -157,6 +158,51 @@ router.get('/saved-materials', auth(true), async (req, res) => {
 })
 
 router.delete('/saved-materials', sanitize, auth(true), async (req, res) => {
+  const user = await User.findById(req.user._id)
+  if (!user)
+    return res.sendError(401, 'User not found')
+  try {
+    await user.removeFromSavedMaterials(req.query.materialId)
+    return res.sendData(200)
+  }
+  catch (err) {
+    return res.sendError(500, err.message, err.errors)
+  }
+})
+
+router.patch('/assets', auth(true), upload.single('file'), async (req, res) => {
+  const user = await User.findById(req.user._id)
+  if (!user)
+    return res.sendError(401, 'User not found')
+  try {
+    const object = {
+      ...req.body,
+      __tempFile: req.file,
+    }
+    await Asset.create(object)
+  }
+  catch (err) {
+    if (req.file)
+      deleteFile(req.file.path)
+    return res.sendError(500, 'Error', err.errors)
+  }
+  return res.sendData(200)
+})
+
+router.get('/assets', auth(true), async (req, res) => {
+  const user = await User.findById(req.user._id)
+  if (!user)
+    return res.sendError(401, 'User not found')
+  try {
+    const favorites = await user.getSavedMaterials()
+    return res.sendData(200, favorites)
+  }
+  catch (err) {
+    return res.sendError(500, err.message, err.errors)
+  }
+})
+
+router.delete('/assets', sanitize, auth(true), async (req, res) => {
   const user = await User.findById(req.user._id)
   if (!user)
     return res.sendError(401, 'User not found')
