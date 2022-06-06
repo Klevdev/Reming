@@ -12,7 +12,7 @@ const close = () => {
     bgTransparent.value = true
   }, 200)
   setTimeout(() => {
-    layoutStore.confirm.close()
+    layoutStore.assetsMenu.close()
   }, 400)
 }
 const assetsMenuModal = ref(null)

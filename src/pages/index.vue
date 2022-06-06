@@ -11,9 +11,7 @@ useHead({
   ],
 })
 
-const asset = reactive({
-  title: '',
-})
+const asset = ref({})
 
 </script>
 

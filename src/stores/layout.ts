@@ -51,13 +51,12 @@ export const useLayoutStore = defineStore('layout', () => {
     open: (assetRef) => {
       assetsMenu.shown.value = true
       assetsMenu.assetRef = assetRef
-      console.log(assetsMenu.assetRef)
     },
     close: () => {
       assetsMenu.shown.value = false
-      confirm.message.value = ''
+      assetsMenu.assetRef = null
     },
-    assetRef: ref(null),
+    assetRef: null,
   }
   return {
     sidebarCollapsed,
