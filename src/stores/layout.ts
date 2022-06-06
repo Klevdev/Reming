@@ -46,19 +46,6 @@ export const useLayoutStore = defineStore('layout', () => {
     declinedCallback: ref(() => {}),
   }
 
-  const assetsMenu = {
-    shown: ref(false),
-    open: (assetRef) => {
-      assetsMenu.shown.value = true
-      assetsMenu.assetRef = assetRef
-    },
-    close: () => {
-      assetsMenu.shown.value = false
-      assetsMenu.assetRef = null
-    },
-    assetRef: null,
-  }
-
   const inputModal = {
     shown: ref(false),
     message: ref(''),
@@ -75,6 +62,29 @@ export const useLayoutStore = defineStore('layout', () => {
     inputValue: null,
   }
 
+  const assetsMenu = {
+    shown: ref(false),
+    open: (assetRef) => {
+      assetsMenu.shown.value = true
+      assetsMenu.assetRef = assetRef
+    },
+    close: () => {
+      assetsMenu.shown.value = false
+      assetsMenu.assetRef = null
+    },
+    assetRef: null,
+  }
+
+  const assetUpload = {
+    shown: ref(false),
+    open: () => {
+      assetUpload.shown.value = true
+    },
+    close: () => {
+      assetUpload.shown.value = false
+    },
+  }
+
   return {
     sidebarCollapsed,
     userPanelShow,
@@ -84,6 +94,7 @@ export const useLayoutStore = defineStore('layout', () => {
     confirm,
     assetsMenu,
     inputModal,
+    assetUpload,
   }
 })
 

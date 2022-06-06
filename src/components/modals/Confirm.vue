@@ -3,17 +3,17 @@ import { useLayoutStore } from '~/stores/layout'
 const { t } = useI18n()
 const layoutStore = useLayoutStore()
 
-const bgTransparent = ref(true)
-const modalTransparent = ref(true)
+const confirmBgTransparent = ref(true)
+const confirmModalTransparent = ref(true)
 
 const close = (confirmed = false) => {
   if (confirmed)
     layoutStore.confirm.confirmedCallback()
   else
     layoutStore.confirm.declinedCallback()
-  modalTransparent.value = true
+  confirmModalTransparent.value = true
   setTimeout(() => {
-    bgTransparent.value = true
+    confirmBgTransparent.value = true
   }, 200)
   setTimeout(() => {
     layoutStore.confirm.close()
@@ -24,18 +24,18 @@ onClickOutside(confirmModal, () => close())
 
 onMounted(() => {
   setTimeout(() => {
-    bgTransparent.value = false
+    confirmBgTransparent.value = false
   }, 1)
   setTimeout(() => {
-    modalTransparent.value = false
+    confirmModalTransparent.value = false
   }, 200)
 })
 
 </script>
 
 <template>
-  <div class="modal-container" :class=" {'transparent': bgTransparent}">
-    <div ref="confirmModal" class="modal" :class=" {'transparent': modalTransparent}">
+  <div class="modal-container" :class=" {'transparent': confirmBgTransparent}">
+    <div ref="confirmModal" class="modal" :class=" {'transparent': confirmModalTransparent}">
       <div class="flex justify-between items-center">
         <h3 class="font-bold">
           Подтверждение

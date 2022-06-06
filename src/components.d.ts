@@ -7,6 +7,7 @@ declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     Assets: typeof import('./components/modals/Assets.vue')['default']
     AssetsMenu: typeof import('./components/modals/AssetsMenu.vue')['default']
+    AssetUpload: typeof import('./components/modals/AssetUpload.vue')['default']
     Bottombar: typeof import('./components/layout/Bottombar.vue')['default']
     CardSetContent: typeof import('./components/content/CardSetContent.vue')['default']
     CardSetEditor: typeof import('./components/editors/CardSetEditor.vue')['default']
@@ -16,6 +17,7 @@ declare module '@vue/runtime-core' {
     Header: typeof import('./components/layout/Header.vue')['default']
     Input: typeof import('./components/inputs/Input.vue')['default']
     InputModal: typeof import('./components/modals/InputModal.vue')['default']
+    'InputModal copy': typeof import('./components/modals/InputModal copy.vue')['default']
     MaterialsContainer: typeof import('./components/MaterialsContainer.vue')['default']
     Modal: typeof import('./components/modals/Modal.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']

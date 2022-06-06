@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import request from '~/composables/request'
 import { useLayoutStore } from '~/stores/layout'
 const { t } = useI18n()
 const layoutStore = useLayoutStore()
@@ -6,20 +7,29 @@ const layoutStore = useLayoutStore()
 const bgTransparent = ref(true)
 const modalTransparent = ref(true)
 
-const close = (cancel = false) => {
-  if (cancel)
-    layoutStore.inputModal.inputValue.value = ''
+const close = () => {
   modalTransparent.value = true
   setTimeout(() => {
     bgTransparent.value = true
   }, 200)
   setTimeout(() => {
-    layoutStore.inputModal.close()
+    layoutStore.assetUpload.close()
+    layoutStore.assetsMenu.open()
   }, 400)
 }
 
-const inputModal = ref(null)
-onClickOutside(inputModal, () => close(true))
+const upload = async() => {
+  const form = document.getElementById('uploadForm') || undefined
+  const formData = new FormData(form)
+
+  const { data, error } = await request.patch('/user/assets', formData)
+
+  if (!error)
+    close()
+}
+
+const assetUpload = ref(null)
+onClickOutside(assetUpload, () => close())
 
 onMounted(() => {
   setTimeout(() => {
@@ -34,19 +44,29 @@ onMounted(() => {
 
 <template>
   <div class="modal-container" :class=" {'transparent': bgTransparent}">
-    <div ref="inputModal" class="modal" :class=" {'transparent': modalTransparent}">
+    <div ref="assetUpload" class="modal" :class=" {'transparent': modalTransparent}">
       <div class="flex justify-between items-center">
         <h3 class="font-bold">
-          {{ layoutStore.inputModal.message }}
+          Новое вложение
         </h3>
-        <button class="icon-btn" i="carbon-close" @click="close(true)" />
+        <button class="icon-btn" i="carbon-close" @click="close" />
       </div>
-      <input v-model="layoutStore.inputModal.inputValue.value" type="text">
+      <form id="uploadForm" class="flex flex-col gap-.5em">
+        <label>
+          <div>Название вложения</div>
+          <input type="text" name="title">
+        </label>
+        <input type="hidden" name="type" value="image">
+        <label>
+          <div>Файл</div>
+          <input type="file" name="file">
+        </label>
+      </form>
       <div class="flex gap-1em">
-        <button class="btn" :disabled="layoutStore.inputModal.inputValue.value.length < 1" @click="close()">
-          Подтвердить
+        <button class="btn" @click="upload">
+          Добавить
         </button>
-        <button class="btn secondary" @click="close(true)">
+        <button class="btn secondary" @click="close">
           Отмена
         </button>
       </div>
@@ -87,7 +107,7 @@ onMounted(() => {
     opacity: 1;
     transition: opacity .2s ease-in-out;
   }
-  input {
+  input:not([type="file"]) {
     @apply rounded;
     outline: none;
     padding: .25em;
@@ -97,11 +117,11 @@ onMounted(() => {
     transition: border .2s ease-in-out;
   }
 
-  input:focus,
-  input:active {
+  input:not([type="file"]):focus,
+  input:not([type="file"]):active {
     border: 2px solid var(--primary-active)
   }
-  input:hover {
+  input:not([type="file"]):hover {
     border: 2px solid var(--primary)
   }
 

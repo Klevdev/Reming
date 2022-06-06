@@ -23,9 +23,12 @@ const value = ref({})
     </button>
     <div>{{ asset }}</div>
     <button class="btn" @click="layoutStore.inputModal.open('Введите значение', value)">
-      assetsMenu
+      inputModal
     </button>
     <div>{{ value.value }}</div>
+    <button class="btn" @click="layoutStore.assetUpload.open()">
+      AssetUpload
+    </button>
   </main>
 </template>
 

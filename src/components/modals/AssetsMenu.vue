@@ -4,13 +4,13 @@ import { useLayoutStore } from '~/stores/layout'
 const { t } = useI18n()
 const layoutStore = useLayoutStore()
 
-const bgTransparent = ref(true)
-const modalTransparent = ref(true)
+const assetMenuBgTransparent = ref(true)
+const assetMenuModalTransparent = ref(true)
 
 const close = () => {
-  modalTransparent.value = true
+  assetMenuModalTransparent.value = true
   setTimeout(() => {
-    bgTransparent.value = true
+    assetMenuBgTransparent.value = true
   }, 200)
   setTimeout(() => {
     layoutStore.assetsMenu.close()
@@ -21,15 +21,16 @@ onClickOutside(assetsMenuModal, () => close())
 
 onMounted(() => {
   setTimeout(() => {
-    bgTransparent.value = false
+    assetMenuBgTransparent.value = false
   }, 1)
   setTimeout(() => {
-    modalTransparent.value = false
+    assetMenuModalTransparent.value = false
   }, 200)
 })
 
 const upload = () => {
-
+  layoutStore.assetUpload.open()
+  close()
 }
 
 const assets = ref([])
@@ -46,8 +47,8 @@ onMounted(async() => {
 </script>
 
 <template>
-  <div class="modal-container" :class=" {'transparent': bgTransparent}">
-    <div ref="assetsMenuModal" class="modal" :class=" {'transparent': modalTransparent}">
+  <div class="modal-container" :class=" {'transparent': assetMenuBgTransparent}">
+    <div ref="assetsMenuModal" class="modal" :class=" {'transparent': assetMenuModalTransparent}">
       <div class="flex justify-between items-center">
         <h3 class="font-bold">
           Мои вложения
@@ -59,12 +60,12 @@ onMounted(async() => {
           <img :src="`http://localhost:3001/${asset.file}`" alt="Вложение">
           {{ asset.title }}
         </div>
-      </div>
-      <div class="asset" @click="upload">
-        <div i="carbon-add" class="text-2em" title="Загрузить" />
+        <div class="asset" @click="upload">
+          <div i="carbon-add" class="text-2em" title="Загрузить" />
         <!-- <div class="text-.8em">
           Загрузить
         </div> -->
+        </div>
       </div>
       <!-- <div class="flex gap-1em">
         <button class="btn" @click="close(true)">
@@ -100,7 +101,8 @@ onMounted(async() => {
 
   .modal {
     @apply rounded;
-    width: 500px;
+    width: max-content;
+    max-width: 690px;
     height: max-content;
     padding: 1em;
     background-color: var(--bg);
@@ -114,8 +116,8 @@ onMounted(async() => {
 
   .asset {
     @apply rounded;
-    width: 100px;
-    height: 100px;
+    width: 150px;
+    height: 150px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -126,6 +128,12 @@ onMounted(async() => {
 
   .asset:hover,
   .asset:active {
+    cursor: pointer;
     border: 2px solid var(--primary-active);
+  }
+
+  .asset > img {
+    object-fit: contain;
+    height: 120px;
   }
 </style>
