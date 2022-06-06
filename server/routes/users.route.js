@@ -4,7 +4,6 @@ const multer = require('multer')
 const sanitize = require('../middleware/sanitizeRequest')
 const auth = require('../middleware/auth')
 const User = require('../models/user.model')
-const Asset = require('../models/asset.model')
 const { deleteFile } = require('../utils/files')
 
 const upload = multer({ dest: './server/temp' })
@@ -175,11 +174,11 @@ router.patch('/assets', auth(true), upload.single('file'), async (req, res) => {
   if (!user)
     return res.sendError(401, 'User not found')
   try {
-    const object = {
+    const asset = {
       ...req.body,
       __tempFile: req.file,
     }
-    await Asset.create(object)
+    await user.addAsset(asset)
   }
   catch (err) {
     if (req.file)
@@ -194,8 +193,8 @@ router.get('/assets', auth(true), async (req, res) => {
   if (!user)
     return res.sendError(401, 'User not found')
   try {
-    const favorites = await user.getSavedMaterials()
-    return res.sendData(200, favorites)
+    const assets = await user.getAssets()
+    return res.sendData(200, assets)
   }
   catch (err) {
     return res.sendError(500, err.message, err.errors)

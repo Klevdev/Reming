@@ -3,6 +3,7 @@ const mongoose = require('mongoose')
 const jwt = require('jsonwebtoken')
 const { nanoid } = require('nanoid')
 const { saveFile, deleteFile } = require('../utils/files')
+const Asset = require('../models/asset.model')
 
 const hashPassword = function(password) {
   return crypto
@@ -65,6 +66,10 @@ const userSchema = new mongoose.Schema({
     type: [String],
     default: [],
   },
+  assets: {
+    type: [String],
+    default: [],
+  },
   __v: {
     type: Number,
     select: false,
@@ -108,6 +113,25 @@ userSchema.methods.removeFromSavedMaterials = async function(materialId) {
     }
   }
   return true
+}
+
+userSchema.methods.addAsset = async function(assetObject) {
+  const asset = new Asset()
+  asset.title = assetObject.title
+  asset.type = assetObject.type
+  asset.__tempFile = assetObject.__tempFile
+  await asset.save()
+  this.assets.push(asset._id)
+  await this.save()
+  return true
+}
+
+userSchema.methods.getAssets = async function() {
+  const savedMaterials = await Asset.find({ _id: { $in: this.assets } })
+
+  for (let i = 0; i < savedMaterials.length; i++)
+    savedMaterials[i] = await savedMaterials[i].short(this._id)
+  return savedMaterials
 }
 
 userSchema.methods.update = async function(userObject) {
