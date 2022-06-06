@@ -8,7 +8,7 @@
   --btn-disabled: #888;
   --bg: #FFF;
   --bg-back: #E7EAED;
-  --border-input: #FFFFFF80;
+  --border-input: #F3F5F6;
 }
 
 html.dark:root {
@@ -19,7 +19,7 @@ html.dark:root {
   --btn-disabled: #888;
   --bg: #35363A;
   --bg-back: #202124;
-  --border-input: #35363A80;
+  --border-input: #2B2C2F;
 }
 
 /* * {
