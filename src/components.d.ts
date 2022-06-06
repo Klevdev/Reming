@@ -15,6 +15,7 @@ declare module '@vue/runtime-core' {
     GlossaryEditor: typeof import('./components/editors/GlossaryEditor.vue')['default']
     Header: typeof import('./components/layout/Header.vue')['default']
     Input: typeof import('./components/inputs/Input.vue')['default']
+    InputModal: typeof import('./components/modals/InputModal.vue')['default']
     MaterialsContainer: typeof import('./components/MaterialsContainer.vue')['default']
     Modal: typeof import('./components/modals/Modal.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']

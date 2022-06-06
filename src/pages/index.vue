@@ -12,15 +12,20 @@ useHead({
 })
 
 const asset = ref({})
+const value = ref({})
 
 </script>
 
 <template>
   <main>
-    <button @click="layoutStore.assetsMenu.open(asset)">
+    <button class="btn" @click="layoutStore.assetsMenu.open(asset)">
       assetsMenu
     </button>
     <div>{{ asset }}</div>
+    <button class="btn" @click="layoutStore.inputModal.open('Введите значение', value)">
+      assetsMenu
+    </button>
+    <div>{{ value.value }}</div>
   </main>
 </template>
 

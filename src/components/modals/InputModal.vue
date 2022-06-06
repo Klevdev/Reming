@@ -6,21 +6,27 @@ const layoutStore = useLayoutStore()
 const bgTransparent = ref(true)
 const modalTransparent = ref(true)
 
-const close = (confirmed = false) => {
-  if (confirmed)
-    layoutStore.confirm.confirmedCallback()
-  else
-    layoutStore.confirm.declinedCallback()
+const close = (cancel = false) => {
+  if (cancel)
+    layoutStore.inputModal.inputValue.value = ''
   modalTransparent.value = true
   setTimeout(() => {
     bgTransparent.value = true
   }, 200)
   setTimeout(() => {
-    layoutStore.confirm.close()
+    layoutStore.inputModal.close()
   }, 400)
 }
-const confirmModal = ref(null)
-onClickOutside(confirmModal, () => close())
+
+const inputProps = {
+  value: {
+    label: '',
+    type: 'text',
+  },
+}
+
+const inputModal = ref(null)
+onClickOutside(inputModal, () => close(true))
 
 onMounted(() => {
   setTimeout(() => {
@@ -35,19 +41,19 @@ onMounted(() => {
 
 <template>
   <div class="modal-container" :class=" {'transparent': bgTransparent}">
-    <div ref="confirmModal" class="modal" :class=" {'transparent': modalTransparent}">
+    <div ref="inputModal" class="modal" :class=" {'transparent': modalTransparent}">
       <div class="flex justify-between items-center">
         <h3 class="font-bold">
-          Подтверждение
+          {{ layoutStore.inputModal.message }}
         </h3>
-        <button class="icon-btn" i="carbon-close" @click="close()" />
+        <button class="icon-btn" i="carbon-close" @click="close(true)" />
       </div>
-      <div>{{ layoutStore.confirm.message }}</div>
+      <input v-model="layoutStore.inputModal.inputValue.value" type="text">
       <div class="flex gap-1em">
-        <button class="btn" @click="close(true)">
+        <button class="btn" :disabled="layoutStore.inputModal.inputValue.value.length < 1" @click="close()">
           Подтвердить
         </button>
-        <button class="btn secondary" @click="close(false)">
+        <button class="btn secondary" @click="close(true)">
           Отмена
         </button>
       </div>
@@ -77,7 +83,7 @@ onMounted(() => {
 
   .modal {
     @apply rounded;
-    width: 300px;
+    width: max-content;
     height: max-content;
     padding: 1em;
     background-color: var(--bg);
@@ -88,4 +94,27 @@ onMounted(() => {
     opacity: 1;
     transition: opacity .2s ease-in-out;
   }
+  input {
+    @apply rounded;
+    outline: none;
+    padding: .25em;
+    width: 300px;
+    background: var(--bg-back);
+    border: 2px solid var(--border-input);
+    transition: border .2s ease-in-out;
+  }
+
+  input:focus,
+  input:active {
+    border: 2px solid var(--primary-active)
+  }
+  input:hover {
+    border: 2px solid var(--primary)
+  }
+
+@media only screen and (min-width: 600px) {
+  input {
+    width: 300px;
+  }
+}
 </style>

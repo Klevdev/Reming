@@ -39,4 +39,5 @@ onMounted(async() => {
 
   <Confirm v-if="layoutStore.confirm.shown" />
   <AssetsMenu v-if="layoutStore.assetsMenu.shown" />
+  <InputModal v-if="layoutStore.inputModal.shown" />
 </template>

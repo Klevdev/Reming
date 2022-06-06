@@ -58,6 +58,23 @@ export const useLayoutStore = defineStore('layout', () => {
     },
     assetRef: null,
   }
+
+  const inputModal = {
+    shown: ref(false),
+    message: ref(''),
+    open: (message, inputValue) => {
+      inputModal.message.value = message
+      inputModal.shown.value = true
+      inputModal.inputValue = inputValue
+    },
+    close: () => {
+      inputModal.message.value = ''
+      inputModal.shown.value = false
+      inputModal.inputValue = null
+    },
+    inputValue: null,
+  }
+
   return {
     sidebarCollapsed,
     userPanelShow,
@@ -66,6 +83,7 @@ export const useLayoutStore = defineStore('layout', () => {
     popup,
     confirm,
     assetsMenu,
+    inputModal,
   }
 })
 
