@@ -127,11 +127,8 @@ userSchema.methods.addAsset = async function(assetObject) {
 }
 
 userSchema.methods.getAssets = async function() {
-  const savedMaterials = await Asset.find({ _id: { $in: this.assets } })
-
-  for (let i = 0; i < savedMaterials.length; i++)
-    savedMaterials[i] = await savedMaterials[i].short(this._id)
-  return savedMaterials
+  const assets = await Asset.find({ _id: { $in: this.assets } })
+  return assets
 }
 
 userSchema.methods.update = async function(userObject) {

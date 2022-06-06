@@ -31,6 +31,10 @@ const assetSchema = new mongoose.Schema({
   },
   file: String,
   __tempFile: Object,
+  __v: {
+    type: Number,
+    select: false,
+  },
 })
 
 assetSchema.pre('save', async function(next) {
