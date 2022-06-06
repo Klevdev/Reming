@@ -131,6 +131,19 @@ userSchema.methods.getAssets = async function() {
   return assets
 }
 
+userSchema.methods.removeAsset = async function(assetId) {
+  for (let i = 0; i < this.assets.length; i++) {
+    if (this.assets[i] === assetId) {
+      this.assets.splice(i, 1)
+      const asset = await Asset.findById(assetId)
+      await asset.delete()
+      await this.save()
+      break
+    }
+  }
+  return true
+}
+
 userSchema.methods.update = async function(userObject) {
   this.name = userObject.name || this.name
   this.email = userObject.email || this.email

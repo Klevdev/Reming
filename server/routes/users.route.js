@@ -206,7 +206,7 @@ router.delete('/assets', sanitize, auth(true), async (req, res) => {
   if (!user)
     return res.sendError(401, 'User not found')
   try {
-    await user.removeFromSavedMaterials(req.query.materialId)
+    await user.removeAsset(req.query.assetId)
     return res.sendData(200)
   }
   catch (err) {
