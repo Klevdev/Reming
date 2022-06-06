@@ -68,8 +68,8 @@ const editPicture = async() => {
     user.setPicture(data.picture)
 }
 
-const deleteUser = () => {
-  request.delete('/user/self')
+const deleteUser = async() => {
+  await request.delete('/user/self')
   user.logout()
   router.push('/')
 }

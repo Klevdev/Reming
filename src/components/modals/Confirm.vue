@@ -3,7 +3,14 @@ import { useLayoutStore } from '~/stores/layout'
 const { t } = useI18n()
 const layoutStore = useLayoutStore()
 
-const close = () => {
+const bgTransparent = ref(true)
+const modalTransparent = ref(true)
+
+const close = (confirmed = false) => {
+  if (confirmed)
+    layoutStore.confirm.confirmedCallback()
+  else
+    layoutStore.confirm.declinedCallback()
   modalTransparent.value = true
   setTimeout(() => {
     bgTransparent.value = true
@@ -14,9 +21,6 @@ const close = () => {
 }
 const confirmModal = ref(null)
 onClickOutside(confirmModal, () => close())
-
-const bgTransparent = ref(true)
-const modalTransparent = ref(true)
 
 onMounted(() => {
   setTimeout(() => {
@@ -40,10 +44,10 @@ onMounted(() => {
       </div>
       <div>{{ layoutStore.confirm.message }}</div>
       <div class="flex gap-1em">
-        <button class="btn" @click="layoutStore.confirm.confirmedCallback; close()">
-          Да
+        <button class="btn" @click="close(true)">
+          Подвердить
         </button>
-        <button class="btn secondary" @click="layoutStore.confirm.declinedCallback; close()">
+        <button class="btn secondary" @click="close(false)">
           Отмена
         </button>
       </div>

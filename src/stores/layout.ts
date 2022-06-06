@@ -30,15 +30,17 @@ export const useLayoutStore = defineStore('layout', () => {
   const confirm = {
     shown: ref(false),
     message: ref(''),
-    open: (message: string, confirmedCallback, declinedCallback = null) => {
+    open: (message: string, confirmedCallback, declinedCallback = () => {}) => {
       confirm.shown.value = true
       confirm.message.value = message
-      confirm.confirmedCallback = confirmedCallback
-      confirm.declinedCallback = declinedCallback
+      confirm.confirmedCallback.value = confirmedCallback
+      confirm.declinedCallback.value = declinedCallback
     },
     close: () => {
       confirm.shown.value = false
       confirm.message.value = ''
+      confirm.confirmedCallback.value = () => {}
+      confirm.declinedCallback.value = () => {}
     },
     confirmedCallback: ref(() => {}),
     declinedCallback: ref(() => {}),
