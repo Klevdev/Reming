@@ -70,16 +70,16 @@ const deleteEntry = (index) => {
   </h2>
   <div id="addedContent" class="flex flex-col gap-.5em">
     <div v-for="(entry, index) in definitions" :key="index" class="entry flex w-100% justify-between gap-.25em pt-.5em">
-      <div>
+      <div class="text-0.8em grid items-center">
         {{ index }}
       </div>
-      <div class="w-30%">
-        <div class="w-100% text-left text-ellipsis overflow-hidden" :title="entry.term.text">
+      <div class="card-side">
+        <div class="card-side--text" :title="entry.term.text">
           {{ entry.term.text }}
         </div>
       </div>
-      <div class="w-30%">
-        <div class="w-100% text-left text-ellipsis overflow-hidden" :title="entry.def.text">
+      <div class="card-side">
+        <div class="card-side--text" :title="entry.def.text">
           {{ entry.def.text }}
         </div>
       </div>
@@ -93,14 +93,22 @@ const deleteEntry = (index) => {
     border-top: 1px solid var(--bg-back)
   }
 
-@media only screen and (min-width: 1250px) {
-  form {
-    flex-direction: row;
-    align-items: flex-end;
+  .card-side {
+    @apply min-w-100px w-35% grid items-center;
   }
-  form > button {
-    height: max-content;
-    margin-bottom: 2px;
+
+  .card-side--text {
+    @apply w-100% text-left text-ellipsis text-0.8em overflow-hidden;
   }
-}
+
+  @media only screen and (min-width: 1250px) {
+    form {
+      flex-direction: row;
+      align-items: flex-end;
+    }
+    form > button {
+      height: max-content;
+      margin-bottom: 2px;
+    }
+  }
 </style>

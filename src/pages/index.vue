@@ -29,7 +29,7 @@ const value = ref({})
     <button class="btn" @click="layoutStore.assetUpload.open()">
       AssetUpload
     </button>
-    <button class="btn" @click="layoutStore.popup.show({message: 'Test', type: 'info'})">
+    <button class="btn" @click="layoutStore.popup.show({message: 'Текст всплывающего оповещения', type: 'info'})">
       Popup
     </button>
   </main>

@@ -39,6 +39,7 @@ const id = nanoid(5)
 <style scoped>
   label {
     display: block;
+    width: max-content;
     margin-bottom: .5em;
     margin-right: .5em;
   }

@@ -111,6 +111,7 @@ onMounted(async() => {
 main {
   display: flex;
   flex-direction: column;
+  max-width: max-content;
 }
 
 .container {
@@ -121,6 +122,25 @@ main {
 }
 
 @media only screen and (min-width: 600px) {
+  main {
+    flex-direction: column;
+  }
+
+  main > div {
+    margin-right: 2em;
+  }
+
+  #materialContent {
+    width: max-content;
+  }
+
+  #actions {
+    grid-column: 1;
+    grid-row: 2;
+  }
+}
+
+@media only screen and (min-width: 1200px) {
   main {
     flex-direction: row;
   }

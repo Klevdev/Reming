@@ -10,17 +10,17 @@ const { content: cardSet } = defineProps({
     <h2 class="font-bold">
       Карточки:
     </h2>
-    <div v-for="(entry, index) in cardSet.definitions" :key="index" class="entry flex w-100% justify-between gap-.25em pt-.5em">
-      <div>
+    <div v-for="(entry, index) in cardSet.definitions" :key="index" class="entry flex w-100% justify-between pt-.5em">
+      <div class="text-0.8em grid items-center">
         {{ index }}
       </div>
-      <div class="min-w-100px w-30%">
-        <div class="w-100% text-left text-ellipsis overflow-hidden" :title="entry.term.text">
+      <div class="min-w-100px w-35% grid items-center">
+        <div class="w-100% text-left text-ellipsis text-0.8em overflow-hidden" :title="entry.term.text">
           {{ entry.term.text }}
         </div>
       </div>
-      <div class="min-w-100px w-30%">
-        <div class="w-100% text-left text-ellipsis overflow-hidden" :title="entry.def.text">
+      <div class="min-w-100px w-35% grid items-center">
+        <div class="w-100% text-left text-ellipsis text-0.8em overflow-hidden" :title="entry.def.text">
           {{ entry.def.text }}
         </div>
       </div>

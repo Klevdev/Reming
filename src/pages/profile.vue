@@ -147,17 +147,11 @@ const toggleLocales = () => {
 h2 {
   font-weight: bold;
   font-size: 1.2em;
-  text-align: center;
+    text-align: left;
   margin-bottom: .5em;
-}
-form {
-  align-items: center;
 }
 
 @media only screen and (min-width: 600px) {
-  h2 {
-    text-align: left;
-  }
   form {
     align-items: flex-start;
   }

@@ -28,8 +28,8 @@ const { t } = useI18n()
   .page-title {
     margin-bottom: 1em;
     font-weight: bold;
-    font-size: 1.2em;
-    text-align: center;
+    font-size: 1.4em;
+    text-align: left;
   }
   .layout-wrapper-inner {
       padding: 1em 1rem calc(60px + 60px + 1em) 1em;
