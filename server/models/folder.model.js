@@ -25,8 +25,11 @@ folderSchema.statics._create = async function(materials) {
   return await this.create({ materials })
 }
 
-// folderSchema.methods._update = async function(update) {
-// }
+folderSchema.methods._update = async function(materials) {
+  this.materials = materials
+  this.markModified('materials')
+  await this.save()
+}
 
 folderSchema.methods._get = async function() {
   return this.materials
