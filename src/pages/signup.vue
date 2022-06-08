@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import request from '~/composables/request'
 import { useUserStore } from '~/stores/user'
+import { useLayoutStore } from '~/stores/layout'
 
 const { t } = useI18n()
 
@@ -20,16 +21,16 @@ const formData = ref({
 
 const inputProps = {
   name: {
-    label: 'Username',
+    label: t('user.name'),
     placeholder: 'MyUniqueName',
   },
   email: {
-    label: 'E-mail',
+    label: t('user.email'),
     type: 'email',
     placeholder: 'examplemail@mail.com',
   },
   password: {
-    label: 'Password',
+    label: t('user.password'),
     type: 'password',
   },
 }
@@ -37,9 +38,21 @@ const inputProps = {
 const submitForm = async() => {
   const { data, error } = await request.post('/user/signup', formData.value)
 
-  if (!error)
+  if (!error) {
     user.login(data)
+    useRouter().push('/')
+  }
 }
+
+onBeforeMount(() => {
+  if (useUserStore().loggedIn) {
+    useLayoutStore().popup.show({
+      message: 'Вы уже авторизованны',
+      type: 'error',
+    })
+    useRouter().push('/')
+  }
+})
 
 </script>
 
@@ -77,7 +90,7 @@ const submitForm = async() => {
 }
 form {
   width: max-content;
-  text-align: center;
+  text-align: left;
 }
 
 @media only screen and (min-width: 600px) {

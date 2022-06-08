@@ -1,6 +1,8 @@
 <script setup lang="ts">
 
+import { useUserStore } from '~/stores/user'
 import { useLayoutStore } from '~/stores/layout'
+
 const { t } = useI18n()
 const layoutStore = useLayoutStore()
 
@@ -14,6 +16,15 @@ useHead({
 const asset = ref({})
 const value = ref({})
 
+onBeforeMount(() => {
+  if (!useUserStore().loggedIn) {
+    useLayoutStore().popup.show({
+      message: 'Для доступа к этой странице необходимо авторизоваться',
+      type: 'error',
+    })
+    useRouter().go(-1)
+  }
+})
 </script>
 
 <template>

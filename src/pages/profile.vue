@@ -80,6 +80,16 @@ const toggleLocales = () => {
   locale.value = locales[(locales.indexOf(locale.value) + 1) % locales.length]
 }
 
+onBeforeMount(() => {
+  if (!useUserStore().loggedIn) {
+    useLayoutStore().popup.show({
+      message: 'Для доступа к этой странице необходимо авторизоваться',
+      type: 'error',
+    })
+    useRouter().go(-1)
+  }
+})
+
 </script>
 
 <template>
@@ -114,12 +124,12 @@ const toggleLocales = () => {
             <div i="carbon-sun dark:carbon-moon" />
           </button>
         </div>
-        <div class="flex gap-1em items-center">
+        <!-- <div class="flex gap-1em items-center">
           <span>{{ t('settings.change-lang') }}</span>
           <button class="btn flex justify-center items-center w-max" @click.stop.prevent="toggleLocales">
             {{ locale }}
           </button>
-        </div>
+        </div> -->
       </div>
     </section>
     <section class="container">

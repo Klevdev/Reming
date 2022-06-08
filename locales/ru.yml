@@ -17,6 +17,10 @@ layout:
 settings:
   change-lang: Сменить язык
   toggle-color: Переключить тему
+user:
+  name: Имя пользователя
+  email: E-mail
+  password: Пароль
 material:
   types:
     glossary: Словарь

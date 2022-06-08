@@ -23,17 +23,17 @@ async function _authStrict(req, res, next) {
   }
 
   if (!refreshToken)
-    return res.sendError(401, 'Refresh token is empty')
+    return res.sendError(401, 'Отсутствует RT')
 
   try {
     token = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET)
   }
   catch (err) {
-    return res.sendError(401, 'Refresh token is invalid or expired')
+    return res.sendError(401, 'RT некореектен или истёк')
   }
   const _user = await User.findById(token._id)
   if (_user?.refreshToken !== refreshToken)
-    return res.sendError(401, 'Refresh token is invalid or expired')
+    return res.sendError(401, 'RT некореектен или истёк')
   await _user.setRefreshToken()
   req.user = {
     _id: token._id,

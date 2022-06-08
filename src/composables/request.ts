@@ -33,6 +33,10 @@ function _handleErrors(status: Number, resError: Error) {
     message: resError.message,
   })
   if (status === 401) {
+    useLayoutStore().popup.show({
+      message: 'Для доступа к этой странице необходимо авторизоваться',
+      type: 'error',
+    })
     const user = useUserStore()
     user.logout()
   }

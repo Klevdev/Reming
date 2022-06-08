@@ -25,7 +25,7 @@ router.post('/login', sanitize, async (req, res) => {
   try {
     const user = await User.login(req.body.email, req.body.password)
     if (!user)
-      return res.sendError(400, 'Incorrect e-mail or password')
+      return res.sendError(400, 'Неверный e-mail или пароль')
     const projection = ['_id', 'name', 'picture', 'accessToken', 'refreshToken']
     return res.sendData(201, user.project(projection))
   }
@@ -39,18 +39,18 @@ router.get('/refresh', async (req, res) => {
   const refreshToken = req.cookies?.refreshToken
 
   if (!refreshToken)
-    return res.sendError(401, 'Refresh token is empty')
+    return res.sendError(401, 'RT отсутствует')
 
   let token
   try {
     token = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET)
   }
   catch (err) {
-    return res.sendError(401, 'Refresh token is invalid or expired')
+    return res.sendError(401, 'RT некорректен или истёк')
   }
   const _user = await User.findById(token._id)
   if (!_user || _user.refreshToken !== refreshToken)
-    return res.sendError(401, 'Refresh token is invalid or expired')
+    return res.sendError(401, 'RT некорректен или истёк')
   await _user.setRefreshToken()
 
   const data = {
@@ -76,14 +76,14 @@ router.delete('/logout', auth(true), async (req, res) => {
 router.get('/self', auth(true), async (req, res) => {
   const user = await User.findById(req.user._id)
   if (!user)
-    return res.sendError(401, 'User not found')
+    return res.sendError(401, 'Пользователь не найден')
   return res.sendData(200, user.project(['name', 'email', 'bio', 'picture']))
 })
 
 router.patch('/picture', sanitize, auth(true), upload.single('picture'), async (req, res) => {
   const user = await User.findById(req.user._id)
   if (!user)
-    return res.sendError(401, 'User not found')
+    return res.sendError(401, 'Пользователь не найден')
   try {
     const update = {
       __tempPicture: req.file,
@@ -93,7 +93,7 @@ router.patch('/picture', sanitize, auth(true), upload.single('picture'), async (
   catch (err) {
     if (req.file)
       deleteFile(req.file.path)
-    return res.sendError(500, 'Error', err.errors)
+    return res.sendError(500, 'Непредвиденная ошибка', err.errors)
   }
   if (user.picture)
     return res.sendData(200, { picture: user.picture })
@@ -103,12 +103,12 @@ router.patch('/picture', sanitize, auth(true), upload.single('picture'), async (
 router.patch('/self', sanitize, auth(true), async (req, res) => {
   const user = await User.findById(req.user._id)
   if (!user)
-    return res.sendError(401, 'User not found')
+    return res.sendError(401, 'Пользователь не найден')
   try {
     await user.update(req.body)
   }
   catch (err) {
-    return res.sendError(500, 'Error', err.errors)
+    return res.sendError(500, 'Непредвиденная ошибка', err.errors)
   }
   return res.sendData(200)
 })
@@ -132,11 +132,11 @@ router.patch('/saved-materials', auth(true), async (req, res) => {
     return res.sendError(401, 'User not found')
   const material = await require('../models/material.model').findById(req.body.materialId)
   if (!material)
-    return res.sendError(404, 'Material not found')
+    return res.sendError(404, 'Материал не найден')
   try {
     const added = await user.addToSavedMaterials(req.body.materialId)
     if (!added)
-      return res.sendError(400, 'Material is already in saved materials')
+      return res.sendError(400, 'Материал уже сохранён')
     return res.sendData(200)
   }
   catch (err) {
@@ -147,7 +147,7 @@ router.patch('/saved-materials', auth(true), async (req, res) => {
 router.get('/saved-materials', auth(true), async (req, res) => {
   const user = await User.findById(req.user._id)
   if (!user)
-    return res.sendError(401, 'User not found')
+    return res.sendError(401, 'Пользователь не найден')
   try {
     const favorites = await user.getSavedMaterials()
     return res.sendData(200, favorites)
@@ -160,7 +160,7 @@ router.get('/saved-materials', auth(true), async (req, res) => {
 router.delete('/saved-materials', sanitize, auth(true), async (req, res) => {
   const user = await User.findById(req.user._id)
   if (!user)
-    return res.sendError(401, 'User not found')
+    return res.sendError(401, 'Пользователь не найден')
   try {
     await user.removeFromSavedMaterials(req.query.materialId)
     return res.sendData(200)
@@ -173,7 +173,7 @@ router.delete('/saved-materials', sanitize, auth(true), async (req, res) => {
 router.patch('/assets', auth(true), upload.single('file'), async (req, res) => {
   const user = await User.findById(req.user._id)
   if (!user)
-    return res.sendError(401, 'User not found')
+    return res.sendError(401, 'Пользователь не найден')
   try {
     const asset = {
       ...req.body,
@@ -184,7 +184,7 @@ router.patch('/assets', auth(true), upload.single('file'), async (req, res) => {
   catch (err) {
     if (req.file)
       deleteFile(req.file.path)
-    return res.sendError(500, 'Error', err.errors)
+    return res.sendError(500, 'Непредвиденная ошибка', err.errors)
   }
   return res.sendData(200)
 })
@@ -192,7 +192,7 @@ router.patch('/assets', auth(true), upload.single('file'), async (req, res) => {
 router.get('/assets', auth(true), async (req, res) => {
   const user = await User.findById(req.user._id)
   if (!user)
-    return res.sendError(401, 'User not found')
+    return res.sendError(401, 'Пользователь не найден')
   try {
     const assets = await user.getAssets()
     return res.sendData(200, assets)
@@ -205,11 +205,11 @@ router.get('/assets', auth(true), async (req, res) => {
 router.get('/assets/:assetId', auth(true), async (req, res) => {
   const user = await User.findById(req.user._id)
   if (!user)
-    return res.sendError(401, 'User not found')
+    return res.sendError(401, 'Пользователь не найден')
   try {
     const asset = await Asset.findById(req.params.assetId)
     if (!asset)
-      return res.sendError(404, 'Asset not found')
+      return res.sendError(404, 'Вложение не найдено')
     return res.sendData(200, asset)
   }
   catch (err) {
@@ -220,7 +220,7 @@ router.get('/assets/:assetId', auth(true), async (req, res) => {
 router.delete('/assets', sanitize, auth(true), async (req, res) => {
   const user = await User.findById(req.user._id)
   if (!user)
-    return res.sendError(401, 'User not found')
+    return res.sendError(401, 'Пользователь не найден')
   try {
     await user.removeAsset(req.query.assetId)
     return res.sendData(200)
@@ -233,7 +233,7 @@ router.delete('/assets', sanitize, auth(true), async (req, res) => {
 router.get('/:id', async (req, res) => {
   const user = await User.findById(req.params.id, { _id: 0, password: 0, refreshToken: 0, __v: 0, favorites: 0 })
   if (!user)
-    return res.sendError(404, 'User not found')
+    return res.sendError(404, 'Пользователь не найден')
   return res.sendData(200, user)
 })
 

@@ -48,7 +48,7 @@ const color = () => {
       <div class=" w-100% max-w-100%">
         {{ layoutStore.popup.message }}
       </div>
-      <button class="icon-btn" i="carbon-close" @click="close()" />
+      <button class="icon-btn text-1.2em" i="carbon-close" @click="close()" />
     </div>
     <div class="popup-timer absolute bottom-0 w-100% h-2px" :class="color()" />
   </div>

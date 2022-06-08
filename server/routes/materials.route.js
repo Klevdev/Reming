@@ -20,9 +20,9 @@ router.get('/personal', auth(), async (req, res) => {
 router.get('/:id/content', auth(false), async (req, res) => {
   const material = await Material.findById(req.params.id)
   if (!material)
-    return res.sendError(404, 'Material not found')
+    return res.sendError(404, 'Материал не найден')
   if (!material.checkAccess(req.user?._id))
-    return res.sendError(403, 'Access denied')
+    return res.sendError(403, 'Нет доступа')
   const content = await material.getContent()
   return res.sendData(200, content)
 })
@@ -30,9 +30,9 @@ router.get('/:id/content', auth(false), async (req, res) => {
 router.get('/:id', auth(false), async (req, res) => {
   const material = await Material.findById(req.params.id)
   if (!material)
-    return res.sendError(404, 'Material not found')
+    return res.sendError(404, 'Материал не найден')
   if (!material.checkAccess(req.user?._id))
-    return res.sendError(403, 'Access denied')
+    return res.sendError(403, 'Нет доступа')
   return res.sendData(200, await material.full(req.user?._id))
 })
 
@@ -49,13 +49,13 @@ router.post('/', sanitize, auth(), async (req, res) => {
 router.patch('/:id/rate', sanitize, auth(), async (req, res) => {
   const material = await Material.findById(req.params.id)
   if (!material)
-    return res.sendError(404, 'Material not found')
+    return res.sendError(404, 'Материал не найден')
   if (!material.userId === req.user._id)
-    return res.sendError(400, 'User cannot rate its own materials')
+    return res.sendError(400, 'Вы не можете оценивать собственный материал')
   if (!material.privacy.public)
-    return res.sendError(400, 'Only public materials can be rated')
+    return res.sendError(400, 'Можно оценивать только общедоступные материалы')
   if (!material.addRating(req.user._id, req.body.score))
-    return res.sendError(400, 'Rating must be at range from 1 to 5')
+    return res.sendError(400, 'Оценка должна быть от 1 до 5')
   try {
     await material.save()
     return res.sendData(200)
@@ -68,7 +68,7 @@ router.patch('/:id/rate', sanitize, auth(), async (req, res) => {
 router.patch('/:id', auth(), async (req, res) => {
   const material = await Material.findById(req.params.id)
   if (!material)
-    return res.sendError(404, 'Material not found')
+    return res.sendError(404, 'Материал не найден')
   try {
     await material._update(req.body)
     return res.sendData(200)
@@ -81,7 +81,7 @@ router.patch('/:id', auth(), async (req, res) => {
 router.delete('/:id', auth(), async (req, res) => {
   const material = await Material.findById(req.params.id)
   if (!material)
-    return res.sendError(404, 'Material not found')
+    return res.sendError(404, 'Материал не найден')
   try {
     await material.delete()
     return res.sendData(200)

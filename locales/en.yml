@@ -19,6 +19,10 @@ settings:
   toggle-color: Switch color mode
   color-dark: Dark mode
   color-light: Light mode
+user:
+  name: Username
+  email: E-mail
+  password: Password
 material:
   types:
     glossary: Glossary

@@ -3,6 +3,7 @@
 import request from '~/composables/request'
 import { dateToString } from '~/composables/date'
 import { useUserStore } from '~/stores/user'
+import { useLayoutStore } from '~/stores/layout'
 
 const userStore = useUserStore()
 const props = defineProps<{ id: string }>()
@@ -53,6 +54,15 @@ onMounted(async() => {
   if (!error)
     materialInfo.value = data
   await getContent()
+})
+onBeforeMount(() => {
+  if (!useUserStore().loggedIn) {
+    useLayoutStore().popup.show({
+      message: 'Для доступа к этой странице необходимо авторизоваться',
+      type: 'error',
+    })
+    useRouter().go(-1)
+  }
 })
 </script>
 
