@@ -39,18 +39,18 @@ router.get('/refresh', async (req, res) => {
   const refreshToken = req.cookies?.refreshToken
 
   if (!refreshToken)
-    return res.sendError(401, 'RT отсутствует')
+    return res.sendError(401, 'Отсутствует токен')
 
   let token
   try {
     token = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET)
   }
   catch (err) {
-    return res.sendError(401, 'RT некорректен или истёк')
+    return res.sendError(401, 'Токен некорректен или истёк')
   }
   const _user = await User.findById(token._id)
   if (!_user || _user.refreshToken !== refreshToken)
-    return res.sendError(401, 'RT некорректен или истёк')
+    return res.sendError(401, 'Токен некорректен или истёк')
   await _user.setRefreshToken()
 
   const data = {

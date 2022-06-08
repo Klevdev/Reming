@@ -102,18 +102,18 @@ onBeforeMount(() => {
       <transition name="createMenu">
         <div v-if="createMenuOpened" id="createMenu">
           <nav>
-            <button class="menu-item" @click="goToEditor('glossary')">
+            <!-- <button class="menu-item" @click="goToEditor('glossary')">
               <div i-carbon-book />
               <span>{{ t('material.types.glossary') }}</span>
-            </button>
+            </button> -->
             <button class="menu-item" @click="goToEditor('cardSet')">
               <div i-carbon-collapse-all />
               <span>{{ t('material.types.cardSet') }}</span>
             </button>
-            <button class="menu-item" @click="goToEditor('questionBank')">
+            <!-- <button class="menu-item" @click="goToEditor('questionBank')">
               <div i-carbon-book />
               <span>{{ t('material.types.questionBank') }}</span>
-            </button>
+            </button> -->
             <button class="menu-item" @click="goToEditor('test')">
               <div i-carbon-text-annotation-toggle />
               <span>{{ t('material.types.test') }}</span>
