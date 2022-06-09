@@ -8,6 +8,7 @@ const studySchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  materialInfo: Object,
   userId: {
     type: String,
     required: true,
@@ -30,7 +31,7 @@ studySchema.methods.project = function(projection) {
 }
 
 studySchema.statics.addEntry = async function(entry) {
-  const existingLog = await this.find({ materialId: entry.materialId })
+  const existingLog = await this.find({ materialId: entry.materialId, userId: entry.userId })
   if (existingLog?.length >= 1) {
     existingLog[0].results[Date.now()] = entry.results
     existingLog[0].markModified('results')
@@ -43,16 +44,15 @@ studySchema.statics.addEntry = async function(entry) {
   }
 }
 
-// studySchema.statics.getAll = async function(userId) {
-//   const studies = await this.find({ userId })
-//   studies.forEach((entry) => {
-//     entry = {
-//       ...entry,
-//       materialInfo: await Material.findById(entry.materialId, { _id: 0 })
-//     }
-//   })
-// }
+studySchema.statics.getAll = async function(userId) {
+  const studies = await this.find({ userId })
+  for (let i = 0; i < studies.length; i++) {
+    const materialInfo = await Material.findById(studies[i].materialId, { _id: 0 })
+    studies[i].materialInfo = materialInfo
+  }
 
+  return studies
+}
 
 // studySchema.pre('save', async function(next) {
 //   next()
