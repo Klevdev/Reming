@@ -1,11 +1,10 @@
 <script setup lang="ts">
 
 import request from '~/composables/request'
-import { dateToString } from '~/composables/date'
-import { useUserStore } from '~/stores/user'
+// import { dateToString } from '~/composables/date'
 import { useLayoutStore } from '~/stores/layout'
 
-const userStore = useUserStore()
+const layoutStore = useLayoutStore()
 const props = defineProps<{ id: string }>()
 const router = useRouter()
 const { t } = useI18n()
@@ -33,8 +32,9 @@ const answers = ref([])
 const studyComplete = ref(false)
 
 const currentCardIdx = ref(0)
-const currentCardIndex = ref(0)
+const currentCardIndex = ref(-1)
 const currentCardText = ref('')
+const currentCardAsset = ref({})
 const currentCardSide = ref(0)
 const currentCardFlipped = ref(false)
 const cardAnimation = ref('')
@@ -48,12 +48,14 @@ const flip = () => {
   if (currentCardSide.value === 0) {
     setTimeout(() => {
       currentCardText.value = cards.value[currentCardIndex.value].def.text
+      currentCardAsset.value = cards.value[currentCardIndex.value].def.asset?.value
     }, 250)
     currentCardSide.value = 1
   }
   else {
     setTimeout(() => {
       currentCardText.value = cards.value[currentCardIndex.value].term.text
+      currentCardAsset.value = cards.value[currentCardIndex.value].term.asset?.value
     }, 250)
     currentCardSide.value = 0
   }
@@ -71,6 +73,7 @@ const nextCard = () => {
   else {
     // currentCardIdx.value = currentCardIndex.value
     currentCardText.value = cards.value[currentCardIndex.value].term.text
+    currentCardAsset.value = cards.value[currentCardIndex.value].term.asset?.value
     currentCardSide.value = 0
     currentCardFlipped.value = false
   }
@@ -97,7 +100,7 @@ const getPercentage = () => {
 }
 
 const save = async() => {
-
+  router.go(-1)
 }
 
 const restart = () => {
@@ -105,8 +108,9 @@ const restart = () => {
   answers.value = []
 
   currentCardIdx.value = 0
-  currentCardIndex.value = 0
+  currentCardIndex.value = -1
   currentCardText.value = ''
+  currentCardAsset.value = {}
   currentCardSide.value = 0
   currentCardFlipped.value = false
   cardAnimation.value = ''
@@ -128,10 +132,13 @@ onMounted(async() => {
     <section v-if="!studyComplete" class="h-100% flex flex-col justify-between mt-2em">
       <div class="card" :class="cardAnimation" @dblclick="flip">
         <div class="card-idx">
-          {{ currentCardIndex }}
+          {{ currentCardIndex + 1 }}
         </div>
         <div class="card-text">
           {{ currentCardText }}
+        </div>
+        <div v-if="currentCardAsset" class="asset" @click="layoutStore.assetView.open(currentCardAsset._id)">
+          <div i-carbon-document-attachment title="Посмотреть вложение" />
         </div>
       </div>
       <div class="flex flex-row gap-3em mx-a w-max mt-2em">
@@ -164,11 +171,11 @@ onMounted(async() => {
         </div>
         <strong v-if="getCorrect().length">Отвечены верно:</strong>
         <div v-for="answer in getCorrect()" :key="answer.idx">
-          {{ answer.idx }}) {{ cards[answer.idx].term.text }} - {{ cards[answer.idx].def.text }}
+          {{ answer.idx + 1 }}) {{ cards[answer.idx].term.text }} - {{ cards[answer.idx].def.text }}
         </div>
         <strong v-if="getIncorrect().length">Отвечены неверно:</strong>
         <div v-for="answer in getIncorrect()" :key="answer.idx">
-          {{ answer.idx }}) {{ cards[answer.idx].term.text }} - {{ cards[answer.idx].def.text }}
+          {{ answer.idx + 1 }}) {{ cards[answer.idx].term.text }} - {{ cards[answer.idx].def.text }}
         </div>
         <div class="flex gap-1em mt-1em">
           <button type="button" class="btn" @click="save">
@@ -289,6 +296,14 @@ onMounted(async() => {
 .btn:disabled {
   background-color: var(--btn-disabled);
 }
+
+.asset {
+  @apply flex items-center gap-.3em text-0.8em;
+  position: absolute;
+  bottom: 1em;
+  left: 1em;
+}
+
 .end-screen {
   @apply rounded;
   margin: 0 auto;
