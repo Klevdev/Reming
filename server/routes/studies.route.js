@@ -14,12 +14,18 @@ router.post('/', async (req, res) => {
       ...req.body,
       userId: req.user._id,
     }
-    await Study.create(entry)
+    await Study.addEntry(entry)
     return res.sendData(201)
   }
   catch (err) {
     return res.sendError(400, err.message, err.errors)
   }
+})
+
+router.get('/', async (req, res) => {
+  const studies = await Study.getAll(req.user._id)
+
+  return res.sendData(200, studies)
 })
 
 router.delete('/:id', async (req, res) => {

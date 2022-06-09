@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const Material = require('../models/material.model')
 
 mongoose.connect(process.env.DB_URL)
 
@@ -11,13 +12,8 @@ const studySchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  studiedAt: {
-    type: Number,
-    immutable: true,
-    default: () => Date.now(),
-  },
   results: {
-    type: [Object],
+    type: Object,
     required: true,
   },
   __v: {
@@ -32,6 +28,31 @@ studySchema.methods.project = function(projection) {
     obj[projection[i]] = this[projection[i]]
   return obj
 }
+
+studySchema.statics.addEntry = async function(entry) {
+  const existingLog = await this.find({ materialId: entry.materialId })
+  if (existingLog?.length >= 1) {
+    existingLog[0].results[Date.now()] = entry.results
+    existingLog[0].markModified('results')
+    await existingLog[0].save()
+  } else {
+    entry.results = {
+      [Date.now()]: entry.results,
+    }
+    await this.create(entry)
+  }
+}
+
+// studySchema.statics.getAll = async function(userId) {
+//   const studies = await this.find({ userId })
+//   studies.forEach((entry) => {
+//     entry = {
+//       ...entry,
+//       materialInfo: await Material.findById(entry.materialId, { _id: 0 })
+//     }
+//   })
+// }
+
 
 // studySchema.pre('save', async function(next) {
 //   next()
