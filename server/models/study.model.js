@@ -55,6 +55,14 @@ studySchema.statics.getAll = async function(userId) {
   return studies
 }
 
+studySchema.statics.getMaterialEntries = async function(userId, materialId) {
+  const studies = await this.find({ materialId, userId })
+  const materialInfo = await Material.findById(studies[0].materialId, { _id: 0 })
+  studies[0].materialInfo = materialInfo
+
+  return studies
+}
+
 // studySchema.pre('save', async function(next) {
 //   next()
 // })

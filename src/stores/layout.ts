@@ -132,6 +132,19 @@ export const useLayoutStore = defineStore('layout', () => {
     },
   }
 
+  const materialStats = {
+    shown: ref(false),
+    materialId: ref(''),
+    open: (materialId) => {
+      materialStats.materialId.value = materialId
+      materialStats.shown.value = true
+    },
+    close: () => {
+      materialStats.materialId.value = ''
+      materialStats.shown.value = false
+    },
+  }
+
   return {
     sidebarCollapsed,
     userPanelShow,
@@ -144,6 +157,7 @@ export const useLayoutStore = defineStore('layout', () => {
     assetUpload,
     assetView,
     folderCreate,
+    materialStats,
   }
 })
 

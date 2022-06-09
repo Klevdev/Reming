@@ -52,14 +52,16 @@ onMounted(async() => {
       <div>Записей: {{ Object.keys(material.results).length }}</div>
       <!-- <div>Последний результат: {{ getLastResult(material.results) }}</div> -->
       <div class="flex flex-row items-center gap-.5em">
-        <router-link :to="`/materials/${material.materialId}`" class="btn w-max">
+        <button class="btn w-max" @click="layoutStore.materialStats.open(material.materialId)">
           <div i="carbon-chart-histogram" />
-        </router-link>
+        </button>
         <router-link :to="`/materials/${material.materialId}`" class="btn w-max">
           <div i="carbon-view" />
         </router-link>
       </div>
     </div>
+
+    <MaterialStats v-if="layoutStore.materialStats.shown" />
   </main>
 </template>
 
