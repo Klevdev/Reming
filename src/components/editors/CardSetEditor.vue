@@ -76,10 +76,10 @@ const deleteEntry = (index) => {
         <button v-if="!newEntry.term.asset.value?._id" type="button" class="text-.8em text-gray flex items-center gap-.5em" @click="layoutStore.assetsMenu.open(newEntry.term.asset)">
           <div i-carbon-add /> Прикрепить файл
         </button>
-        <div v-else class="asset">
+        <div v-else class="asset" @click="layoutStore.assetView.open(newEntry.term.asset.value._id)">
           <div i-carbon-document-attachment />
           {{ newEntry.term.asset.value.title }}
-          <button class="icon-btn" i="carbon-close" @click="newEntry.term.asset.value = {}" />
+          <button class="icon-btn" i="carbon-close" @click.stop="newEntry.term.asset.value = {}" />
         </div>
       </div>
     </div>
@@ -89,7 +89,7 @@ const deleteEntry = (index) => {
         <button v-if="!newEntry.def.asset.value?._id" type="button" class="text-.8em text-gray flex items-center gap-.5em" @click="layoutStore.assetsMenu.open(newEntry.def.asset)">
           <div i-carbon-add /> Прикрепить файл
         </button>
-        <div v-else class="asset">
+        <div v-else class="asset" @click="layoutStore.assetView.open(newEntry.def.asset.value._id)">
           <div i-carbon-document-attachment />
           {{ newEntry.def.asset.value.title }}
           <button class="icon-btn" i="carbon-close" @click="newEntry.def.asset.value = {}" />
@@ -113,7 +113,7 @@ const deleteEntry = (index) => {
         <div class="card-side--text" :title="entry.term.text">
           {{ entry.term.text }}
         </div>
-        <div v-if="entry.term.asset._id" class="asset">
+        <div v-if="entry.term.asset?._id" class="asset" @click="layoutStore.assetView.open(entry.term.asset._id)">
           <div i-carbon-document-attachment />
           {{ entry.term.asset.title }}
         </div>
@@ -121,6 +121,10 @@ const deleteEntry = (index) => {
       <div class="card-side">
         <div class="card-side--text" :title="entry.def.text">
           {{ entry.def.text }}
+        </div>
+        <div v-if="entry.def.asset?._id" class="asset" @click="layoutStore.assetView.open(entry.def.asset._id)">
+          <div i-carbon-document-attachment />
+          {{ entry.def.asset.title }}
         </div>
       </div>
       <button i-carbon-close class="icon-btn" @click="deleteEntry(index)" />

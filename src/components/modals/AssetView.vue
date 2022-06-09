@@ -44,10 +44,10 @@ onMounted(async() => {
 <template>
   <div class="modal-container" :class=" {'transparent': assetViewBgTransparent}">
     <div ref="assetViewModal" class="modal" :class=" {'transparent': assetViewModalTransparent}">
-      <div class="flex justify-between items-center">
-        <h3 class="font-bold">
+      <div class="flex flex-row-reverse justify-between items-center">
+        <!-- <h3 class="font-bold">
           {{ asset.title }}
-        </h3>
+        </h3> -->
         <button class="icon-btn" i="carbon-close" @click="close()" />
       </div>
       <img :src="`http://localhost:3001/${asset.file}`" alt="Вложение">
@@ -78,7 +78,7 @@ onMounted(async() => {
   .modal {
     @apply rounded;
     width: max-content;
-    max-width: 690px;
+    max-width: 90vw;
     height: max-content;
     padding: 1em;
     background-color: var(--bg);

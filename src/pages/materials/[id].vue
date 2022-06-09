@@ -98,7 +98,7 @@ onMounted(async() => {
         <button v-if="!materialInfo.isSaved" class="btn" @click="save">
           {{ t('pages.material-view.save') }}
         </button>
-        <button v-else class="btn" :disabled="materialInfo.user?._id === userStore._id" @click="remove">
+        <button v-else-if="materialInfo.user?._id !== userStore._id" class="btn" @click="remove">
           {{ t('pages.material-view.remove') }}
         </button>
         <!-- <button v-show="materialInfo.user?._id === userStore._id" class="btn">
