@@ -7,7 +7,10 @@ const layoutStore = useLayoutStore()
 const assetMenuBgTransparent = ref(true)
 const assetMenuModalTransparent = ref(true)
 
-const close = () => {
+const close = (saveAsset = true) => {
+  if (!saveAsset)
+    layoutStore.assetsMenu.assetRef.value = {}
+
   assetMenuModalTransparent.value = true
   setTimeout(() => {
     assetMenuBgTransparent.value = true
@@ -35,9 +38,14 @@ const selectAsset = (asset) => {
   layoutStore.assetsMenu.assetRef.value = asset
 }
 
+const deselectAsset = () => {
+  selectedAsset.value = {}
+  layoutStore.assetsMenu.assetRef.value = {}
+}
+
 const upload = () => {
   layoutStore.assetUpload.open()
-  close()
+  close(false)
 }
 
 const deleteAsset = (assetId, assetTitle) => {
@@ -70,10 +78,10 @@ onMounted(async() => {
         <h3 class="font-bold">
           Мои вложения
         </h3>
-        <button class="icon-btn" i="carbon-close" @click="close()" />
+        <button class="icon-btn" i="carbon-close" @click="close(false)" />
       </div>
       <div class="flex gap-1em flex-wrap">
-        <div v-for="asset in assets" :key="asset._id" class="asset" :class="{'selected' : selectedAsset._id === asset._id}" @click="selectAsset(asset)">
+        <div v-for="asset in assets" :key="asset._id" class="asset" :class="{'selected' : selectedAsset._id === asset._id}" @click="selectedAsset._id === asset._id ? deselectAsset() : selectAsset(asset)">
           <div class="asset-actions">
             <button class="btn danger" i="carbon-trash-can" title="Удалить" @click="deleteAsset(asset._id, asset.title)" />
             <button class="btn" i="carbon-view" title="Просмотреть" @click="viewAsset(asset._id)" />
@@ -85,6 +93,9 @@ onMounted(async() => {
           <div i="carbon-add" class="text-2em" title="Загрузить" />
         </div>
       </div>
+      <button class="btn w-max" :disabled="!selectedAsset._id" @click="close">
+        Прикрепить
+      </button>
     </div>
   </div>
 </template>

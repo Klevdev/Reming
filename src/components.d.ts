@@ -5,7 +5,6 @@ import '@vue/runtime-core'
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
-    Assets: typeof import('./components/modals/Assets.vue')['default']
     AssetsMenu: typeof import('./components/modals/AssetsMenu.vue')['default']
     AssetUpload: typeof import('./components/modals/AssetUpload.vue')['default']
     AssetView: typeof import('./components/modals/AssetView.vue')['default']
@@ -19,9 +18,7 @@ declare module '@vue/runtime-core' {
     Header: typeof import('./components/layout/Header.vue')['default']
     Input: typeof import('./components/inputs/Input.vue')['default']
     InputModal: typeof import('./components/modals/InputModal.vue')['default']
-    'InputModal copy': typeof import('./components/modals/InputModal copy.vue')['default']
     MaterialsContainer: typeof import('./components/MaterialsContainer.vue')['default']
-    Modal: typeof import('./components/modals/Modal.vue')['default']
     Popup: typeof import('./components/modals/Popup.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

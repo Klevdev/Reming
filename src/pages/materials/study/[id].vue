@@ -95,18 +95,25 @@ const getIncorrect = () => {
 const getPercentage = () => {
   return Math.round(getCorrect().length / answers.value.length * 10000) / 100
 }
+
 const save = async() => {
 
 }
 
+const restart = () => {
+  studyComplete.value = false
+  answers.value = []
+
+  currentCardIdx.value = 0
+  currentCardIndex.value = 0
+  currentCardText.value = ''
+  currentCardSide.value = 0
+  currentCardFlipped.value = false
+  cardAnimation.value = ''
+  nextCard()
+}
+
 onMounted(async() => {
-  if (!useUserStore().loggedIn) {
-    useLayoutStore().popup.show({
-      message: 'Для доступа к этой странице необходимо авторизоваться',
-      type: 'error',
-    })
-    router.go(-1)
-  }
   const { data, error } = await request.get(`/materials/${props.id}`)
 
   if (!error)
@@ -121,7 +128,7 @@ onMounted(async() => {
     <section v-if="!studyComplete" class="h-100% flex flex-col justify-between mt-2em">
       <div class="card" :class="cardAnimation" @dblclick="flip">
         <div class="card-idx">
-          {{ currentCardIdx + 1 }}
+          {{ currentCardIndex }}
         </div>
         <div class="card-text">
           {{ currentCardText }}
@@ -148,7 +155,7 @@ onMounted(async() => {
     <section v-else>
       <div class="end-screen">
         <h2 class="font-bold text-1.4em mb-.5em">
-          Итог
+          Результаты
         </h2>
         <div style="display: flex; flex-direction: column; text-align: left;">
           <span style="color: #3EAF7C; margin-right: 10px"><strong>{{ getCorrect().length }}</strong> Правильно</span>
@@ -163,9 +170,14 @@ onMounted(async() => {
         <div v-for="answer in getIncorrect()" :key="answer.idx">
           {{ answer.idx }}) {{ cards[answer.idx].term.text }} - {{ cards[answer.idx].def.text }}
         </div>
-        <button type="button" class="btn mt-1em" @click="save">
-          {{ 'Завершить' }}
-        </button>
+        <div class="flex gap-1em mt-1em">
+          <button type="button" class="btn" @click="save">
+            Завершить
+          </button>
+          <button type="button" class="btn secondary !w-max" @click="restart">
+            Начать&nbsp;заново
+          </button>
+        </div>
       </div>
     </section>
   </main>

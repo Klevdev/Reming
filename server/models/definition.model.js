@@ -8,14 +8,20 @@ const definitionSchema = new mongoose.Schema({
       type: String,
       required: true,
     },
-    attachment: mongoose.Schema.ObjectId,
+    asset: {
+      type: mongoose.Mixed,
+      required: false,
+    },
   },
   def: {
     text: {
       type: String,
       required: true,
     },
-    attachment: mongoose.Schema.ObjectId,
+    asset: {
+      type: mongoose.Mixed,
+      required: false,
+    },
   },
   reversible: {
     type: Boolean,
