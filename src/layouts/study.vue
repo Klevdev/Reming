@@ -18,13 +18,12 @@ const { t } = useI18n()
     justify-content: space-between;
   }
   .layout-wrapper-inner {
-      padding: 0 0 calc(60px + 60px + 1em) 0;
+      padding-bottom: calc(60px + 60px + 1em);
       width: 100%;
       overflow-y: auto;
   }
   @media only screen and (min-width: 600px) {
     .layout-wrapper-inner {
-      padding-left: 0;
       padding-bottom: calc(60px + 1em);
     }
     .page-title {

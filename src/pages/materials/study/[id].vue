@@ -179,7 +179,7 @@ onMounted(async() => {
         </button>
       </div>
     </section>
-    <section v-else class="pt-3em">
+    <section v-else class="pt-3em px-1em">
       <div class="end-screen">
         <h2 class="font-bold text-1.4em mb-.5em">
           Результаты
