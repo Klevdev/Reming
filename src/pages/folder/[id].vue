@@ -34,6 +34,7 @@ onMounted(async() => {
     folderTitle.value = data.title
     await getMaterials()
   }
+  document.getElementById('pageTitle').innerText = folderTitle.value
 })
 </script>
 

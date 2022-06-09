@@ -10,7 +10,7 @@ const { t } = useI18n()
   <div class="layout-wrapper-outer h100%">
     <Sidebar />
     <div class="layout-wrapper-inner">
-      <h1 class="page-title">
+      <h1 id="pageTitle" class="page-title">
         {{ t(`pages.${$route.meta.name}.title`) }}
       </h1>
       <RouterView />
