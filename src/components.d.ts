@@ -19,6 +19,7 @@ declare module '@vue/runtime-core' {
     Input: typeof import('./components/inputs/Input.vue')['default']
     InputModal: typeof import('./components/modals/InputModal.vue')['default']
     MaterialsContainer: typeof import('./components/MaterialsContainer.vue')['default']
+    MaterialStats: typeof import('./components/modals/MaterialStats.vue')['default']
     Popup: typeof import('./components/modals/Popup.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

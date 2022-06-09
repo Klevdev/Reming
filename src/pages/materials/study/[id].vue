@@ -143,11 +143,17 @@ onMounted(async() => {
 
 <template>
   <main class="h-100%">
-    <section v-if="!studyComplete" class="h-100% flex flex-col justify-between mt-2em">
+    <div v-if="!studyComplete">
+      <div class="progress" :style="`width: ${Math.floor(currentCardIndex * 100 / Object.keys(cards).length) }vw`" />
+      <div class="text-center pt-1em">
+        {{ currentCardIndex+1 }} / {{ Object.keys(cards).length }}
+      </div>
+    </div>
+    <section v-if="!studyComplete" class="h-100% flex flex-col justify-between mt-1em">
       <div class="card" :class="cardAnimation" @dblclick="flip">
-        <div class="card-idx">
+        <!-- <div class="card-idx">
           {{ currentCardIndex + 1 }}
-        </div>
+        </div> -->
         <div class="card-text">
           {{ currentCardText }}
         </div>
@@ -173,7 +179,7 @@ onMounted(async() => {
         </button>
       </div>
     </section>
-    <section v-else>
+    <section v-else class="pt-3em">
       <div class="end-screen">
         <h2 class="font-bold text-1.4em mb-.5em">
           Результаты
@@ -205,6 +211,12 @@ onMounted(async() => {
 </template>
 
 <style scoped>
+.progress {
+  height: 3px;
+  background-color: #3EAF7C;
+  transition: width .2s ease-in;
+}
+
 @keyframes appear {
   0% {
     opacity: 0;
