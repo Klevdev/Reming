@@ -34,6 +34,7 @@ app.all('/test', authorize(false), (req, res) => {
 
 app.use(['/users', '/user'], require('./routes/users.route.js'))
 app.use(['/materials', '/material'], require('./routes/materials.route.js'))
+app.use(['/studies', '/study'], require('./routes/studies.route.js'))
 
 app.listen(process.env.PORT || 3000)
 console.log(`Server is listening on http://localhost:${process.env.PORT || 3000}`)

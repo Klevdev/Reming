@@ -78,29 +78,42 @@ const nextCard = () => {
     currentCardFlipped.value = false
   }
 }
-const answer = (correct) => {
+const answer = (isCorrect) => {
   answers.value.push({
+    itemId: cards.value[currentCardIndex.value]._id,
     idx: currentCardIndex.value,
-    correct,
+    isCorrect,
   })
-  cardAnimation.value = correct ? 'correct' : 'incorrect'
+  cardAnimation.value = isCorrect ? 'correct' : 'incorrect'
   setTimeout(() => {
     cardAnimation.value = ''
     nextCard()
   }, 500)
 }
 const getCorrect = () => {
-  return answers.value.filter(answer => answer.correct)
+  return answers.value.filter(answer => answer.isCorrect)
 }
 const getIncorrect = () => {
-  return answers.value.filter(answer => !answer.correct)
+  return answers.value.filter(answer => !answer.isCorrect)
 }
 const getPercentage = () => {
   return Math.round(getCorrect().length / answers.value.length * 10000) / 100
 }
 
 const save = async() => {
-  router.go(-1)
+  const formData = {
+    materialId: props.id,
+    results: answers.value.map((entry) => { return { itemId: entry.itemId, isCorrect: entry.isCorrect } }),
+  }
+  const { data, error } = await request.post('/study', formData)
+
+  if (!error) {
+    layoutStore.popup.show({
+      type: 'success',
+      message: 'Ваш результат сохранён',
+    })
+    router.go(-1)
+  }
 }
 
 const restart = () => {

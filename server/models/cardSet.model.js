@@ -64,7 +64,7 @@ cardSetSchema.methods._update = async function(update) {
 cardSetSchema.methods._get = async function() {
   const definitions = {}
   for (const idx in this.definitions) {
-    const def = await Definition.findById(this.definitions[idx], { _id: 0 })
+    const def = await Definition.findById(this.definitions[idx])
     definitions[idx] = def
   }
   return {
