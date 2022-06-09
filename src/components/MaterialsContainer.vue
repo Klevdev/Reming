@@ -45,7 +45,7 @@ const { materials } = defineProps({
   </div>
 </template>
 
-<style>
+<style scoped>
   .material {
     @apply rounded;
     display: flex;
