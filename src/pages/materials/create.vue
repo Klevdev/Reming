@@ -80,13 +80,13 @@ const submitForms = async() => {
     router.push('/my-materials')
 }
 
-onBeforeMount(() => {
+onMounted(() => {
   if (!useUserStore().loggedIn) {
     useLayoutStore().popup.show({
       message: 'Для доступа к этой странице необходимо авторизоваться',
       type: 'error',
     })
-    useRouter().go(-1)
+    router.go(-1)
   }
 })
 </script>

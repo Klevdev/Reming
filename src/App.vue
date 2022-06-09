@@ -42,4 +42,5 @@ onMounted(async() => {
   <InputModal v-if="layoutStore.inputModal.shown" />
   <AssetUpload v-if="layoutStore.assetUpload.shown" />
   <AssetView v-if="layoutStore.assetView.shown" />
+  <FolderCreate v-if="layoutStore.folderCreate.shown" />
 </template>

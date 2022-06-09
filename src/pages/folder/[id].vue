@@ -5,9 +5,14 @@ import { useLayoutStore } from '~/stores/layout'
 
 const router = useRouter()
 const { t } = useI18n()
+const layoutStore = useLayoutStore()
+
+const props = defineProps<{ id: string }>()
+
+const folderTitle = ref('Папка')
 
 useHead({
-  title: t('pages.library.title'),
+  title: folderTitle,
   meta: [
     { name: 'description', content: '' },
   ],
@@ -15,30 +20,31 @@ useHead({
 
 const materials = ref([])
 
-onMounted(async() => {
-  if (!useUserStore().loggedIn) {
-    useLayoutStore().popup.show({
-      message: 'Для доступа к этой странице необходимо авторизоваться',
-      type: 'error',
-    })
-    router.go(-1)
-  }
-  const { data, error } = await request.get('/materials/public')
+const getMaterials = async() => {
+  const { data, error } = await request.get(`/materials/${props.id}/content`)
 
   if (!error)
     materials.value = data
-})
+}
 
+onMounted(async() => {
+  const { data, error } = await request.get(`/materials/${props.id}`)
+
+  if (!error) {
+    folderTitle.value = data.title
+    await getMaterials()
+  }
+})
 </script>
 
 <template>
-  <main>
+  <main class="flex flex-col gap-1em">
     <materials-container :materials="materials" />
   </main>
 </template>
 
 <route lang="yaml">
 meta:
-  name: library
+  name: folder
   layout: default
 </route>

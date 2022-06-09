@@ -56,6 +56,7 @@ const color = () => {
 
 <style scoped>
   .popup {
+    z-index: 999;
     @apply rounded drop-shadow-lg;
     position: absolute;
     top: calc(60px + 1em);

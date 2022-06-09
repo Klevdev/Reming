@@ -30,6 +30,7 @@ material:
     questionBank: Questions Bank
     test: Test
     article: Article
+    folder: Folder
   privacy:
     public: Public
     private: Private

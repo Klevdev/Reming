@@ -5,6 +5,7 @@ import { useLayoutStore } from '~/stores/layout'
 
 const router = useRouter()
 const { t } = useI18n()
+const layoutStore = useLayoutStore()
 
 useHead({
   title: t('pages.my-materials.title'),
@@ -36,20 +37,17 @@ const goToEditor = (type) => {
 }
 
 onMounted(async() => {
-  const { data, error } = await request.get('/materials/personal')
-
-  if (!error)
-    materials.value = data
-})
-
-onBeforeMount(() => {
   if (!useUserStore().loggedIn) {
     useLayoutStore().popup.show({
       message: 'Для доступа к этой странице необходимо авторизоваться',
       type: 'error',
     })
-    useRouter().go(-1)
+    router.go(-1)
   }
+  const { data, error } = await request.get('/materials/personal')
+
+  if (!error)
+    materials.value = data
 })
 </script>
 
@@ -117,6 +115,10 @@ onBeforeMount(() => {
             <button class="menu-item" @click="goToEditor('test')">
               <div i-carbon-text-annotation-toggle />
               <span>{{ t('material.types.test') }}</span>
+            </button>
+            <button class="menu-item" @click="layoutStore.folderCreate.open()">
+              <div i-carbon-folder />
+              <span>{{ t('material.types.folder') }}</span>
             </button>
           </nav>
         </div>

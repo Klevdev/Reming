@@ -13,6 +13,7 @@ declare module '@vue/runtime-core' {
     CardSetContent: typeof import('./components/content/CardSetContent.vue')['default']
     CardSetEditor: typeof import('./components/editors/CardSetEditor.vue')['default']
     Confirm: typeof import('./components/modals/Confirm.vue')['default']
+    FolderCreate: typeof import('./components/modals/FolderCreate.vue')['default']
     GlossaryContent: typeof import('./components/content/GlossaryContent.vue')['default']
     GlossaryEditor: typeof import('./components/editors/GlossaryEditor.vue')['default']
     Header: typeof import('./components/layout/Header.vue')['default']

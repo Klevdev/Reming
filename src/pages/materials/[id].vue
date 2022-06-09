@@ -49,21 +49,20 @@ const remove = async() => {
 }
 
 onMounted(async() => {
+  if (!useUserStore().loggedIn) {
+    useLayoutStore().popup.show({
+      message: 'Для доступа к этой странице необходимо авторизоваться',
+      type: 'error',
+    })
+    router.go(-1)
+  }
   const { data, error } = await request.get(`/materials/${props.id}`)
 
   if (!error)
     materialInfo.value = data
   await getContent()
 })
-onBeforeMount(() => {
-  if (!useUserStore().loggedIn) {
-    useLayoutStore().popup.show({
-      message: 'Для доступа к этой странице необходимо авторизоваться',
-      type: 'error',
-    })
-    useRouter().go(-1)
-  }
-})
+
 </script>
 
 <template>

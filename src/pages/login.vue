@@ -3,6 +3,7 @@ import request from '~/composables/request'
 import { useUserStore } from '~/stores/user'
 import { useLayoutStore } from '~/stores/layout'
 
+const router = useRouter()
 const { t } = useI18n()
 
 useHead({
@@ -35,7 +36,7 @@ const submitForm = async() => {
 
   if (!error) {
     user.login(data)
-    useRouter().push('/')
+    router.push('/')
   }
 }
 
@@ -45,7 +46,7 @@ onBeforeMount(() => {
       message: 'Вы уже авторизованны',
       type: 'error',
     })
-    useRouter().push('/')
+    router.push('/')
   }
 })
 

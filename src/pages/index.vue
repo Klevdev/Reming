@@ -29,19 +29,8 @@ onBeforeMount(() => {
 
 <template>
   <main>
-    <button class="btn" @click="layoutStore.assetsMenu.open(asset)">
-      assetsMenu
-    </button>
-    <div>{{ asset }}</div>
-    <button class="btn" @click="layoutStore.inputModal.open('Введите значение', value)">
-      inputModal
-    </button>
-    <div>{{ value.value }}</div>
-    <button class="btn" @click="layoutStore.assetUpload.open()">
-      AssetUpload
-    </button>
-    <button class="btn" @click="layoutStore.popup.show({message: 'Текст всплывающего оповещения', type: 'info'})">
-      Popup
+    <button class="btn" @click="layoutStore.folderCreate.open()">
+      create folder
     </button>
   </main>
 </template>

@@ -122,6 +122,16 @@ export const useLayoutStore = defineStore('layout', () => {
     },
   }
 
+  const folderCreate = {
+    shown: ref(false),
+    open: () => {
+      folderCreate.shown.value = true
+    },
+    close: () => {
+      folderCreate.shown.value = false
+    },
+  }
+
   return {
     sidebarCollapsed,
     userPanelShow,
@@ -133,6 +143,7 @@ export const useLayoutStore = defineStore('layout', () => {
     inputModal,
     assetUpload,
     assetView,
+    folderCreate,
   }
 })
 

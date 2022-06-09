@@ -21,6 +21,14 @@ const user = useUserStore()
 const userData = reactive({})
 
 onMounted(async() => {
+  if (!useUserStore().loggedIn) {
+    useLayoutStore().popup.show({
+      message: 'Для доступа к этой странице необходимо авторизоваться',
+      type: 'error',
+    })
+    router.go(-1)
+  }
+
   const { data, error } = await request.get('/user/self')
   if (!error) {
     userData.name = data.name
@@ -79,16 +87,6 @@ const toggleLocales = () => {
   const locales = availableLocales
   locale.value = locales[(locales.indexOf(locale.value) + 1) % locales.length]
 }
-
-onBeforeMount(() => {
-  if (!useUserStore().loggedIn) {
-    useLayoutStore().popup.show({
-      message: 'Для доступа к этой странице необходимо авторизоваться',
-      type: 'error',
-    })
-    useRouter().go(-1)
-  }
-})
 
 </script>
 

@@ -28,6 +28,7 @@ material:
     questionBank: Банк вопросов
     test: Тест
     article: Статья
+    folder: Папка
   privacy:
     public: Доступен в библиотеке
     private: Личный

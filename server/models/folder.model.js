@@ -1,5 +1,4 @@
 const mongoose = require('mongoose')
-// const Material = require('./material.model.js')
 
 mongoose.connect(process.env.DB_URL)
 
@@ -32,7 +31,9 @@ folderSchema.methods._update = async function(materials) {
 }
 
 folderSchema.methods._get = async function() {
-  return this.materials
+  const Material = require('./material.model.js')
+  const materials = await Material.find({ _id: { $in: this.materials } })
+  return materials
 }
 
 // folderSchema.pre('remove', async function(next) {
