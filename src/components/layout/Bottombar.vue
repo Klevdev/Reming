@@ -21,7 +21,7 @@
       <router-link class="menu-item" to="">
         <div i-carbon-calendar />
       </router-link>
-      <router-link class="menu-item" to="">
+      <router-link class="menu-item" to="/stats">
         <div i-carbon-dashboard />
       </router-link>
     </nav>

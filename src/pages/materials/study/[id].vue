@@ -103,6 +103,7 @@ const getPercentage = () => {
 const save = async() => {
   const formData = {
     materialId: props.id,
+    // perc: getPercentage(),
     results: answers.value.map((entry) => { return { itemId: entry.itemId, isCorrect: entry.isCorrect } }),
   }
   const { data, error } = await request.post('/study', formData)

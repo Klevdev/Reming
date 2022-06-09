@@ -13,6 +13,7 @@ const studySchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  resultsCount: Number,
   results: {
     type: Object,
     required: true,
