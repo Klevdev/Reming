@@ -63,6 +63,10 @@ onMounted(async() => {
       </div>
       <materials-container v-show="sectionsShown.all" :materials="[...materials.created, ...materials.saved, ...materials.shared]" />
     </section>
+    <div v-else>
+      У вас пока нет материалов<br>
+      Нажмите кнопку Создать чтобы создать тест или набор карточек
+    </div>
     <section v-if="materials.created.length">
       <div class="flex gap-5px mb-1em">
         <h2>{{ t('pages.my-materials.created') }}</h2>
