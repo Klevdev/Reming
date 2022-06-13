@@ -6,6 +6,7 @@ import { useUserStore } from '~/stores/user'
 import { useLayoutStore } from '~/stores/layout'
 
 const userStore = useUserStore()
+const layoutStore = useLayoutStore()
 const props = defineProps<{ id: string }>()
 const router = useRouter()
 const { t } = useI18n()
@@ -48,19 +49,31 @@ const remove = async() => {
     materialInfo.value.isSaved = false
 }
 
+const rate = async(score) => {
+  const { data, error } = await request.patch(`/materials/${materialInfo.value._id}/rate`, { score })
+
+  if (!error) {
+    layoutStore.popup.show({
+      type: 'success',
+      message: 'Ваш отзыв сохранён',
+    })
+  }
+}
+
 onMounted(async() => {
-  if (!useUserStore().loggedIn) {
+  const { data, error } = await request.get(`/materials/${props.id}`)
+
+  if (!error)
+    materialInfo.value = data
+  await getContent()
+
+  if (!useUserStore().loggedIn && !materialInfo.value.privacy?.public) {
     useLayoutStore().popup.show({
       message: 'Для доступа к этой странице необходимо авторизоваться',
       type: 'error',
     })
     router.go(-1)
   }
-  const { data, error } = await request.get(`/materials/${props.id}`)
-
-  if (!error)
-    materialInfo.value = data
-  await getContent()
 })
 
 </script>
@@ -75,17 +88,34 @@ onMounted(async() => {
           </h2>
           <div>{{ materialInfo.description }}</div>
           <dl>
-            <div class="flex flex-row gap-1em">
+            <div class="flex flex-row gap-1em w-max">
               <dt>{{ t('pages.material-view.user') }}:</dt>
               <dd>{{ materialInfo.user?.name }}</dd>
             </div>
-            <div class="flex flex-row gap-1em">
+            <div class="flex flex-row gap-1em w-max">
               <dt>{{ t('pages.material-view.created-at') }}:</dt>
               <dd>{{ dateToString(materialInfo.createdAt) }}</dd>
             </div>
-            <div class="flex flex-row gap-1em">
+            <div class="flex flex-row gap-1em w-max">
               <dt>{{ t('pages.material-view.updated-at') }}:</dt>
               <dd>{{ dateToString(materialInfo.updatedAt) }}</dd>
+            </div>
+            <div class="flex flex-row gap-1em w-max">
+              <dt>Рейтинг:</dt>
+              <dd class="flex items-center gap-.2em">
+                <div>{{ materialInfo.avgRating }}</div>
+                <div i-carbon-star />
+              </dd>
+            </div>
+            <div v-if="materialInfo.privacy?.public" class="flex flex-row gap-1em">
+              <dt>Оценить</dt>
+              <dd class="flex flex-row-reverse items-center w-max">
+                <div class="star" i-carbon-star @click="rate(5)" />
+                <div class="star" i-carbon-star @click="rate(4)" />
+                <div class="star" i-carbon-star @click="rate(3)" />
+                <div class="star" i-carbon-star @click="rate(2)" />
+                <div class="star" i-carbon-star @click="rate(1)" />
+              </dd>
             </div>
           </dl>
           <!-- <div>{{ materialInfo.tags }}</div> -->
@@ -130,6 +160,16 @@ main {
   background: var(--bg);
 }
 
+.star {
+  transition: color .2s ease-in;
+}
+
+.star:hover,
+.star:hover ~ .star {
+  cursor: pointer;
+  color: teal;
+}
+
 @media only screen and (min-width: 600px) {
   main {
     flex-direction: column;
@@ -167,7 +207,6 @@ main {
     grid-row: 2;
   }
 }
-
 </style>
 
 <route lang="yaml">

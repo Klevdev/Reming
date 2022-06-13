@@ -159,7 +159,7 @@ materialSchema.methods.short = async function(userId) {
 }
 
 materialSchema.methods.full = async function(userId) {
-  return await this.project(['_id', 'title', 'type', 'user', 'description', 'createdAt', 'updatedAt', 'avgRating', 'views', 'tags'], userId)
+  return await this.project(['_id', 'title', 'type', 'user', 'description', 'createdAt', 'updatedAt', 'avgRating', 'views', 'tags', 'privacy'], userId)
 }
 
 materialSchema.statics.createContent = async function(type, content) {

@@ -330,6 +330,9 @@ onMounted(async() => {
   left: 1em;
 }
 
+.asset:hover {
+  cursor: pointer;
+}
 .end-screen {
   @apply rounded;
   margin: 0 auto;

@@ -15,7 +15,7 @@ interface userData {
 }
 
 export const useUserStore = defineStore('user', () => {
-  const loggedIn = ref(true)
+  const loggedIn = ref(false)
   const _id = ref('')
   const name = ref('')
   const picture = ref('')
