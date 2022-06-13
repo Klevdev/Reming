@@ -21,14 +21,14 @@ onMounted(() => {
   }, 5 * 1000)
 })
 
-const icon = () => {
-  if (layoutStore.popup.type === 'error')
-    return 'carbon-misuse-alt'
-  if (layoutStore.popup.type === 'success')
-    return 'carbon-checkmark-outline'
-  if (layoutStore.popup.type === 'info')
-    return 'carbon-information'
-}
+// const icon = () => {
+//   if (layoutStore.popup.type === 'error')
+//     return 'carbon-misuse-alt'
+//   if (layoutStore.popup.type === 'success')
+//     return 'carbon-checkmark-outline'
+//   if (layoutStore.popup.type === 'info')
+//     return 'carbon-information'
+// }
 
 const color = () => {
   if (layoutStore.popup.type === 'error')
@@ -44,7 +44,7 @@ const color = () => {
 <template>
   <div class="popup" :class=" {'transparent': popupTransparent}">
     <div class="flex justify-between items-center gap-1em p-1em">
-      <div class="text-1.2em" :i="icon()" :class="color()" />
+      <div class="text-1.2em" :i="layoutStore.popup.type === 'error' ? 'carbon-misuse-alt' : (layoutStore.popup.type === 'success' ? 'carbon-checkmark-outline' : 'carbon-information')" :class="color()" />
       <div class=" w-100% max-w-100%">
         {{ layoutStore.popup.message }}
       </div>

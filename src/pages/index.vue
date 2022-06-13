@@ -29,8 +29,13 @@ onBeforeMount(() => {
 
 <template>
   <main>
-    <button class="btn" @click="layoutStore.folderCreate.open()">
-      create folder
+    <button
+      class="btn" @click="layoutStore.popup.show({
+        message: 'Test',
+        type: 'info',
+      })"
+    >
+      pop
     </button>
   </main>
 </template>
