@@ -11,6 +11,8 @@ const { loggedIn: userLoggedIn, name: userName, picture: userPicture } = storeTo
 
 const userPanelSwitch = ref(null)
 onClickOutside(userPanelSwitch, () => layoutStore.toggleUserPanel(false))
+const notificationsPanel = ref(null)
+onClickOutside(notificationsPanel, () => layoutStore.toggleNotifications(false))
 </script>
 
 <template>
@@ -21,9 +23,9 @@ onClickOutside(userPanelSwitch, () => layoutStore.toggleUserPanel(false))
       </router-link>
     </div>
     <div v-else class="flex flex-row">
-      <div id="notifications">
+      <button id="notifications" ref="notificationsPanel" @click="layoutStore.toggleNotifications()">
         <div i="carbon-notification" />
-      </div>
+      </button>
       <div id="user" ref="userPanelSwitch" @click="layoutStore.toggleUserPanel()">
         <img v-if="userPicture" id="userPicture" :src="`http://localhost:3001/${userPicture}`" alt="user picture">
         <div v-else class="text-2em" i="carbon-user-avatar-filled-alt" />
@@ -43,6 +45,7 @@ onClickOutside(userPanelSwitch, () => layoutStore.toggleUserPanel(false))
         </nav>
       </div>
     </transition>
+    <Notifications ref="notificationsPanel" />
   </div>
 </template>
 
