@@ -23,10 +23,10 @@ app.use(cors({
   credentials: true,
 }))
 
-app.use((req, res, next) => {
-  console.log(req.body)
-  next()
-})
+// app.use((req, res, next) => {
+//   console.log(req.body)
+//   next()
+// })
 
 app.all('/test', authorize(false), (req, res) => {
   return res.sendData(200, { test: 'Test', user: req.user || 'not authorized' })

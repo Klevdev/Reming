@@ -42,6 +42,14 @@ const { materials } = defineProps({
           {{ tag }}
         </div>
       </div>
+      <div v-if="material.avgRating" class="flex items-center gap-.2em">
+        <div v-if="material.avgRating >= 1" i-carbon-star />
+        <div v-if="material.avgRating >= 2" i-carbon-star />
+        <div v-if="material.avgRating >= 3" i-carbon-star />
+        <div v-if="material.avgRating >= 4" i-carbon-star />
+        <div v-if="material.avgRating === 5" i-carbon-star />
+        ({{ material.avgRating }})
+      </div>
       <div class="flex flex-row items-center mt-a">
         <router-link v-if="material.type !== 'folder'" :to="`/materials/study/${material._id}`" class="btn">
           <div i="carbon-play" />
