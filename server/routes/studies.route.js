@@ -29,12 +29,18 @@ router.get('/', async (req, res) => {
 })
 
 // router.get('/:materialId', async (req, res) => {
-//   const studies = await Study.getOne(req.user._id, req.params.materialId)
+//   const study = await Study.getOne(req.user._id, req.params.materialId)
 
-//   return res.sendData(200, studies)
+//   return res.sendData(200, study)
 // })
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:materialId', async (req, res) => {
+  const study = await Study.findOne({userId: req.user._id, materialId: req.params.materialId})
+  if (!study) {
+    return res.sendError(404, 'Записей не найдено')
+  }
+  await study.delete()
+  return res.sendData(200)
 })
 
 module.exports = router

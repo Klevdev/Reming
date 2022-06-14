@@ -5,6 +5,7 @@ import { useLayoutStore } from '~/stores/layout'
 
 const { t } = useI18n()
 const layoutStore = useLayoutStore()
+const router = useRouter()
 
 const bgTransparent = ref(true)
 const modalTransparent = ref(true)
@@ -22,7 +23,13 @@ const statsModal = ref(null)
 onClickOutside(statsModal, () => close())
 
 const deleteStats = async() => {
-
+  const { data, error } = await request.delete(`/studies/${layoutStore.materialStats.materialId}`)
+  if (!error) {
+    layoutStore.popup.show({
+      message: 'Статистика материала удалена',
+      type: 'info',
+    })
+  }
 }
 
 const materialContent = ref({})
