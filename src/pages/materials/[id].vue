@@ -88,6 +88,11 @@ onMounted(async() => {
           </h2>
           <div>{{ materialInfo.description }}</div>
           <dl>
+            <div v-if="materialInfo.tags?.length" class="pb-.5em flex flex-row items-center flex-wrap gap-.5em">
+              <div v-for="tag in materialInfo.tags" :key="tag" class="tag">
+                {{ tag }}
+              </div>
+            </div>
             <div class="flex flex-row gap-1em w-max">
               <dt>{{ t('pages.material-view.user') }}:</dt>
               <dd>{{ materialInfo.user?.name }}</dd>
@@ -102,9 +107,12 @@ onMounted(async() => {
             </div>
             <div class="flex flex-row gap-1em w-max">
               <dt>Рейтинг:</dt>
-              <dd class="flex items-center gap-.2em">
+              <dd v-if="materialInfo.avgRating > 0" class="flex items-center gap-.2em">
                 <div>{{ materialInfo.avgRating }}</div>
                 <div i-carbon-star />
+              </dd>
+              <dd v-else>
+                Нет оценок
               </dd>
             </div>
             <div v-if="materialInfo.privacy?.public" class="flex flex-row gap-1em">
@@ -118,7 +126,6 @@ onMounted(async() => {
               </dd>
             </div>
           </dl>
-          <!-- <div>{{ materialInfo.tags }}</div> -->
         </div>
       </section>
       <section id="actions" class="container pt-1em w-max flex gap-.5em mb-1em">
@@ -168,6 +175,14 @@ main {
 .star:hover ~ .star {
   cursor: pointer;
   color: teal;
+}
+
+.tag {
+  @apply rounded;
+  color: white;
+  background-color: var(--btn-disabled);
+  font-size: .8em;
+  padding: .3em .8em;
 }
 
 @media only screen and (min-width: 600px) {

@@ -49,6 +49,12 @@ const inputProps = {
     label: 'Описание',
     placeholder: 'Описание',
   },
+  newTag: {
+    type: 'input',
+    required: false,
+    label: 'Добавить тег',
+    placeholder: '',
+  },
 }
 
 const materialInfo = ref({
@@ -61,6 +67,22 @@ const materialInfo = ref({
   },
   tags: [],
 })
+
+const newTag = ref('')
+const addTag = () => {
+  materialInfo.value.tags.push(newTag.value)
+  newTag.value = ''
+}
+const deleteTag = (targetTag) => {
+  for (let i = 0; i < materialInfo.value.tags.length; i++) {
+    const tag = materialInfo.value.tags[i]
+    if (tag === targetTag) {
+      materialInfo.value.tags.splice(i, 1)
+      break
+    }
+  }
+  // materialInfo.value.tags = materialInfo.value.tags.filter(tag => tag !== targetTag)
+}
 
 const content = ref({})
 
@@ -95,23 +117,46 @@ onMounted(() => {
   <main>
     <div class="flex flex-col gap-1em ">
       <section id="materialInfo" class="container">
-        <form class="flex flex-col justify-center text-center gap-1em max-w-45vw" @submit.prevent="">
+        <form class="flex flex-col justify-center gap-1em" @submit.prevent="">
           <Input v-model="materialInfo.title" :props="inputProps.title" />
           <Input v-model="materialInfo.description" :props="inputProps.description" />
-          <select v-model="materialInfo.privacy">
-            <option :value="privacySettings.private">
-              {{ t('material.privacy.private') }}
-            </option>
-            <option :value="privacySettings.public">
-              {{ t('material.privacy.public') }}
-            </option>
-            <option :value="privacySettings.byLink">
-              {{ t('material.privacy.by-link') }}
-            </option>
+          <label>
+            <div class="mb-8px">Настройки доступа</div>
+            <select v-model="materialInfo.privacy">
+              <option :value="privacySettings.private">
+                {{ t('material.privacy.private') }}
+              </option>
+              <option :value="privacySettings.public">
+                {{ t('material.privacy.public') }}
+              </option>
+              <option :value="privacySettings.byLink">
+                {{ t('material.privacy.by-link') }}
+              </option>
             <!-- <option :value="privacySettings.byUser">
               {{ t('material.privacy.by-user')}}
             </option> -->
-          </select>
+            </select>
+          </label>
+
+          <label v-if="materialInfo.tags?.length">
+            <div class="mb-8px">Теги</div>
+            <div class="flex flex-row items-center flex-wrap gap-.5em max-w-300px">
+              <div v-for="tag in materialInfo.tags" :key="tag" class="tag">
+                <div>{{ tag }}</div>
+                <button class="icon-btn" i="carbon-close" @click="deleteTag(tag)" />
+              </div>
+            </div>
+          </label>
+
+          <label>
+            <div class="mb-8px">Добавить тег</div>
+            <div class="flex gap-.5em items-center">
+              <input v-model="newTag" type="text">
+              <button class="btn w-max py-6px" :disabled="!newTag.length" @click="addTag">
+                <div i="carbon-add" />
+              </button>
+            </div>
+          </label>
         </form>
       </section>
       <section id="actions" class="container pt-1em w-max flex gap-.5em mb-1em">
@@ -143,6 +188,47 @@ main {
   background: var(--bg);
 }
 
+select {
+  max-width: 300px;
+  @apply rounded;
+  /* background-color: var(--bg); */
+  border: 2px solid var(--border-input);
+  padding: .25em;
+  transition: border .2s ease-in-out;
+}
+
+select:focus,
+select:active {
+  border: 2px solid var(--primary-active)
+}
+
+.tag {
+  @apply rounded flex items-center gap-.2em;
+  color: white;
+  background-color: var(--btn-disabled);
+  font-size: .8em;
+  padding: .3em .8em;
+}
+
+input,
+textarea {
+  @apply rounded;
+  outline: none;
+  padding: .25em;
+  width: 300px;
+  background: var(--bg-back);
+  border: 2px solid var(--border-input);
+  transition: border .2s ease-in-out;
+}
+
+input:focus,
+input:active {
+  border: 2px solid var(--primary-active)
+}
+
+input:hover {
+  border: 2px solid var(--primary)
+}
 @media only screen and (min-width: 600px) {
   main {
     flex-direction: row;

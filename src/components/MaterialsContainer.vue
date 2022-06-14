@@ -61,34 +61,34 @@ const { materials } = defineProps({
 </template>
 
 <style scoped>
+.material {
+  @apply rounded;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg);
+  width: 200px;
+  /* height: max-content; */
+  padding: 1em;
+  gap: 1em;
+  transition: box-shadow .2s;
+}
+
+.material:hover,
+.material:active {
+  @apply drop-shadow;
+}
+.tag {
+  @apply rounded;
+  color: white;
+  background-color: var(--btn-disabled);
+  font-size: .8em;
+  padding: .3em .8em;
+}
+
+@media only screen and (min-width: 600px) {
   .material {
-    @apply rounded;
-    display: flex;
-    flex-direction: column;
-    background-color: var(--bg);
-    width: 200px;
-    /* height: max-content; */
-    padding: 1em;
-    gap: 1em;
-    transition: box-shadow .2s;
+    width: 300px;
   }
-
-  .material:hover,
-  .material:active {
-    @apply drop-shadow;
-  }
-  .tag {
-    @apply rounded;
-    color: white;
-    background-color: var(--btn-disabled);
-    font-size: .8em;
-    padding: .3em .8em;
-  }
-
-  @media only screen and (min-width: 600px) {
-    .material {
-      width: 300px;
-    }
-  }
+}
 
 </style>

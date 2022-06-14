@@ -39,7 +39,7 @@ onMounted(async() => {
 
 const inputProps = {
   name: {
-    label: 'Username',
+    label: 'Имя пользователя',
     placeholder: userData.name,
   },
   email: {
@@ -48,14 +48,14 @@ const inputProps = {
     placeholder: userData.email,
   },
   password: {
-    label: 'Password',
+    label: 'Пароль',
     type: 'password',
     placeholder: userData.password,
   },
   bio: {
-    label: 'About',
+    label: 'Обо мне',
     type: 'textarea',
-    placeholder: 'Write something',
+    placeholder: 'Изучаю...',
   },
 }
 
