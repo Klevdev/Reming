@@ -73,15 +73,8 @@ const addTag = () => {
   materialInfo.value.tags.push(newTag.value)
   newTag.value = ''
 }
-const deleteTag = (targetTag) => {
-  for (let i = 0; i < materialInfo.value.tags.length; i++) {
-    const tag = materialInfo.value.tags[i]
-    if (tag === targetTag) {
-      materialInfo.value.tags.splice(i, 1)
-      break
-    }
-  }
-  // materialInfo.value.tags = materialInfo.value.tags.filter(tag => tag !== targetTag)
+const deleteTag = (index) => {
+  materialInfo.value.tags.splice(index, 1)
 }
 
 const content = ref({})
@@ -138,32 +131,32 @@ onMounted(() => {
             </select>
           </label>
 
-          <label v-if="materialInfo.tags?.length">
-            <div class="mb-8px">Теги</div>
-            <div class="flex flex-row items-center flex-wrap gap-.5em max-w-300px">
-              <div v-for="tag in materialInfo.tags" :key="tag" class="tag">
-                <div>{{ tag }}</div>
-                <button class="icon-btn" i="carbon-close" @click="deleteTag(tag)" />
-              </div>
-            </div>
-          </label>
-
           <label>
             <div class="mb-8px">Добавить тег</div>
             <div class="flex gap-.5em items-center">
               <input v-model="newTag" type="text">
-              <button class="btn w-max py-6px" :disabled="!newTag.length" @click="addTag">
+              <button class="btn w-max py-6px" :disabled="!newTag.length" type="button" @click="addTag">
                 <div i="carbon-add" />
               </button>
+            </div>
+          </label>
+
+          <label v-if="materialInfo.tags?.length">
+            <div class="mb-8px">Теги</div>
+            <div class="flex flex-row items-center flex-wrap gap-.5em max-w-300px">
+              <div v-for="(tag, index) in materialInfo.tags" :key="index" class="tag">
+                <div>{{ tag }}</div>
+                <button type="button" class="icon-btn" i="carbon-close" @click="deleteTag(index)" />
+              </div>
             </div>
           </label>
         </form>
       </section>
       <section id="actions" class="container pt-1em w-max flex gap-.5em mb-1em">
-        <button class="btn" :disabled="Object.keys(content).length < 1" @click="submitForms">
+        <button class="btn" :disabled="Object.keys(content).length < 1" type="button" @click="submitForms">
           {{ t('pages.create.btn-create') }}
         </button>
-        <button class="btn" @click="cancel">
+        <button class="btn" type="button" @click="cancel">
           {{ t('pages.create.btn-cancel') }}
         </button>
       </section>
@@ -171,6 +164,7 @@ onMounted(() => {
     <section id="materialContent" class="container">
       <glossary-editor v-if="type === 'glossary'" v-model="content" />
       <card-set-editor v-if="type === 'cardSet'" v-model="content" />
+      <test-editor v-if="type === 'test'" v-model="content" />
     </section>
   </main>
 </template>
