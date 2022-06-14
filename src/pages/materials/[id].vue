@@ -31,8 +31,13 @@ const getContent = async() => {
 const deleteMaterial = async() => {
   const { data, error } = await request.delete(`/materials/${props.id}`)
 
-  if (!error)
+  if (!error) {
+    layoutStore.popup.show({
+      message: 'Материал удалён',
+      type: 'info',
+    })
     router.push('/my-materials')
+  }
 }
 
 const save = async() => {
@@ -129,7 +134,7 @@ onMounted(async() => {
         </div>
       </section>
       <section id="actions" class="container pt-1em w-max flex gap-.5em mb-1em">
-        <router-link v-if="materialInfo.type === 'cardSet' || materialInfo.type === 'test'" class="btn" :to="`/materials/study/${materialInfo._id}`">
+        <router-link v-if="materialInfo.type === 'cardSet'" class="btn" :to="`/materials/study/${materialInfo._id}`">
           {{ t('pages.material-view.study') }}
         </router-link>
         <button v-if="!materialInfo.isSaved" class="btn" @click="save">
@@ -141,7 +146,7 @@ onMounted(async() => {
         <!-- <button v-show="materialInfo.user?._id === userStore._id" class="btn">
         {{ t('pages.material-view.edit') }}
       </button> -->
-        <button v-show="materialInfo.user?._id === userStore._id" class="btn danger" @click="deleteMaterial">
+        <button v-show="materialInfo.user?._id === userStore._id" class="btn danger" @click="layoutStore.confirm.open(`Вы уверены что хотите удалить материал ${materialInfo.title}?`, deleteMaterial)">
           {{ t('pages.material-view.delete') }}
         </button>
       </section>
