@@ -129,7 +129,7 @@ onMounted(async() => {
         </div>
       </section>
       <section id="actions" class="container pt-1em w-max flex gap-.5em mb-1em">
-        <router-link v-if="materialInfo.type === 'cardSet'" class="btn" :to="`/materials/study/${materialInfo._id}`">
+        <router-link v-if="materialInfo.type === 'cardSet' || materialInfo.type === 'test'" class="btn" :to="`/materials/study/${materialInfo._id}`">
           {{ t('pages.material-view.study') }}
         </router-link>
         <button v-if="!materialInfo.isSaved" class="btn" @click="save">
@@ -149,6 +149,7 @@ onMounted(async() => {
     <section id="materialContent" class="container">
       <glossary-content v-if="materialInfo.type === 'glossary'" :content="materialContent" />
       <card-set-content v-if="materialInfo.type === 'cardSet'" :content="materialContent" />
+      <test-content v-if="materialInfo.type === 'test'" :content="materialContent" />
     </section>
   </main>
 </template>
