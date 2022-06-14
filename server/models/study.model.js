@@ -37,7 +37,8 @@ studySchema.statics.addEntry = async function(entry) {
     existingLog[0].results[Date.now()] = entry.results
     existingLog[0].markModified('results')
     await existingLog[0].save()
-  } else {
+  }
+  else {
     entry.results = {
       [Date.now()]: entry.results,
     }
@@ -54,6 +55,16 @@ studySchema.statics.getAll = async function(userId) {
 
   return studies
 }
+
+// studySchema.statics.getOne = async function(userId, materialId) {
+//   const studies = await this.find({ userId, materialId })
+//   for (let i = 0; i < studies.length; i++) {
+//     const materialInfo = await Material.findById(studies[i].materialId, { _id: 0 })
+//     studies[i].materialInfo = materialInfo
+//   }
+
+//   return studies
+// }
 
 studySchema.statics.getMaterialEntries = async function(userId, materialId) {
   const studies = await this.find({ materialId, userId })

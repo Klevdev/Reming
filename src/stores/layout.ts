@@ -142,12 +142,15 @@ export const useLayoutStore = defineStore('layout', () => {
   const materialStats = {
     shown: ref(false),
     materialId: ref(''),
-    open: (materialId) => {
+    study: ref({}),
+    open: (materialId, study) => {
       materialStats.materialId.value = materialId
+      materialStats.study.value = study
       materialStats.shown.value = true
     },
     close: () => {
       materialStats.materialId.value = ''
+      materialStats.study.value = {}
       materialStats.shown.value = false
     },
   }

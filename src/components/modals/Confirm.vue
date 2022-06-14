@@ -44,7 +44,7 @@ onMounted(() => {
       </div>
       <div>{{ layoutStore.confirm.message }}</div>
       <div class="flex gap-1em">
-        <button class="btn" @click="close(true)">
+        <button class="btn danger" @click="close(true)">
           Подтвердить
         </button>
         <button class="btn secondary" @click="close(false)">

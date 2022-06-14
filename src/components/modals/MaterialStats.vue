@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import request from '~/composables/request'
-// import { dateToString } from '~/composables/date'
+import { datetimeToString } from '~/composables/date'
 import { useLayoutStore } from '~/stores/layout'
 
 const { t } = useI18n()
@@ -15,43 +15,83 @@ const close = () => {
     bgTransparent.value = true
   }, 200)
   setTimeout(() => {
-    layoutStore.folderCreate.close()
+    layoutStore.materialStats.close()
   }, 400)
 }
 const statsModal = ref(null)
 onClickOutside(statsModal, () => close())
 
-onMounted(() => {
+const deleteStats = async() => {
+
+}
+
+const materialContent = ref({})
+
+onMounted(async() => {
   setTimeout(() => {
     bgTransparent.value = false
   }, 1)
   setTimeout(() => {
     modalTransparent.value = false
   }, 200)
+
+  const { data, error } = await request.get(`/materials/${layoutStore.materialStats.materialId}/content`)
+  if (!error)
+    materialContent.value = data.definitions
 })
 
+const entries = ref([])
+
 // onMounted(async() => {
-//   const { data, error } = await request.get('/materials/personal')
+//   const { data, error } = await request.get(`/studies/${layoutStore.materialStats.materialId}`)
 
 //   if (!error)
-//     materials.value = [...data.created, ...data.saved, ...data.shared]
+//     entries = data
 // })
 </script>
 
 <template>
   <div class="modal-container" :class=" {'transparent': bgTransparent}">
-    <div ref="folderCreateModal" class="modal" :class=" {'transparent': modalTransparent}">
+    <div ref="statsModal" class="modal" :class=" {'transparent': modalTransparent}">
       <div class="flex justify-between items-center">
         <h3 class="font-bold">
-          {{ layoutStore.materialStats.materialId }} - cтатистика
+          {{ layoutStore.materialStats.study.materialInfo.title }} - cтатистика
         </h3>
         <button class="icon-btn" i="carbon-close" @click="close()" />
+      </div>
+      <div class="flex flex-col gap-1em max-h-500px overflow-y-auto ">
+        <div v-for="(entry, date) in layoutStore.materialStats.study.results" :key="date">
+          <div class="font-bold">
+            {{ datetimeToString(parseInt(date)) }}
+          </div>
+          <div class="flex gap-1em overflow-x-auto w-100%">
+            <div v-for="(item, index) in entry" :key="index" class="entry flex flex-col">
+              <div class="text-center w-1em">
+                {{ index + 1 }}
+              </div>
+              <div class="text-center w-1em">
+                <div v-if="item.isCorrect" i-carbon-checkbox-checked class="color-green" />
+                <div v-else i-carbon-checkbox-indeterminate class="color-red" />
+              </div>
+              <!-- <div class="min-w-100px w-35% grid items-center">
+                <div class="w-100% text-left text-ellipsis text-0.8em overflow-hidden">
+                  {{ materialContent[index].term.text }}
+                </div>
+              </div>
+              <div class="min-w-100px w-35% grid items-center">
+                <div class="w-100% text-left text-ellipsis text-0.8em overflow-hidden">
+                  {{ materialContent[index].def.text }}
+                </div>
+              </div> -->
+            </div>
+          </div>
+        </div>
       </div>
       <div class="flex gap-1em">
         <button class="btn" @click="close">
           Закрыть
         </button>
-        <button class="btn danger" @click="close">
+        <button class="btn danger" @click="layoutStore.confirm.open(`Вы уверены что хотете удалить записи о ${layoutStore.materialStats.study.materialInfo.title}?`, deleteStats)">
           Очистить статистику
         </button>
       </div>

@@ -28,6 +28,12 @@ router.get('/', async (req, res) => {
   return res.sendData(200, studies)
 })
 
+// router.get('/:materialId', async (req, res) => {
+//   const studies = await Study.getOne(req.user._id, req.params.materialId)
+
+//   return res.sendData(200, studies)
+// })
+
 router.delete('/:id', async (req, res) => {
 })
 
