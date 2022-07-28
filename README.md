@@ -2,12 +2,14 @@
 
 Reming is a progressive web application for memorizing.
 
-## Stack
+📹 See the [video demo](https://youtu.be/rTsiq1JUf0E)
+
+## 🧰 Stack
 Frontend: Vue 3, TypeScript, Pinia, Vue Router.
 
 Backend: Node, Express, Mongoose, MongoDB.
 
-## Key features
+## 📱 Key features
 * Flash cards: create and study flash card sets to effectively memorize any subject 
 * Tests: create and study tests to check on your progrees
 * Attachments: system for managing and adding images in your materials
